@@ -2,7 +2,7 @@ import { Action } from '@ngrx/store';
 import { Patient } from '../models/patient';
 
 export enum PatientActionTypes {
-  ADD = 'Add'
+  ADD = 'ADD'
 }
 
 /**

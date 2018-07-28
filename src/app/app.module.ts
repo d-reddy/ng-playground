@@ -1,4 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
+import { CommonModule } from '@angular/common'
 import { NgModule } from '@angular/core';
 import { StoreModule } from '@ngrx/store';
 import { AppComponent } from './app.component';
@@ -11,6 +12,7 @@ import { StoreDevtoolsModule } from '@ngrx/store-devtools';
   ],
   imports: [
     BrowserModule,
+    CommonModule,
     PatientModule,
     StoreModule.forRoot({}),
     //https://medium.com/stratajet-tech/a-beginners-guide-to-ngrx-store-bc2184d6d7f0

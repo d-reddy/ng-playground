@@ -1,6 +1,9 @@
 import { createEntityAdapter, EntityAdapter, EntityState } from '@ngrx/entity';
 import { Patient } from '../models/patient';
 import { PatientActionsUnion, PatientActionTypes } from '../actions/patient.actions';
+import {   createSelector } from '@ngrx/store';
+
+
 
 /**
  * @ngrx/entity provides a predefined interface for handling
@@ -19,7 +22,9 @@ export interface PatientState extends EntityState<Patient> { }
  * a sortComparer option which is set to a compare
  * function if the records are to be sorted.
  */
-export const patientAdapter: EntityAdapter<Patient> = createEntityAdapter<Patient>();
+export const patientAdapter: EntityAdapter<Patient> = createEntityAdapter<Patient>({
+  selectId: (patient: Patient) => patient.name
+});
 
 
 /**
@@ -50,7 +55,8 @@ export function patientReducer (
       }
     }
   }
-  
+
+
   /**
    * Because the data structure is defined within the reducer it is optimal to
    * locate our selector functions at this level. If store is to be thought of

@@ -3,11 +3,17 @@ import { RouterModule } from '@angular/router';
 import { StoreModule } from '@ngrx/store';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { PatientComponent } from './components/patient.component';
-import { patientReducer } from './reducers/patient.reducer'
+import { PatientGridComponent } from './components/patient-grid.component';
+import { patientReducer } from './reducers/patient.reducer';
+import { BrowserModule } from '@angular/platform-browser';
+import { CommonModule } from '@angular/common'
+
 
 @NgModule({
   imports: [
     FormsModule,
+    BrowserModule,
+    CommonModule,
     ReactiveFormsModule,
     //https://offering.solutions/blog/articles/2018/02/10/separating-state-into-angular-modules-with-ngrx
     StoreModule.forFeature('patientFeature', {
@@ -15,12 +21,14 @@ import { patientReducer } from './reducers/patient.reducer'
     })
   ],
   declarations: [
-    PatientComponent
+    PatientComponent,
+    PatientGridComponent
   ],
   providers: [
   ],
   exports:[
-      PatientComponent
+      PatientComponent,
+      PatientGridComponent
   ]
 })
 export class PatientModule {}
