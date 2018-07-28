@@ -4,15 +4,14 @@
     </div>
     <div class="panel-body">
       <form [formGroup]="patientForm" novalidate>
-       
-          <label class="col-md-4">Name</label>
-          <input type="text" class="form-control" formControlName="name" #name />
-       
-          <label class="col-md-4">DOB</label>
-          <input type="text" class="form-control" formControlName="dob" #dob/>
-       
-          <button (click)="addPatient(name.value, dob.value)" class="btn btn-primary">Add</button>
-       
+       <div>
+          <label class="col-md-4">Name</label> <input type="text" class="form-control" formControlName="name" #name />
+          <label class="col-md-4">DOB</label>  <input type="text" class="form-control" formControlName="dob" #dob/>
+       </div>   
+        <div>
+            <button (click)="addPatient(name.value, dob.value)" class="btn btn-primary">Add</button>
+        </div>
+      
       </form>
     </div>
     <patient-grid></patient-grid>

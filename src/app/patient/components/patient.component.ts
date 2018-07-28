@@ -14,6 +14,7 @@ import * as reducer from '../reducers/patient.reducer';
 })
 export class PatientComponent implements OnInit {
   patientForm: FormGroup;
+  title:string = 'Patient Form';
 
   constructor(private store: Store<reducer.PatientState>, private fb: FormBuilder) { 
     this.createForm();

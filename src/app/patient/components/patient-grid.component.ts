@@ -14,10 +14,12 @@ import * as reducer from '../reducers/patient.reducer';
   styleUrls: ['./patient-grid.component.css']
 })
 export class PatientGridComponent implements OnInit {
-  patients$: Observable<any>;
+  patients$ = [{'name': 'blah', 'dob':'dah' }, {'name': 'donk', 'dob':'dink' }];//Observable<any>;
+   
+  title:string ='Patients Added'
 
   constructor(private store: Store<reducer.PatientState>) { 
-    this.patients$ = this.store.select(reducer.selectEntities);
+//    this.patients$ = this.store.select(reducer.selectEntities);
   }
 
   ngOnInit() {
