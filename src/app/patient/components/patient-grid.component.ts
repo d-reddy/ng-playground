@@ -1,12 +1,10 @@
-// patient.component.ts
-import { FormGroup,  FormBuilder,  Validators } from '@angular/forms';
-
 import { Patient } from '../models/patient';
 import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs'
 
-import * as reducer from '../reducers/patient.reducer';
+//import * as reducer from '../reducers/patient.reducer';
+import * as reducer from '../reducers/index'
 
 @Component({
   selector: 'patient-grid',
@@ -14,15 +12,14 @@ import * as reducer from '../reducers/patient.reducer';
   styleUrls: ['./patient-grid.component.css']
 })
 export class PatientGridComponent implements OnInit {
-  patients$ = [{'name': 'blah', 'dob':'dah' }, {'name': 'donk', 'dob':'dink' }];//Observable<any>;
-   
-  title:string ='Patients Added'
+  patients$:Observable<Patient[]>;
+  title:string ='Patients Added';
 
-  constructor(private store: Store<reducer.PatientState>) { 
-//    this.patients$ = this.store.select(reducer.selectEntities);
+  constructor(private store: Store<reducer.PatientAggregateState>) { 
   }
 
   ngOnInit() {
+    this.patients$ = this.store.select(reducer.selectAllPatients);  
   }
 
 }

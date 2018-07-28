@@ -16,9 +16,8 @@ import { CommonModule } from '@angular/common'
     CommonModule,
     ReactiveFormsModule,
     //https://offering.solutions/blog/articles/2018/02/10/separating-state-into-angular-modules-with-ngrx
-    StoreModule.forFeature('patientFeature', {
-        patient: patientReducer
-    })
+    //https://toddmotto.com/ngrx-store-understanding-state-selectors
+    StoreModule.forFeature('patients', patientReducer)
   ],
   declarations: [
     PatientComponent,
