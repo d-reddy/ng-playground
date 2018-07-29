@@ -7,7 +7,7 @@ import { PatientGridComponent } from './components/patient-grid.component';
 import { patientReducer } from './reducers/patient.reducer';
 import { BrowserModule } from '@angular/platform-browser';
 import { CommonModule } from '@angular/common'
-
+import {PatientRoutingModule} from './patient.routing'
 
 @NgModule({
   imports: [
@@ -15,6 +15,8 @@ import { CommonModule } from '@angular/common'
     BrowserModule,
     CommonModule,
     ReactiveFormsModule,
+    RouterModule,
+    PatientRoutingModule,
     //https://offering.solutions/blog/articles/2018/02/10/separating-state-into-angular-modules-with-ngrx
     //https://toddmotto.com/ngrx-store-understanding-state-selectors
     StoreModule.forFeature('patients', patientReducer)

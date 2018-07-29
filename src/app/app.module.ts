@@ -2,6 +2,14 @@ import { BrowserModule } from '@angular/platform-browser';
 import { CommonModule } from '@angular/common'
 import { NgModule } from '@angular/core';
 import { StoreModule } from '@ngrx/store';
+import { HttpModule } from '@angular/http';
+import { RouterModule } from '@angular/router';
+import { NavbarModule } from './shared/navbar/navbar.module';
+import { FooterModule } from './shared/footer/footer.module';
+import { SidebarModule } from './sidebar/sidebar.module';
+import { AppRoutingModule } from './app.routing';
+
+
 import { AppComponent } from './app.component';
 import { PatientModule } from './patient/patient.module'
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
@@ -14,6 +22,12 @@ import { StoreDevtoolsModule } from '@ngrx/store-devtools';
     BrowserModule,
     CommonModule,
     PatientModule,
+    HttpModule,
+    NavbarModule,
+    FooterModule,
+    SidebarModule,
+    RouterModule,
+    AppRoutingModule,    
     StoreModule.forRoot({}),
     //https://medium.com/stratajet-tech/a-beginners-guide-to-ngrx-store-bc2184d6d7f0
     StoreDevtoolsModule.instrument({

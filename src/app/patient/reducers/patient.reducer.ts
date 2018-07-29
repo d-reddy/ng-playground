@@ -1,11 +1,6 @@
 import { createEntityAdapter, EntityAdapter, EntityState } from '@ngrx/entity';
 import { Patient } from '../models/patient';
 import { PatientActionsUnion, PatientActionTypes } from '../actions/patient.actions';
-import {
-  createSelector,
-  createFeatureSelector,
-  ActionReducerMap,
-} from '@ngrx/store';
 
 /**
  * @ngrx/entity provides a predefined interface for handling
@@ -75,7 +70,3 @@ export function patientReducer (
     selectTotal: selectTotal,
   } = patientAdapter.getSelectors();
 
-//patient selectors  
-export const getPatientState = createFeatureSelector<PatientState>('patients');
-
-export const selectAllPatients = createSelector(getPatientState, selectAll);
