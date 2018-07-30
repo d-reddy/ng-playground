@@ -2,7 +2,8 @@ import { Action } from '@ngrx/store';
 import { Patient } from '../models/patient';
 
 export enum PatientActionTypes {
-  ADD = 'ADD'
+  PATIENT_ADD = 'PATIENT_ADD',
+  PATIENT_ADD_COMPLETE = 'PATIENT_ADD_COMPLETE'
 }
 
 /**
@@ -12,8 +13,14 @@ export enum PatientActionTypes {
  *
  * See Discriminated Unions: https://www.typescriptlang.org/docs/handbook/advanced-types.html#discriminated-unions
  */
-export class ADD implements Action {
-  readonly type = PatientActionTypes.ADD;
+export class PATIENT_ADD implements Action {
+  readonly type = PatientActionTypes.PATIENT_ADD;
+
+  constructor(public payload: Patient) {}
+}
+
+export class PATIENT_ADD_COMPLETE implements Action {
+  readonly type = PatientActionTypes.PATIENT_ADD_COMPLETE;
 
   constructor(public payload: Patient) {}
 }
@@ -23,5 +30,6 @@ export class ADD implements Action {
  * so that reducers can easily compose action types
  */
 export type PatientActionsUnion =
-  | ADD
+  | PATIENT_ADD
+  | PATIENT_ADD_COMPLETE
 ;

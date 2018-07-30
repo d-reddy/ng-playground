@@ -9,7 +9,7 @@ import { FooterModule } from './shared/footer/footer.module';
 import { SidebarModule } from './sidebar/sidebar.module';
 import { AppRoutingModule } from './app.routing';
 
-
+import { EffectsModule } from '@ngrx/effects';
 import { AppComponent } from './app.component';
 import { PatientModule } from './patient/patient.module'
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
@@ -21,6 +21,7 @@ import { StoreDevtoolsModule } from '@ngrx/store-devtools';
   imports: [
     BrowserModule,
     CommonModule,
+    EffectsModule.forRoot([]),    
     PatientModule,
     HttpModule,
     NavbarModule,
@@ -32,7 +33,7 @@ import { StoreDevtoolsModule } from '@ngrx/store-devtools';
     //https://medium.com/stratajet-tech/a-beginners-guide-to-ngrx-store-bc2184d6d7f0
     StoreDevtoolsModule.instrument({
       maxAge: 25 //  Retains last 25 states
-    })
+    }),
   ],
   providers: [],
   bootstrap: [AppComponent]

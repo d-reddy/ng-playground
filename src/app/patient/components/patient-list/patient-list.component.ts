@@ -1,16 +1,16 @@
-import { Patient } from '../models/patient';
+import { Patient } from '../../models/patient';
 import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs'
 
-import * as reducer from '../reducers/index'
+import * as reducer from '../../reducers'
 
 @Component({
-  selector: 'patient-grid',
-  templateUrl: './patient-grid.component.html',
-  styleUrls: ['./patient-grid.component.css']
+  selector: 'patient-list',
+  templateUrl: './patient-list.component.html',
+  styleUrls: ['./patient-list.component.css']
 })
-export class PatientGridComponent implements OnInit {
+export class PatientListComponent implements OnInit {
   patients$:Observable<Patient[]>;
   title:string ='Patients Added';
 

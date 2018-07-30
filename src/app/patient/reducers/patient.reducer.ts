@@ -36,7 +36,7 @@ export function patientReducer (
     action: PatientActionsUnion
   ) : PatientState {
     switch (action.type) {
-      case PatientActionTypes.ADD: {
+      case PatientActionTypes.PATIENT_ADD_COMPLETE: {
         /**
        * The addOne function provided by the created adapter
        * adds one record to the entity dictionary
