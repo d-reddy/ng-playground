@@ -1,9 +1,16 @@
 import { Patient } from '../../models/patient';
 import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { Observable } from 'rxjs'
+import { Observable, of } from 'rxjs'
+import { ActivatedRoute, ParamMap } from '@angular/router';
 
 import * as reducer from '../../reducers'
+import * as actions from '../../actions/patient.actions';
+
+declare interface TableData {
+  headerRow: string[];
+  patients$: Observable<Patient[]>;
+}
 
 @Component({
   selector: 'patient-list',
@@ -11,14 +18,19 @@ import * as reducer from '../../reducers'
   styleUrls: ['./patient-list.component.css']
 })
 export class PatientListComponent implements OnInit {
-  patients$:Observable<Patient[]>;
-  title:string ='Patients Added';
+  tableData: TableData;
+  private selectedId: number;
 
   constructor(private store: Store<reducer.PatientAggregateState>) { 
+    this.tableData = {
+      headerRow: ['medical#', 'name', 'dob', 'actions'],
+      patients$: of([]) //initialize to empty array
+    }
   }
 
   ngOnInit() {
-    this.patients$ = this.store.select(reducer.selectAllPatients);  
+    this.tableData.patients$ = this.store.select(reducer.selectAllPatients);
+    this.store.dispatch(new actions.PatientsGet(/*support filter at some point*/));
   }
-
+  
 }

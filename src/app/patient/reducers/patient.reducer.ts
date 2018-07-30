@@ -20,7 +20,7 @@ export interface PatientState extends EntityState<Patient> { }
  * function if the records are to be sorted.
  */
 export const patientAdapter: EntityAdapter<Patient> = createEntityAdapter<Patient>({
-  selectId: (patient: Patient) => patient.name
+  selectId: (patient: Patient) => patient.id
 });
 
 
@@ -36,7 +36,7 @@ export function patientReducer (
     action: PatientActionsUnion
   ) : PatientState {
     switch (action.type) {
-      case PatientActionTypes.PATIENT_ADD_COMPLETE: {
+      case PatientActionTypes.PATIENT_CREATE_COMPLETE: {
         /**
        * The addOne function provided by the created adapter
        * adds one record to the entity dictionary
@@ -46,7 +46,12 @@ export function patientReducer (
        */
         return patientAdapter.addOne(action.payload, state);
       } 
-  
+      case PatientActionTypes.PATIENTS_GET_COMPLETE: {
+        return patientAdapter.addAll(action.payload, state);
+      }   
+      case PatientActionTypes.PATIENT_SAVE_COMPLETE: {
+        return patientAdapter.updateOne({id:action.id, changes: action.changes}, state);
+      } 
       default: {
         return state;
       }

@@ -5,7 +5,8 @@ import { Routes, RouterModule } from '@angular/router';
 
 // import { HomeComponent } from './home/home.component';
 // import { UserComponent } from './user/user.component';
-import { PatientComponent } from './components/patient/patient.component';
+import { PatientDetailComponent } from './components/patient/patient-detail.component';
+import { PatientListComponent } from './components/patient-list/patient-list.component'
 // import { TablesComponent } from './tables/tables.component';
 // import { TypographyComponent } from './typography/typography.component';
 // import { IconsComponent } from './icons/icons.component';
@@ -16,7 +17,8 @@ import { PatientComponent } from './components/patient/patient.component';
 const routes: Routes =[
     // { path: 'dashboard',      component: HomeComponent },
     // { path: 'user',           component: UserComponent },
-    { path: 'patients',           component: PatientComponent },
+    { path: 'patients',          component: PatientListComponent },
+    { path: 'patient/:id',       component: PatientDetailComponent },
     // { path: 'table',          component: TablesComponent },
     // { path: 'typography',     component: TypographyComponent },
     // { path: 'icons',          component: IconsComponent },

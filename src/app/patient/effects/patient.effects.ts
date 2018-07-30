@@ -14,8 +14,14 @@ import {
 import { PatientService } from '../services/patient.service';
 import {
   PatientActionTypes,
-  PATIENT_ADD,
-  PATIENT_ADD_COMPLETE
+  PatientCreate,
+  PatientCreateComplete,
+  PatientsGet,
+  PatientsGetComplete,
+  PatientSave,
+  PatientSaveComplete,
+  PatientGet,
+  PatientGetComplete
 } from '../actions/patient.actions';
 
 import { Patient } from '../models/patient';
@@ -44,11 +50,46 @@ export class PatientEffects {
     
   @Effect()
   createPatient$: Observable<Action> = this.actions$.pipe(
-    ofType<PATIENT_ADD>(PatientActionTypes.PATIENT_ADD),
+    ofType<PatientCreate>(PatientActionTypes.PATIENT_CREATE),
     map(action => action.payload),
     switchMap(patient => {
-      return this.patientService.addPatient(patient).pipe(
-        map((createdPatient: Patient) => new PATIENT_ADD_COMPLETE(createdPatient)),
+      return this.patientService.createPatient(patient).pipe(
+        map((createdPatient: Patient) => new PatientCreateComplete(createdPatient)),
+//      catchError(err => of(new SearchError(err)))
+      );
+    })
+  );
+
+  @Effect()
+  savePatient$: Observable<Action> = this.actions$.pipe(
+    ofType<PatientSave>(PatientActionTypes.PATIENT_SAVE),
+    map(action => action.payload),
+    switchMap(patient => {
+      return this.patientService.savePatient(patient).pipe(
+        map((savedPatient: Patient) => new PatientSaveComplete(savedPatient.id, savedPatient)),
+//      catchError(err => of(new SearchError(err)))
+      );
+    })
+  );
+
+
+  @Effect()
+  getPatients$: Observable<Action> = this.actions$.pipe(
+    ofType<PatientsGet>(PatientActionTypes.PATIENTS_GET),
+    switchMap(action => {
+      return this.patientService.getPatients().pipe(
+        map((returnedPatients: Patient[]) => new PatientsGetComplete(returnedPatients)),
+//      catchError(err => of(new SearchError(err)))
+      );
+    })
+  );
+
+  @Effect()
+  getPatient$: Observable<Action> = this.actions$.pipe(
+    ofType<PatientGet>(PatientActionTypes.PATIENT_GET),
+    switchMap(action => {
+      return this.patientService.getPatient(action.payload).pipe(
+        map((returnedPatient: Patient) => new PatientGetComplete(returnedPatient)),
 //      catchError(err => of(new SearchError(err)))
       );
     })

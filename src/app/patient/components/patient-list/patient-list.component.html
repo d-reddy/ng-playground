@@ -1,12 +1,26 @@
-<div class="panel panel-primary">
-  <div class="panel-heading">
-    {{ title }}
-  </div>
-  <div class="panel-body">
-      <ul>
-          <li *ngFor="let patient of patients$ | async">
-            <span>{{ patient.name }}  {{ patient.dob }}</span>
-          </li> 
-      </ul>
-  </div>
+<div class="main-content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="content table-responsive table-full-width">
+                          <table class="table table-hover table-striped">
+                                <thead>
+                                    <tr>
+                                        <th *ngFor="let cell of tableData.headerRow">{{ cell }}</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let patient of tableData.patients$ | async">
+                                        <td>{{ patient.id }}</td>
+                                        <td>{{ patient.name }}</td>
+                                        <td>{{ patient.dob }}</td>
+                                        <td><button [routerLink]="['/patient', patient.id]" type="button" class="btn btn-primary btn-sm">Select</button></td>
+                                    </tr>
+                                </tbody>
+                          </table>
+                    </div>
+                </div>
+            </div>
+    </div>
 </div>

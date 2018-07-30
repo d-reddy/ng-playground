@@ -1,0 +1,20 @@
+<div class="main-content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12" >
+                <div class="card">
+                    <form *ngIf="patient$ | async;" [formGroup]="patientForm" (ngSubmit)="onSubmit(patientForm)" novalidate >
+                        <div>
+                            <label class="col-md-4">Id</label> <input type="text" class="form-control" formControlName="id" />
+                            <label class="col-md-4">Name</label> <input type="text" class="form-control" formControlName="name"/>
+                            <label class="col-md-4">DOB</label>  <input type="text" class="form-control" formControlName="dob"/>
+                        </div>   
+                          <div>
+                              <button type="submit" class="btn btn-primary">Save</button>
+                          </div>
+                        </form>
+                </div>
+            </div>
+    </div>
+</div>
+
