@@ -4,33 +4,114 @@ import { Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { Patient } from '../models/patient';
+import { Address } from '../models/address';
 
 const PATIENTS = [
     {
        id: 1,
-       name: 'homer j simpson',
-       dob: '01/11/63'     
+       firstName: 'homer',
+       middleName: 'j',
+       lastName: 'simpson',
+       dob: '01/11/63',
+       phone: '815.333.1234',
+       email: 'homer.simpson@gmail.com',
+       notes: 'forgot drivers license',
+       currentAddress: {
+          address: '123 Fake st',
+          city: 'springfield',
+          state: 'il',
+          zip: '60515',
+          until: ''
+       },
+       addressHistory: []
     },
     {
-        id: 2,
-        name: 'marge simpson',
-        dob: '11/02/63'   
-    },
+      id: 2,
+      firstName: 'marge',
+      middleName: '',
+      lastName: 'simpson',
+      dob: '11/02/63',
+      phone: '815.333.1234',
+      email: 'marge.simpson@gmail.com',
+      notes: '',
+      currentAddress: {
+         address: '123 Fake st',
+         city: 'springfield',
+         state: 'il',
+         zip: '60515',
+         until: ''
+      },
+      addressHistory: []
+   },
     {
-        id: 3,
-        name: 'batholomew simpson',
-        dob: '07/19/79'   
-    },
+      id: 3,
+      firstName: 'bartholomew',
+      middleName: 'j',
+      lastName: 'simpson',
+      dob: '07/19/79',
+      phone: '815.333.1234',
+      email: 'bart.simpson@gmail.com',
+      notes: '',
+      currentAddress: {
+         address: '200 Fake st',
+         city: 'springfield',
+         state: 'il',
+         zip: '60515',
+         until: ''
+      },
+      addressHistory: [
+        {
+          address: '123 Fake st',
+          city: 'springfield',
+          state: 'il',
+          zip: '60515',
+          until: '01/01/2000'
+       },
+       {
+        address: '18 Nowhere st',
+        city: 'chicago',
+        state: 'il',
+        zip: '60661',
+        until: '12/31/1999'
+     }
+      ]
+   },
     {
-        id: 4,
-        name: 'lisa simpson',
-        dob: '07/12/82'   
-    },
+      id: 4,
+      firstName: 'lisa',
+      middleName: '',
+      lastName: 'simpson',
+      dob: '08/12/82',
+      phone: '815.333.1234',
+      email: 'lisa.simpson@gmail.com',
+      notes: '',
+      currentAddress: {
+         address: '123 Fake st',
+         city: 'springfield',
+         state: 'il',
+         zip: '60515',
+         until: ''
+      },
+      addressHistory: []
+   },
     {
-        id: 5,
-        name: 'maggie simpson',
-        dob: '05/30/63'   
-    }        
+      id: 5,
+      firstName: 'maggie',
+      middleName: '',
+      lastName: 'simpson',
+      dob: '05/30/85',
+      phone: '815.333.1234',
+      email: 'maggie.simpson@gmail.com',
+      notes: '',
+      currentAddress: {
+         address: '123 Fake st',
+         city: 'springfield',
+         state: 'il',
+         zip: '60515',
+         until: ''       
+      },
+      addressHistory: []
+   }        
 ];
 
 @Injectable()

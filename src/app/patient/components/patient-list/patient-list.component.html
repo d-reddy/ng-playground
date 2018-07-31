@@ -13,7 +13,8 @@
                                 <tbody>
                                     <tr *ngFor="let patient of tableData.patients$ | async">
                                         <td>{{ patient.id }}</td>
-                                        <td>{{ patient.name }}</td>
+                                        <td>{{ patient.firstName }}</td>
+                                        <td>{{ patient.lastName }}</td>
                                         <td>{{ patient.dob }}</td>
                                         <td><button [routerLink]="['/patient', patient.id]" type="button" class="btn btn-primary btn-sm">Select</button></td>
                                     </tr>

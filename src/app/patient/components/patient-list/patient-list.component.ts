@@ -22,7 +22,7 @@ export class PatientListComponent implements OnInit {
 
   constructor(private store: Store<reducer.PatientAggregateState>) { 
     this.tableData = {
-      headerRow: ['medical#', 'name', 'dob', 'actions'],
+      headerRow: ['medical record number', 'first', 'last', 'dob', 'actions'],
       patients$: of([]) //initialize to empty array
     }
   }
