@@ -32,7 +32,7 @@ export class PatientDetailComponent implements OnInit, OnDestroy {
   ngOnInit() {
     //create the patient form
     this.patientForm = this.fb.group({
-      id: '',
+      id: ['',{'disabled': 'true'}],
       name: '',
       dob: ''
     });

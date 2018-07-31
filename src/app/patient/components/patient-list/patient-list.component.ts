@@ -19,7 +19,6 @@ declare interface TableData {
 })
 export class PatientListComponent implements OnInit {
   tableData: TableData;
-  private selectedId: number;
 
   constructor(private store: Store<reducer.PatientAggregateState>) { 
     this.tableData = {

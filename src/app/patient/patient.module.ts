@@ -2,7 +2,7 @@ import { ModuleWithProviders, NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { StoreModule } from '@ngrx/store';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { PatientDetailComponent } from './components/patient/patient-detail.component';
+import { PatientDetailComponent } from './components/patient-detail/patient-detail.component';
 import { PatientListComponent } from './components/patient-list/patient-list.component';
 import { patientReducer } from './reducers/patient.reducer';
 import { BrowserModule } from '@angular/platform-browser';

@@ -5,7 +5,7 @@ import { Routes, RouterModule } from '@angular/router';
 
 // import { HomeComponent } from './home/home.component';
 // import { UserComponent } from './user/user.component';
-import { PatientDetailComponent } from './components/patient/patient-detail.component';
+import { PatientDetailComponent } from './components/patient-detail/patient-detail.component';
 import { PatientListComponent } from './components/patient-list/patient-list.component'
 // import { TablesComponent } from './tables/tables.component';
 // import { TypographyComponent } from './typography/typography.component';
