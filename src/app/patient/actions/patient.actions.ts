@@ -1,5 +1,6 @@
 import { Action } from '@ngrx/store';
 import { Patient } from '../models/patient';
+import { PageRequest, PageResponse } from '../../shared/pagination/models/pagination'
 
 export enum PatientActionTypes {
   PATIENT_CREATE = 'PATIENT_CREATE',
@@ -35,13 +36,14 @@ export class PatientCreateComplete implements Action {
 export class PatientsGet implements Action {
   readonly type = PatientActionTypes.PATIENTS_GET;
 
-  constructor() {}
+//  constructor() {}
+  constructor(public filter: object, public pageRequest: PageRequest) {}
 }
 
 export class PatientsGetComplete implements Action {
   readonly type = PatientActionTypes.PATIENTS_GET_COMPLETE;
 
-  constructor(public payload: Patient[]) {}
+  constructor(public payload: PageResponse<Patient>) {}
 }
 
 export class PatientSave implements Action {

@@ -7,11 +7,11 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { Observable, Subscription, of } from 'rxjs'
-import { switchMap } from 'rxjs/operators';
+import { switchMap, filter, map } from 'rxjs/operators';
 
 import { PatientService } from '../../services/patient.service';
 
-import * as reducer from '../../reducers/patient.reducer';
+import * as reducer from '../../reducers';
 import * as actions from '../../actions/patient.actions';
 
 @Component({
@@ -22,13 +22,14 @@ import * as actions from '../../actions/patient.actions';
 export class PatientDetailComponent implements OnInit, OnDestroy {
   patientForm: FormGroup;
   addressHistory: Address[];
-
+  id: number;
   patient$: Observable<Patient>;
 
   patientFormSubscription: Subscription;
+  patientSubscription: Subscription;
   addressHistorySubscription: Subscription;
   
-  constructor(private store: Store<reducer.PatientState>, private fb: FormBuilder, private route: ActivatedRoute,
+  constructor(private store: Store<reducer.PatientsAggregateState>, private fb: FormBuilder, private route: ActivatedRoute,
     private router: Router, private service: PatientService) { }
 
   onSubmit({ value, valid }) {
@@ -70,14 +71,24 @@ export class PatientDetailComponent implements OnInit, OnDestroy {
     });
 
     //fetch the selected patient
-    this.patient$ = this.route.paramMap.pipe(
-      switchMap((params: ParamMap) =>
-      this.service.getPatient(+params.get('id')))
-    );
+    // this.patient$ = this.route.paramMap.pipe(
+    //   switchMap((params: ParamMap) =>
+    //   this.service.getPatient(+params.get('id')))
+    // );
+    this.patientSubscription = this.route.params.subscribe(params => {
+      this.id = +params['id']; // (+) converts string 'id' to a number
+      this.store.dispatch(new actions.PatientGet(this.id));
+    });
+  
+    this.patient$ = this.store.select(reducer.selectCurrentPatient);
     
     //bind changes to the patient to the form input values
-    this.patientFormSubscription = this.patient$.subscribe(data => this.patientForm.patchValue(data));
-    this.addressHistorySubscription = this.patient$.subscribe(data => this.addressHistory = data.addressHistory)
+    this.patientFormSubscription = this.patient$.subscribe(data => {
+      if(data) this.patientForm.patchValue(data)
+    });
+    this.addressHistorySubscription = this.patient$.subscribe(data => {
+      if(data) this.addressHistory = data.addressHistory
+    })
   }
 
   ngOnDestroy(){

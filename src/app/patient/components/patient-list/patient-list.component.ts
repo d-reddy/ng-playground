@@ -1,16 +1,12 @@
 import { Patient } from '../../models/patient';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { Observable, of } from 'rxjs'
+import { Observable, of, Subject, Subscription } from 'rxjs'
 import { ActivatedRoute, ParamMap } from '@angular/router';
 
 import * as reducer from '../../reducers'
 import * as actions from '../../actions/patient.actions';
-
-declare interface TableData {
-  headerRow: string[];
-  patients$: Observable<Patient[]>;
-}
+import { PageRequest, PageResponse } from '../../../shared/pagination/models/pagination';
 
 @Component({
   selector: 'patient-list',
@@ -18,18 +14,49 @@ declare interface TableData {
   styleUrls: ['./patient-list.component.css']
 })
 export class PatientListComponent implements OnInit {
-  tableData: TableData;
+  //page$: Observable<PageResponse<Patient>> | null
+  patientsSubscription: Subscription;
+  patients: Patient[];
+  page: Observable<PageResponse<Patient>>;
+  headerRow: string[]
 
-  constructor(private store: Store<reducer.PatientAggregateState>) { 
-    this.tableData = {
-      headerRow: ['medical record number', 'first', 'last', 'dob', 'actions'],
-      patients$: of([]) //initialize to empty array
-    }
+  constructor(private store: Store<reducer.PatientsAggregateState>) { 
   }
 
   ngOnInit() {
-    this.tableData.patients$ = this.store.select(reducer.selectAllPatients);
-    this.store.dispatch(new actions.PatientsGet(/*support filter at some point*/));
+    this.headerRow = ['medical record number', 'first', 'last', 'dob', 'actions'];
+
+    //this.tableData.patients$ = this.store.select(reducer.selectAllPatients);
+    this.page = this.store.select(reducer.selectCurrentPatientPage);
+ 
+    this.patientsSubscription = this.page.subscribe(data => {
+      if(data){
+        this.patients = data.results;
+      }
+    });
+
+    let pageRequest = <PageRequest>{
+        pageIndex: 0,
+        pageSize: 2
+    }
+
+    let filter = null;
+
+    this.store.dispatch(new actions.PatientsGet(filter, pageRequest));
   }
   
+  onPageChanged(pageIndex: number) {
+    let pageRequest = <PageRequest>{
+        pageIndex: pageIndex,
+        pageSize: 2
+    };
+    
+    let filter = null;
+
+    this.store.dispatch(new actions.PatientsGet(filter, pageRequest));
+  }
+
+  ngOnDestroy(){
+    this.patientsSubscription.unsubscribe();
+  }
 }

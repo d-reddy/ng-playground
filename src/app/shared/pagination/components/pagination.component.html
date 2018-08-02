@@ -1,0 +1,7 @@
+<div class="container" *ngIf="page">
+  <button (click)="pageChange.emit(page.pageIndex-1)" [disabled]="page.pageIndex == 0">&lsaquo;</button>
+  <span>
+    Page: {{ page.pageIndex }}
+  </span>
+  <button (click)="pageChange.emit(page.pageIndex+1)">&rsaquo;</button>
+</div>

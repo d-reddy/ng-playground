@@ -13,6 +13,7 @@ import { EffectsModule } from '@ngrx/effects';
 import { AppComponent } from './app.component';
 import { PatientModule } from './patient/patient.module'
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { PaginationModule } from './shared/pagination/pagination.module'
 
 @NgModule({
   declarations: [
@@ -26,6 +27,7 @@ import { StoreDevtoolsModule } from '@ngrx/store-devtools';
     HttpModule,
     NavbarModule,
     FooterModule,
+    PaginationModule,
     SidebarModule,
     RouterModule,
     AppRoutingModule,    

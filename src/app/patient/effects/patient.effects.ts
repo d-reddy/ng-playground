@@ -25,6 +25,7 @@ import {
 } from '../actions/patient.actions';
 
 import { Patient } from '../models/patient';
+import { PageResponse} from '../../shared/pagination/models/pagination'
 
 //may need this when working on patient filtering
 // import { Scheduler } from 'rxjs/internal/Scheduler';
@@ -77,8 +78,10 @@ export class PatientEffects {
   getPatients$: Observable<Action> = this.actions$.pipe(
     ofType<PatientsGet>(PatientActionTypes.PATIENTS_GET),
     switchMap(action => {
-      return this.patientService.getPatients().pipe(
-        map((returnedPatients: Patient[]) => new PatientsGetComplete(returnedPatients)),
+//      return this.patientService.getPatients().pipe(
+    return this.patientService.list(action.filter, action.pageRequest).pipe(  
+//        map((returnedPatients: Patient[]) => new PatientsGetComplete(returnedPatients)),
+        map((returnedPatients: PageResponse<Patient>) => new PatientsGetComplete(returnedPatients)),
 //      catchError(err => of(new SearchError(err)))
       );
     })

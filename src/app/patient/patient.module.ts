@@ -12,7 +12,8 @@ import { EffectsModule } from '@ngrx/effects';
 import { PatientEffects } from './effects/patient.effects';
 import { PatientService } from './services/patient.service';
 import { HttpClientModule } from '@angular/common/http';
-
+import { PaginationModule } from '../shared/pagination/pagination.module'
+import { PaginationService } from '../shared/pagination/services/pagination.service'
 
 @NgModule({
   imports: [
@@ -23,6 +24,7 @@ import { HttpClientModule } from '@angular/common/http';
     ReactiveFormsModule,
     RouterModule,
     PatientRoutingModule,
+    PaginationModule,
     //https://offering.solutions/blog/articles/2018/02/10/separating-state-into-angular-modules-with-ngrx
     //https://toddmotto.com/ngrx-store-understanding-state-selectors
     StoreModule.forFeature('patients', patientReducer),
@@ -33,11 +35,12 @@ import { HttpClientModule } from '@angular/common/http';
     PatientListComponent
   ],
   providers: [
-    PatientService
+    PatientService,
+    PaginationService
   ],
   exports:[
     PatientDetailComponent,
-      PatientListComponent
+    PatientListComponent
   ]
 })
 export class PatientModule {}

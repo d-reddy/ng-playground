@@ -1,12 +1,10 @@
-import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+//inspired by: https://medium.com/@JeremyLaine/server-side-pagination-and-filtering-with-angular-6-280a7909e783
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { Injectable } from '@angular/core';
+import { PageRequest, PageResponse } from '../models/pagination';
 
-import { Patient } from '../models/patient';
-import { Address } from '../models/address';
-import { PaginationService } from '../../shared/pagination/services/pagination.service';
-import { PageRequest, PageResponse } from '../../shared/pagination/models/pagination'
+
 
 const PATIENTS = [
     {
@@ -116,43 +114,43 @@ const PATIENTS = [
    }        
 ];
 
-@Injectable()
-export class PatientService {
-  private API_PATH = '...';
+  @Injectable()
+  export class PaginationService {
+    queryPaginated<T>(http: HttpClient, baseUrl: string, filter: object, pageRequest: PageRequest): Observable<PageResponse<any>> {
+      let params = new HttpParams();
+      let url = baseUrl;
 
-  constructor(private http: HttpClient, private paginationService: PaginationService) {}
+      //add paging criteria to request
+      Object.keys(pageRequest).sort().forEach(key => {
+        const value = pageRequest[key];
+        if (value !== null) {
+          params = params.set(key, value.toString());
+        }
+      });
 
-  getPatients(): Observable<Patient[]> {
-    //execute some api call to fetch patients
+      //add filtering criteria to request
+      if (typeof filter === 'object' && filter) {
+        // we were given filtering criteria, build the query string
+        Object.keys(filter).sort().forEach(key => {
+          const value = filter[key];
+          if (value !== null) {
+            params = params.set(key, value.toString());
+          }
+        });
+      }
 
-    //just mocking out an observable response
-    return of(PATIENTS);
-  }
+      // return http.get<PageResponse<T>>(url, {
+      //   params: params
+      // });
 
-  getPatient(id:number){
-    //cheap stub for testing, would need to actually go out to fetch patient detail      
-    let test = this.getPatients().pipe(
-        map(patients => patients.find(patient => patient.id === id))
-      );
+     
+      let response = <PageResponse<T>>{
+        total: 5,      // total number of items in full collection
+        pageIndex: pageRequest.pageIndex,  // page index returned
+        pageSize: 2,   // count per page
+        results:  (PATIENTS.slice(pageRequest.pageIndex*pageRequest.pageSize, pageRequest.pageIndex*pageRequest.pageSize + 2)) as Array<any>// items for the current page
+      };
 
-    return test;
-  }
-
-  createPatient(patient:Patient): Observable<Patient> {
-    //execute some api call to create patient
-
-    //just mocking out an observable response
-    return of(patient);
-  }
-
-  savePatient(patient:Patient): Observable<Patient> {
-    //execute some api call to create patient
-    
-    //just mocking out an observable response
-    return of(patient);
-  }
-
-  list(filter: null | object, pageRequest: PageRequest): Observable<PageResponse<Patient>> {
-    return this.paginationService.queryPaginated<Patient>(this.http, this.API_PATH, filter, pageRequest);
+      return of(response);
   }
 }

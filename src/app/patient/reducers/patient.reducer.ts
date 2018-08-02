@@ -1,7 +1,13 @@
 import { createEntityAdapter, EntityAdapter, EntityState } from '@ngrx/entity';
 import { Patient } from '../models/patient';
+import { PageResponse } from '../../shared/pagination/models/pagination';
 import { PatientActionsUnion, PatientActionTypes } from '../actions/patient.actions';
 
+import {
+  createSelector,
+  createFeatureSelector,
+  ActionReducerMap,
+} from '@ngrx/store';
 /**
  * @ngrx/entity provides a predefined interface for handling
  * a structured dictionary of records. This interface
@@ -9,7 +15,10 @@ import { PatientActionsUnion, PatientActionTypes } from '../actions/patient.acti
  * model type by id. This interface is extended to include
  * any additional interface properties.
  */
-export interface PatientState extends EntityState<Patient> { }
+export interface PatientsState extends EntityState<Patient> { 
+  selectedPatientId: number | null;
+  selectedPatientPage : PageResponse<Patient>
+}
 
 /**
  * createEntityAdapter creates an object of many helper
@@ -29,12 +38,15 @@ export const patientAdapter: EntityAdapter<Patient> = createEntityAdapter<Patien
  * for the generated entity state. Initial state
  * additional properties can also be defined.
  */
-export const initialState: PatientState = patientAdapter.getInitialState({ });
+export const initialState: PatientsState = patientAdapter.getInitialState({
+  selectedPatientId: null,
+  selectedPatientPage: null
+});
 
 export function patientReducer (
     state = initialState,
     action: PatientActionsUnion
-  ) : PatientState {
+  ) : PatientsState {
     switch (action.type) {
       case PatientActionTypes.PATIENT_CREATE_COMPLETE: {
         /**
@@ -46,12 +58,21 @@ export function patientReducer (
        */
         return patientAdapter.addOne(action.payload, state);
       } 
+      // case PatientActionTypes.PATIENTS_GET_COMPLETE: {
+      //   return patientAdapter.addAll(action.payload, state);
+      // }   
       case PatientActionTypes.PATIENTS_GET_COMPLETE: {
-        return patientAdapter.addAll(action.payload, state);
+        //patientAdapter.upsertMany(action.payload.results, state);
+        state = patientAdapter.upsertMany(action.payload.results, state);
+        return { ...state, selectedPatientPage: action.payload }
       }   
       case PatientActionTypes.PATIENT_SAVE_COMPLETE: {
         return patientAdapter.updateOne({id:action.id, changes: action.changes}, state);
-      } 
+      }
+      case PatientActionTypes.PATIENT_GET_COMPLETE: {
+        state = patientAdapter.upsertOne(action.payload, state);
+        return { ...state, selectedPatientId: action.payload.id }
+      }       
       default: {
         return state;
       }
@@ -72,6 +93,5 @@ export function patientReducer (
     selectIds: selectIds,
     selectEntities: selectEntities,
     selectAll: selectAll,
-    selectTotal: selectTotal,
+    selectTotal: selectTotal
   } = patientAdapter.getSelectors();
-
