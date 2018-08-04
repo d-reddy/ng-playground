@@ -1,12 +1,12 @@
 import { Patient } from '../../models/patient';
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { Observable, of, Subject, Subscription } from 'rxjs'
-import { ActivatedRoute, ParamMap } from '@angular/router';
+import { Observable } from 'rxjs'
 
 import * as reducer from '../../reducers'
 import * as actions from '../../actions/patient.actions';
 import { PageRequest, PageResponse } from '../../../shared/pagination/models/pagination';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'patient-list',
@@ -14,11 +14,9 @@ import { PageRequest, PageResponse } from '../../../shared/pagination/models/pag
   styleUrls: ['./patient-list.component.css']
 })
 export class PatientListComponent implements OnInit {
-  //page$: Observable<PageResponse<Patient>> | null
-  patientsSubscription: Subscription;
-  patients: Patient[];
-  page: Observable<PageResponse<Patient>>;
+  page$: Observable<PageResponse<Patient>>;
   headerRow: string[]
+  patients$: Observable<Patient[]>;
 
   constructor(private store: Store<reducer.PatientsAggregateState>) { 
   }
@@ -26,14 +24,11 @@ export class PatientListComponent implements OnInit {
   ngOnInit() {
     this.headerRow = ['medical record number', 'first', 'last', 'dob', 'actions'];
 
-    //this.tableData.patients$ = this.store.select(reducer.selectAllPatients);
-    this.page = this.store.select(reducer.selectCurrentPatientPage);
+    this.page$ = this.store.select(reducer.selectCurrentPatientPage);
  
-    this.patientsSubscription = this.page.subscribe(data => {
-      if(data){
-        this.patients = data.results;
-      }
-    });
+    this.patients$ = this.page$.pipe(
+      map(x => x.results)
+    );
 
     let pageRequest = <PageRequest>{
         pageIndex: 0,
@@ -54,9 +49,5 @@ export class PatientListComponent implements OnInit {
     let filter = null;
 
     this.store.dispatch(new actions.PatientsGet(filter, pageRequest));
-  }
-
-  ngOnDestroy(){
-    this.patientsSubscription.unsubscribe();
   }
 }

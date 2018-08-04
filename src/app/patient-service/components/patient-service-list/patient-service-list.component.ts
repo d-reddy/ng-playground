@@ -1,12 +1,13 @@
 import { PatientService } from '../../models/patientService';
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { Observable, of, Subject, Subscription } from 'rxjs'
-import { ActivatedRoute, ParamMap } from '@angular/router';
+import { Observable } from 'rxjs'
 
 import * as reducer from '../../reducers'
 import * as actions from '../../actions/patient-service.actions';
 import { PageRequest, PageResponse } from '../../../shared/pagination/models/pagination';
+import { map } from 'rxjs/operators';
+
 
 @Component({
   selector: 'patient-service-list',
@@ -14,24 +15,20 @@ import { PageRequest, PageResponse } from '../../../shared/pagination/models/pag
   styleUrls: ['./patient-service-list.component.css']
 })
 export class PatientServiceListComponent implements OnInit {
-  //page$: Observable<PageResponse<PatientService>> | null
-  patientServicesSubscription: Subscription;
-  patientServices: PatientService[];
-  page: Observable<PageResponse<PatientService>>;
+  page$: Observable<PageResponse<PatientService>>;
   headerRow: string[]
+  patientServices$: Observable<PatientService[]>;
 
   constructor(private store: Store<reducer.PatientServicesAggregateState>) { 
   }
 
   ngOnInit() {
     this.headerRow = ['medical record number', 'date of service'];
-    this.page = this.store.select(reducer.selectCurrentPatientServicePage);
+    this.page$ = this.store.select(reducer.selectCurrentPatientServicePage);
  
-    this.patientServicesSubscription = this.page.subscribe(data => {
-      if(data){
-        this.patientServices = data.results;
-      }
-    });
+    this.patientServices$ = this.page$.pipe(
+      map(x => x.results)
+    );
 
     let pageRequest = <PageRequest>{
         pageIndex: 0,
@@ -54,7 +51,4 @@ export class PatientServiceListComponent implements OnInit {
     this.store.dispatch(new actions.PatientServicesGet(filter, pageRequest));
   }
 
-  ngOnDestroy(){
-    this.patientServicesSubscription.unsubscribe();
-  }
 }

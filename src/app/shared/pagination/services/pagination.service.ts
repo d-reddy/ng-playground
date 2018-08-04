@@ -147,7 +147,15 @@ let serviceData = {
     {
       id: 1,
       medicalRecordNumber: 3,
-      exams: [1,3],
+      performedExams: [{
+        patientServiceId: 1,
+        examId: 1,
+        doctorId: 1
+      },{
+        patientServiceId: 2,
+        examId: 2,
+        doctorId: 2
+      }],
       dateOfService: new Date(2018,10,11)
     }
   ]

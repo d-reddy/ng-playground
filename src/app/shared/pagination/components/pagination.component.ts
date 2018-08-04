@@ -1,5 +1,4 @@
 import { Component, EventEmitter, Input, Output, OnInit } from '@angular/core';
-import { Observable } from 'rxjs'
 import { PageResponse } from '../models/pagination';
 
 @Component({

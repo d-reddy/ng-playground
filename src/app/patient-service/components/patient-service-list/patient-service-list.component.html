@@ -11,7 +11,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr *ngFor="let patientService of patientServices">
+                                    <tr *ngFor="let patientService of patientServices$ | async">
                                         <td>{{ patientService.medicalRecordNumber }}</td>
                                         <td>{{ patientService.dateOfService }}</td>
                                         <td><button [routerLink]="['/patient/services', patientService.id]" type="button" class="btn btn-primary btn-sm">Select</button></td>
@@ -23,6 +23,6 @@
             </div>
     </div>
     <div class="row">
-            <app-paginator *ngIf="page" [page]="page | async" (pageChange)="onPageChanged($event)"></app-paginator>
+            <app-paginator *ngIf="page$" [page]="page$ | async" (pageChange)="onPageChanged($event)"></app-paginator>
     </div>
 </div>

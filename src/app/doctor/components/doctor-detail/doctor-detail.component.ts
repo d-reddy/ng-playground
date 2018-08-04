@@ -1,28 +1,25 @@
 import { FormGroup,  FormBuilder,  Validators } from '@angular/forms';
 import { Doctor } from '../../models/doctor';
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { Router, ActivatedRoute, ParamMap } from '@angular/router';
-import { Observable, Subscription, of } from 'rxjs'
+import { ActivatedRoute } from '@angular/router';
+import { Observable } from 'rxjs'
 
 import * as reducer from '../../reducers';
 import * as actions from '../../actions/doctor.actions';
+import { map, tap } from '../../../../../node_modules/rxjs/operators';
 
 @Component({
   selector: 'app-doctor',
   templateUrl: './doctor-detail.component.html',
   styleUrls: ['./doctor-detail.component.css']
 })
-export class DoctorDetailComponent implements OnInit, OnDestroy {
+export class DoctorDetailComponent implements OnInit{
   doctorForm: FormGroup;
   id: number;
   doctor$: Observable<Doctor>;
-
-  doctorFormSubscription: Subscription;
-  doctorSubscription: Subscription;
   
-  constructor(private store: Store<reducer.DoctorsAggregateState>, private fb: FormBuilder, private route: ActivatedRoute,
-    private router: Router) { }
+  constructor(private store: Store<reducer.DoctorsAggregateState>, private fb: FormBuilder, private route: ActivatedRoute) { }
 
   onSubmit({ value, valid }) {
     this.store.dispatch(new actions.DoctorSave(<Doctor>{
@@ -46,21 +43,15 @@ export class DoctorDetailComponent implements OnInit, OnDestroy {
       email:'',
     });
 
-    this.doctorSubscription = this.route.params.subscribe(params => {
-      this.id = +params['id']; // (+) converts string 'id' to a number
-      this.store.dispatch(new actions.DoctorGet(this.id));
-    });
+    this.id = +this.route.snapshot.paramMap.get('id');
   
-    this.doctor$ = this.store.select(reducer.selectCurrentDoctor);
-    
-    //bind changes to the patient to the form input values
-    this.doctorFormSubscription = this.doctor$.subscribe(data => {
-      if(data) this.doctorForm.patchValue(data)
-    });
-  }
+    let doctorSlice$ = this.store.select(reducer.selectCurrentDoctor);
 
-  ngOnDestroy(){
-    //unsubscribe on component destroy
-    this.doctorFormSubscription.unsubscribe();
+    this.doctor$ = doctorSlice$.pipe(
+      tap(doctor => this.doctorForm.patchValue(doctor))
+    );
+
+    this.store.dispatch(new actions.DoctorGet(this.id));
+
   }
 }

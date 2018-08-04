@@ -14,6 +14,8 @@ import { PatientServiceService } from './services/patient-service.service';
 import { HttpClientModule } from '@angular/common/http';
 import { PaginationModule } from '../shared/pagination/pagination.module';
 import { PaginationService } from '../shared/pagination/services/pagination.service';
+import { PatientModule } from '../patient/patient.module';
+import { DoctorModule } from '../doctor/doctor.module';
 
 @NgModule({
   imports: [
@@ -25,6 +27,8 @@ import { PaginationService } from '../shared/pagination/services/pagination.serv
     RouterModule,
     PatientServiceRoutingModule,
     PaginationModule,
+    PatientModule,
+    DoctorModule,
     //https://offering.solutions/blog/articles/2018/02/10/separating-state-into-angular-modules-with-ngrx
     //https://toddmotto.com/ngrx-store-understanding-state-selectors
     StoreModule.forFeature('patientServices', patientServiceReducer),

@@ -1,9 +1,10 @@
 import { FormGroup,  FormBuilder,  Validators } from '@angular/forms';
 import { PatientService } from '../../models/patientService';
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { Router, ActivatedRoute, ParamMap } from '@angular/router';
-import { Observable, Subscription, of } from 'rxjs'
+import { ActivatedRoute } from '@angular/router';
+import { Observable } from 'rxjs'
+import { tap } from 'rxjs/operators'
 
 import * as reducer from '../../reducers';
 import * as actions from '../../actions/patient-service.actions';
@@ -13,16 +14,12 @@ import * as actions from '../../actions/patient-service.actions';
   templateUrl: './patient-service-detail.component.html',
   styleUrls: ['./patient-service-detail.component.css']
 })
-export class PatientServiceDetailComponent implements OnInit, OnDestroy {
+export class PatientServiceDetailComponent implements OnInit {
   patientServiceForm: FormGroup;
   id: number;
   patientService$: Observable<PatientService>;
-
-  patientServiceFormSubscription: Subscription;
-  patientServiceSubscription: Subscription;
-  
-  constructor(private store: Store<reducer.PatientServicesAggregateState>, private fb: FormBuilder, private route: ActivatedRoute,
-    private router: Router) { }
+ 
+  constructor(private store: Store<reducer.PatientServicesAggregateState>, private fb: FormBuilder, private route: ActivatedRoute) { }
 
   onSubmit({ value, valid }) {
     this.store.dispatch(new actions.PatientServiceSave(<PatientService>{
@@ -42,21 +39,16 @@ export class PatientServiceDetailComponent implements OnInit, OnDestroy {
       exams: []
     });
 
-    this.patientServiceSubscription = this.route.params.subscribe(params => {
-      this.id = +params['id']; // (+) converts string 'id' to a number
-      this.store.dispatch(new actions.PatientServiceGet(this.id));
-    });
+    this.id = +this.route.snapshot.paramMap.get('id');
   
-    this.patientService$ = this.store.select(reducer.selectCurrentPatientService);
-    
-    //bind changes to the patient to the form input values
-    this.patientServiceFormSubscription = this.patientService$.subscribe(data => {
-      if(data) this.patientServiceForm.patchValue(data)
-    });
+    let patientServiceSlice$ = this.store.select(reducer.selectCurrentPatientService);
+
+    this.patientService$ = patientServiceSlice$.pipe(
+      tap(patientService => this.patientServiceForm.patchValue(patientService))
+    );
+
+    this.store.dispatch(new actions.PatientServiceGet(this.id));
+
   }
 
-  ngOnDestroy(){
-    //unsubscribe on component destroy
-    this.patientServiceFormSubscription.unsubscribe();
-  }
 }
