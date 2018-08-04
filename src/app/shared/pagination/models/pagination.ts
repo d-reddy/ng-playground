@@ -1,6 +1,6 @@
 export class PageRequest {
     pageIndex: number;  // which page
-    pageSize: number;   // count per page  
+    pageSize: number;   // count per page     
 }
 
 export class PageResponse<T> {

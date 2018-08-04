@@ -2,15 +2,15 @@ import { ModuleWithProviders, NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { StoreModule } from '@ngrx/store';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { PatientDetailComponent } from './components/patient-detail/patient-detail.component';
-import { PatientListComponent } from './components/patient-list/patient-list.component';
-import { patientReducer } from './reducers/patient.reducer';
+import { DoctorDetailComponent } from './components/doctor-detail/doctor-detail.component';
+import { DoctorListComponent } from './components/doctor-list/doctor-list.component';
+import { doctorReducer } from './reducers/doctor.reducer';
 import { BrowserModule } from '@angular/platform-browser';
 import { CommonModule } from '@angular/common'
-import { PatientRoutingModule } from './patient.routing'
+import { DoctorRoutingModule } from './doctor.routing'
 import { EffectsModule } from '@ngrx/effects';
-import { PatientEffects } from './effects/patient.effects';
-import { PatientService } from './services/patient.service';
+import { DoctorEffects } from './effects/doctor.effects';
+import { DoctorService } from './services/doctor.service';
 import { HttpClientModule } from '@angular/common/http';
 import { PaginationModule } from '../shared/pagination/pagination.module'
 
@@ -22,23 +22,23 @@ import { PaginationModule } from '../shared/pagination/pagination.module'
     CommonModule,
     ReactiveFormsModule,
     RouterModule,
-    PatientRoutingModule,
+    DoctorRoutingModule,
     PaginationModule,
     //https://offering.solutions/blog/articles/2018/02/10/separating-state-into-angular-modules-with-ngrx
     //https://toddmotto.com/ngrx-store-understanding-state-selectors
-    StoreModule.forFeature('patients', patientReducer),
-    EffectsModule.forFeature([PatientEffects])
+    StoreModule.forFeature('doctors', doctorReducer),
+    EffectsModule.forFeature([DoctorEffects])
   ],
   declarations: [
-    PatientDetailComponent,
-    PatientListComponent
+    DoctorDetailComponent,
+    DoctorListComponent
   ],
   providers: [
-    PatientService
+    DoctorService
   ],
   exports:[
-    PatientDetailComponent,
-    PatientListComponent
+    DoctorDetailComponent,
+    DoctorListComponent
   ]
 })
-export class PatientModule {}
+export class DoctorModule {}

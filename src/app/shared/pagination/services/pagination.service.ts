@@ -4,9 +4,8 @@ import { Observable, of } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { PageRequest, PageResponse } from '../models/pagination';
 
-
-
-const PATIENTS = [
+let serviceData = { 
+  patients: [
     {
        id: 1,
        firstName: 'homer',
@@ -112,7 +111,49 @@ const PATIENTS = [
       },
       addressHistory: []
    }        
-];
+  ],
+
+ doctors: [
+    {
+      id: 1,
+      firstName: 'tim',
+      middleName: '',
+      lastName: 'doctor',
+      dob: '01/11/60',
+      phone: '815.300.1234',
+      email: 'tim.doctor@gmail.com',
+    },
+    {
+      id: 2,
+      firstName: 'jawartolo',
+      middleName: '',
+      lastName: 'melancholoy',
+      dob: '11/30/70',
+      phone: '815.343.1234',
+      email: 'jawartolo.melancholoy@gmail.com',
+    },
+    {
+      id: 3,
+      firstName: 'smith',
+      middleName: '',
+      lastName: 'smithburg',
+      dob: '07/19/79',
+      phone: '815.323.1234',
+      email: 'smith.smithburg@gmail.com',
+    }
+  ],
+
+  patientServices: [
+    {
+      id: 1,
+      medicalRecordNumber: 3,
+      exams: [1,3],
+      dateOfService: new Date(2018,10,11)
+    }
+  ]
+
+}
+
 
   @Injectable()
   export class PaginationService {
@@ -143,12 +184,17 @@ const PATIENTS = [
       //   params: params
       // });
 
+      let data;
+
+      if (url == 'patients') data = serviceData.patients;
+      if (url == 'doctors') data = serviceData.doctors;
+      if (url == 'patientServices') data = serviceData.patientServices;
      
       let response = <PageResponse<T>>{
-        total: 5,      // total number of items in full collection
+        total: data.length,      // total number of items in full collection
         pageIndex: pageRequest.pageIndex,  // page index returned
         pageSize: 2,   // count per page
-        results:  (PATIENTS.slice(pageRequest.pageIndex*pageRequest.pageSize, pageRequest.pageIndex*pageRequest.pageSize + 2)) as Array<any>// items for the current page
+        results:  (data.slice(pageRequest.pageIndex*pageRequest.pageSize, pageRequest.pageIndex*pageRequest.pageSize + pageRequest.pageSize)) as Array<any>// items for the current page
       };
 
       return of(response);

@@ -11,12 +11,10 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr *ngFor="let patient of patients">
-                                        <td>{{ patient.id }}</td>
-                                        <td>{{ patient.firstName }}</td>
-                                        <td>{{ patient.lastName }}</td>
-                                        <td>{{ patient.dob }}</td>
-                                        <td><button [routerLink]="['/patients', patient.id]" type="button" class="btn btn-primary btn-sm">Select</button></td>
+                                    <tr *ngFor="let patientService of patientServices">
+                                        <td>{{ patientService.medicalRecordNumber }}</td>
+                                        <td>{{ patientService.dateOfService }}</td>
+                                        <td><button [routerLink]="['/patientservices', patientService.id]" type="button" class="btn btn-primary btn-sm">Select</button></td>
                                     </tr>
                                 </tbody>
                           </table>

@@ -5,8 +5,8 @@ import { Routes, RouterModule } from '@angular/router';
 
 // import { HomeComponent } from './home/home.component';
 // import { UserComponent } from './user/user.component';
-import { PatientDetailComponent } from './components/patient-detail/patient-detail.component';
-import { PatientListComponent } from './components/patient-list/patient-list.component'
+import { DoctorDetailComponent } from './components/doctor-detail/doctor-detail.component';
+import { DoctorListComponent } from './components/doctor-list/doctor-list.component'
 // import { TablesComponent } from './tables/tables.component';
 // import { TypographyComponent } from './typography/typography.component';
 // import { IconsComponent } from './icons/icons.component';
@@ -17,8 +17,8 @@ import { PatientListComponent } from './components/patient-list/patient-list.com
 const routes: Routes =[
     // { path: 'dashboard',      component: HomeComponent },
     // { path: 'user',           component: UserComponent },
-    { path: 'patients',          component: PatientListComponent },
-    { path: 'patients/:id',      component: PatientDetailComponent },
+    { path: 'doctors',          component: DoctorListComponent },
+    { path: 'doctors/:id',       component: DoctorDetailComponent },
     // { path: 'table',          component: TablesComponent },
     // { path: 'typography',     component: TypographyComponent },
     // { path: 'icons',          component: IconsComponent },
@@ -41,4 +41,4 @@ const routes: Routes =[
     RouterModule
   ],
 })
-export class PatientRoutingModule { }
+export class DoctorRoutingModule { }

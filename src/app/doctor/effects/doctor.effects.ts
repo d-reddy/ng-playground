@@ -11,23 +11,23 @@ import {
   takeUntil,
 } from 'rxjs/operators';
 
-import { PatientService } from '../services/patient.service';
+import { DoctorService } from '../services/doctor.service';
 import {
-  PatientActionTypes,
-  PatientCreate,
-  PatientCreateComplete,
-  PatientsGet,
-  PatientsGetComplete,
-  PatientSave,
-  PatientSaveComplete,
-  PatientGet,
-  PatientGetComplete
-} from '../actions/patient.actions';
+  DoctorActionTypes,
+  DoctorCreate,
+  DoctorCreateComplete,
+  DoctorsGet,
+  DoctorsGetComplete,
+  DoctorSave,
+  DoctorSaveComplete,
+  DoctorGet,
+  DoctorGetComplete
+} from '../actions/doctor.actions';
 
-import { Patient } from '../models/patient';
+import { Doctor } from '../models/doctor';
 import { PageResponse} from '../../shared/pagination/models/pagination'
 
-//may need this when working on patient filtering
+//may need this when working on doctor filtering
 // import { Scheduler } from 'rxjs/internal/Scheduler';
 
 // export const SEARCH_DEBOUNCE = new InjectionToken<number>('Search Debounce');
@@ -47,27 +47,27 @@ import { PageResponse} from '../../shared/pagination/models/pagination'
  */
 
 @Injectable()
-export class PatientEffects {
+export class DoctorEffects {
     
   @Effect()
-  createPatient$: Observable<Action> = this.actions$.pipe(
-    ofType<PatientCreate>(PatientActionTypes.PATIENT_CREATE),
+  createDoctor$: Observable<Action> = this.actions$.pipe(
+    ofType<DoctorCreate>(DoctorActionTypes.DOCTOR_CREATE),
     map(action => action.payload),
-    switchMap(patient => {
-      return this.patientService.createPatient(patient).pipe(
-        map((createdPatient: Patient) => new PatientCreateComplete(createdPatient)),
+    switchMap(doctor => {
+      return this.doctorService.createDoctor(doctor).pipe(
+        map((createdDoctor: Doctor) => new DoctorCreateComplete(createdDoctor)),
 //      catchError(err => of(new SearchError(err)))
       );
     })
   );
 
   @Effect()
-  savePatient$: Observable<Action> = this.actions$.pipe(
-    ofType<PatientSave>(PatientActionTypes.PATIENT_SAVE),
+  saveDoctor$: Observable<Action> = this.actions$.pipe(
+    ofType<DoctorSave>(DoctorActionTypes.DOCTOR_SAVE),
     map(action => action.payload),
-    switchMap(patient => {
-      return this.patientService.savePatient(patient).pipe(
-        map((savedPatient: Patient) => new PatientSaveComplete(savedPatient.id, savedPatient)),
+    switchMap(doctor => {
+      return this.doctorService.saveDoctor(doctor).pipe(
+        map((savedDoctor: Doctor) => new DoctorSaveComplete(savedDoctor.id, savedDoctor)),
 //      catchError(err => of(new SearchError(err)))
       );
     })
@@ -75,24 +75,22 @@ export class PatientEffects {
 
 
   @Effect()
-  getPatients$: Observable<Action> = this.actions$.pipe(
-    ofType<PatientsGet>(PatientActionTypes.PATIENTS_GET),
+  getDoctors$: Observable<Action> = this.actions$.pipe(
+    ofType<DoctorsGet>(DoctorActionTypes.DOCTORS_GET),
     switchMap(action => {
-//      return this.patientService.getPatients().pipe(
-    return this.patientService.getPatients(action.filter, action.pageRequest).pipe(  
-//        map((returnedPatients: Patient[]) => new PatientsGetComplete(returnedPatients)),
-        map((returnedPatients: PageResponse<Patient>) => new PatientsGetComplete(returnedPatients)),
+    return this.doctorService.getDoctors(action.filter, action.pageRequest).pipe(  
+        map((returnedDoctors: PageResponse<Doctor>) => new DoctorsGetComplete(returnedDoctors)),
 //      catchError(err => of(new SearchError(err)))
       );
     })
   );
 
   @Effect()
-  getPatient$: Observable<Action> = this.actions$.pipe(
-    ofType<PatientGet>(PatientActionTypes.PATIENT_GET),
+  getDoctor$: Observable<Action> = this.actions$.pipe(
+    ofType<DoctorGet>(DoctorActionTypes.DOCTOR_GET),
     switchMap(action => {
-      return this.patientService.getPatient(action.payload).pipe(
-        map((returnedPatient: Patient) => new PatientGetComplete(returnedPatient)),
+      return this.doctorService.getDoctor(action.payload).pipe(
+        map((returnedDoctor: Doctor) => new DoctorGetComplete(returnedDoctor)),
 //      catchError(err => of(new SearchError(err)))
       );
     })
@@ -100,7 +98,7 @@ export class PatientEffects {
 
   constructor(
     private actions$: Actions,
-    private patientService: PatientService,
+    private doctorService: DoctorService,
     //@Optional()
     // @Inject(SEARCH_DEBOUNCE)
     // private debounce: number,

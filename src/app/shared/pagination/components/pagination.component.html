@@ -1,7 +1,13 @@
-<div class="container" *ngIf="page">
-  <button (click)="pageChange.emit(page.pageIndex-1)" [disabled]="page.pageIndex == 0">&lsaquo;</button>
-  <span>
-    Page: {{ page.pageIndex }}
-  </span>
-  <button (click)="pageChange.emit(page.pageIndex+1)">&rsaquo;</button>
+<div class="main-content">
+    <div class="container-fluid" *ngIf="page">
+      <div class="row" *ngIf="numPages > 1">
+          <nav>
+              <ul class="pagination pull-right">
+                <li class="page-item"><a class="page-link" (click)="onPrevClick(page.pageIndex)">Previous</a></li>
+                <li class="page-item"><a class="page-link" *ngFor="let dummy of ' '.repeat(numPages).split(''), let x = index" (click)="onClick(x)" >{{x+1}}</a></li>
+                <li class="page-item"><a class="page-link" (click)="onNextClick(page.pageIndex)">Next</a></li>
+              </ul>
+            </nav>
+      </div>
+  </div>
 </div>

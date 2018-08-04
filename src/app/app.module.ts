@@ -12,6 +12,8 @@ import { AppRoutingModule } from './app.routing';
 import { EffectsModule } from '@ngrx/effects';
 import { AppComponent } from './app.component';
 import { PatientModule } from './patient/patient.module'
+import { DoctorModule } from './doctor/doctor.module'
+import { PatientServiceModule } from './patient-service/patient-service.module'
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { PaginationModule } from './shared/pagination/pagination.module'
 
@@ -24,6 +26,8 @@ import { PaginationModule } from './shared/pagination/pagination.module'
     CommonModule,
     EffectsModule.forRoot([]),    
     PatientModule,
+    DoctorModule,
+    PatientServiceModule,
     HttpModule,
     NavbarModule,
     FooterModule,

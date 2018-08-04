@@ -4,135 +4,27 @@ import { Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { Patient } from '../models/patient';
-import { Address } from '../models/address';
 import { PaginationService } from '../../shared/pagination/services/pagination.service';
 import { PageRequest, PageResponse } from '../../shared/pagination/models/pagination'
 
-const PATIENTS = [
-    {
-       id: 1,
-       firstName: 'homer',
-       middleName: 'j',
-       lastName: 'simpson',
-       dob: '01/11/63',
-       phone: '815.333.1234',
-       email: 'homer.simpson@gmail.com',
-       notes: 'forgot drivers license',
-       currentAddress: {
-          address: '123 Fake st',
-          city: 'springfield',
-          state: 'il',
-          zip: '60515',
-          until: ''
-       },
-       addressHistory: []
-    },
-    {
-      id: 2,
-      firstName: 'marge',
-      middleName: '',
-      lastName: 'simpson',
-      dob: '11/02/63',
-      phone: '815.333.1234',
-      email: 'marge.simpson@gmail.com',
-      notes: '',
-      currentAddress: {
-         address: '123 Fake st',
-         city: 'springfield',
-         state: 'il',
-         zip: '60515',
-         until: ''
-      },
-      addressHistory: []
-   },
-    {
-      id: 3,
-      firstName: 'bartholomew',
-      middleName: 'j',
-      lastName: 'simpson',
-      dob: '07/19/79',
-      phone: '815.333.1234',
-      email: 'bart.simpson@gmail.com',
-      notes: '',
-      currentAddress: {
-         address: '200 Fake st',
-         city: 'springfield',
-         state: 'il',
-         zip: '60515',
-         until: ''
-      },
-      addressHistory: [
-        {
-          address: '123 Fake st',
-          city: 'springfield',
-          state: 'il',
-          zip: '60515',
-          until: '01/01/2000'
-       },
-       {
-        address: '18 Nowhere st',
-        city: 'chicago',
-        state: 'il',
-        zip: '60661',
-        until: '12/31/1999'
-     }
-      ]
-   },
-    {
-      id: 4,
-      firstName: 'lisa',
-      middleName: '',
-      lastName: 'simpson',
-      dob: '08/12/82',
-      phone: '815.333.1234',
-      email: 'lisa.simpson@gmail.com',
-      notes: '',
-      currentAddress: {
-         address: '123 Fake st',
-         city: 'springfield',
-         state: 'il',
-         zip: '60515',
-         until: ''
-      },
-      addressHistory: []
-   },
-    {
-      id: 5,
-      firstName: 'maggie',
-      middleName: '',
-      lastName: 'simpson',
-      dob: '05/30/85',
-      phone: '815.333.1234',
-      email: 'maggie.simpson@gmail.com',
-      notes: '',
-      currentAddress: {
-         address: '123 Fake st',
-         city: 'springfield',
-         state: 'il',
-         zip: '60515',
-         until: ''       
-      },
-      addressHistory: []
-   }        
-];
-
 @Injectable()
 export class PatientService {
-  private API_PATH = '...';
+  //this is just a hack for testing
+  private API_PATH = 'patients';
 
   constructor(private http: HttpClient, private paginationService: PaginationService) {}
 
-  getPatients(): Observable<Patient[]> {
+  getPatients(filter: null | object, pageRequest: PageRequest): Observable<PageResponse<Patient>> {
     //execute some api call to fetch patients
 
     //just mocking out an observable response
-    return of(PATIENTS);
+    return this.paginationService.queryPaginated<Patient>(this.http, this.API_PATH, filter, pageRequest);
   }
 
   getPatient(id:number){
     //cheap stub for testing, would need to actually go out to fetch patient detail      
-    let test = this.getPatients().pipe(
-        map(patients => patients.find(patient => patient.id === id))
+    let test = this.getPatients(null, <PageRequest> {pageIndex:0, pageSize:100 } ).pipe(
+        map(pagedPatients => pagedPatients.results.find(patient => patient.id === id))
       );
 
     return test;
@@ -152,7 +44,4 @@ export class PatientService {
     return of(patient);
   }
 
-  list(filter: null | object, pageRequest: PageRequest): Observable<PageResponse<Patient>> {
-    return this.paginationService.queryPaginated<Patient>(this.http, this.API_PATH, filter, pageRequest);
-  }
 }
