@@ -75,27 +75,17 @@
             </a>           
         </li>
         <li>
-            <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false">
+            <a href="#billingSubmenu" data-toggle="collapse" aria-expanded="false">
                 <i class="pe-7s-cash"></i>
-                <p>Billing</p>
+                <p>Billing Management</p>
             </a>
-            <ul class="collapse list-unstyled" id="pageSubmenu">
-                    <li routerLinkActive="active">
-                            <a  [routerLink]="doctors">
-                                <p>Stuff</p>
-                            </a>           
-                    </li>
-                    <li>
-                            <a  [routerLink]="patientservices">
-                                <p>More Stuff</p>
-                            </a>           
-                    </li>
-                <!-- <li>
-                    <a href="#">Page 2</a>
-                </li>
-                <li>
-                    <a href="#">Page 3</a>
-                </li> -->
+            <ul class="collapse list-unstyled" id="billingSubmenu">
+                    <li routerLinkActive="active" *ngFor="let menuItem of billingMenuItems" class="{{menuItem.class}}">
+                            <a  [routerLink]="[menuItem.path]">
+                                <i class="{{menuItem.icon}}"></i>
+                                <p>{{menuItem.title}}</p>
+                            </a>
+                    </li>                
             </ul>
         </li>
     </ul>

@@ -14,7 +14,7 @@
                                     <tr *ngFor="let patientService of patientServices">
                                         <td>{{ patientService.medicalRecordNumber }}</td>
                                         <td>{{ patientService.dateOfService }}</td>
-                                        <td><button [routerLink]="['/patientservices', patientService.id]" type="button" class="btn btn-primary btn-sm">Select</button></td>
+                                        <td><button [routerLink]="['/patient/services', patientService.id]" type="button" class="btn btn-primary btn-sm">Select</button></td>
                                     </tr>
                                 </tbody>
                           </table>

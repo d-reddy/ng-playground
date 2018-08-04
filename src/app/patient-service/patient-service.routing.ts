@@ -17,8 +17,8 @@ import { PatientServiceListComponent } from './components/patient-service-list/p
 const routes: Routes =[
     // { path: 'dashboard',      component: HomeComponent },
     // { path: 'user',           component: UserComponent },
-    { path: 'patientservices',          component: PatientServiceListComponent },
-    { path: 'patientservices/:id',       component: PatientServiceDetailComponent },
+    { path: 'patient/services',          component: PatientServiceListComponent },
+    { path: 'patient/services/:id',       component: PatientServiceDetailComponent },
     // { path: 'table',          component: TablesComponent },
     // { path: 'typography',     component: TypographyComponent },
     // { path: 'icons',          component: IconsComponent },
