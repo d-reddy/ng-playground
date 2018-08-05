@@ -25,7 +25,6 @@
                             <div class="btn-toolbar">
                                 <button type="submit" class="btn btn-primary btn-fill pull-right">Save</button>
                                 <button [routerLink]="['/patient/services']" class="btn btn-secondary btn-fill pull-right">Cancel</button>   
-                                <button type="button" class="btn btn-primary" (click)="openModal(template)">Create template modal</button>
                             </div>
                             <div class="clearfix"></div>
                         </form>
@@ -33,17 +32,55 @@
                 </div>
             </div>
         </div>
+        <div class="row">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="header">
+                            <h4 class="title">Exams</h4>
+                        </div>                       
+                        <div class="content">
+                            <div class="content table-responsive table-full-width">
+                                <table class="table table-hover table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th>Doctor</th>
+                                                <th>Exam</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <!-- <tr *ngFor="let address of addressHistory">
+                                                <td>{{ address.address }}, {{address.city}}, {{address.state}}, {{address.zip}}</td>
+                                                <td>{{ address.until }}</td>
+                                            </tr> -->
+                                        </tbody>
+                                </table>
+                            </div>
+                            <div class="btn-toolbar">
+                                    <button type="button" class="btn btn-primary btn-fill pull-right" (click)="openModal(template)">Add</button>
+                            </div>
+                            <div class="clearfix"></div>   
+                        </div>
+                    </div>                           
+                </div>
+            </div>        
     </div>
 </div>
  
 <ng-template #template>
   <div class="modal-header">
-    <h4 class="modal-title pull-left">Modal</h4>
+    <h4 class="modal-title pull-left">Add Exam</h4>
+
     <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
       <span aria-hidden="true">&times;</span>
     </button>
   </div>
   <div class="modal-body">
-    This is a modal.
+    Exam:
+
+    <select>
+        <option *ngFor="let exam of exams" value= {{exam.id}}>
+            {{exam.name}}
+        </option>
+    </select>
   </div>
 </ng-template>

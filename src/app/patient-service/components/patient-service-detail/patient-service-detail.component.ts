@@ -12,6 +12,8 @@ import * as actions from '../../actions/patient-service.actions';
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
 
+import { Exam } from '../../models/exam';
+
 @Component({
   selector: 'app-patient-service',
   templateUrl: './patient-service-detail.component.html',
@@ -22,6 +24,7 @@ export class PatientServiceDetailComponent implements OnInit {
   id: number;
   patientService$: Observable<PatientService>;
   modalRef: BsModalRef;
+  exams: Exam[];
 
   constructor(private store: Store<reducer.PatientServicesAggregateState>, private fb: FormBuilder, private route: ActivatedRoute,
     private modalService: BsModalService) { }
@@ -36,6 +39,9 @@ export class PatientServiceDetailComponent implements OnInit {
   }
 
   ngOnInit() {
+
+    this.exams = [ {id:1, name:'brain mri'}, {id:2, name: 'chest mri'}, {id:3, name:'face mri'}];
+
     //create the patientService form
     this.patientServiceForm = this.fb.group({
       id: '',
