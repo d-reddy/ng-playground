@@ -16,6 +16,7 @@ import { DoctorModule } from './doctor/doctor.module'
 import { PatientServiceModule } from './patient-service/patient-service.module'
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { PaginationModule } from './shared/pagination/pagination.module'
+import { ModalModule } from 'ngx-bootstrap';
 
 @NgModule({
   declarations: [
@@ -40,6 +41,7 @@ import { PaginationModule } from './shared/pagination/pagination.module'
     StoreDevtoolsModule.instrument({
       maxAge: 25 //  Retains last 25 states
     }),
+    ModalModule.forRoot()
   ],
   providers: [],
   bootstrap: [AppComponent]
