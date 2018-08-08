@@ -16,6 +16,8 @@ import { PaginationModule } from '../shared/pagination/pagination.module';
 import { PaginationService } from '../shared/pagination/services/pagination.service';
 import { PatientModule } from '../patient/patient.module';
 import { DoctorModule } from '../doctor/doctor.module';
+import { ReferenceDataModule } from '../reference-data/reference-data.module';
+import { ReferenceDataService } from '../reference-data/services/reference-data.service';
 
 @NgModule({
   imports: [
@@ -27,6 +29,7 @@ import { DoctorModule } from '../doctor/doctor.module';
     RouterModule,
     PatientServiceRoutingModule,
     PaginationModule,
+    ReferenceDataModule,
     PatientModule,
     DoctorModule,
     //https://offering.solutions/blog/articles/2018/02/10/separating-state-into-angular-modules-with-ngrx
@@ -40,6 +43,7 @@ import { DoctorModule } from '../doctor/doctor.module';
   ],
   providers: [
     PatientServiceService,
+    ReferenceDataService,
     PaginationService
   ],
   exports:[

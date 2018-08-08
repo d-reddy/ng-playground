@@ -11,11 +11,14 @@ import { AppRoutingModule } from './app.routing';
 
 import { EffectsModule } from '@ngrx/effects';
 import { AppComponent } from './app.component';
-import { PatientModule } from './patient/patient.module'
-import { DoctorModule } from './doctor/doctor.module'
-import { PatientServiceModule } from './patient-service/patient-service.module'
+
+import { PaginationModule } from './shared/pagination/pagination.module';
+import { ReferenceDataModule } from './reference-data/reference-data.module'
+import { PatientModule } from './patient/patient.module';
+import { DoctorModule } from './doctor/doctor.module';
+import { PatientServiceModule } from './patient-service/patient-service.module';
+
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
-import { PaginationModule } from './shared/pagination/pagination.module'
 import { ModalModule } from 'ngx-bootstrap';
 
 @NgModule({
@@ -26,13 +29,9 @@ import { ModalModule } from 'ngx-bootstrap';
     BrowserModule,
     CommonModule,
     EffectsModule.forRoot([]),    
-    PatientModule,
-    DoctorModule,
-    PatientServiceModule,
     HttpModule,
     NavbarModule,
     FooterModule,
-    PaginationModule,
     SidebarModule,
     RouterModule,
     AppRoutingModule,    
@@ -41,7 +40,12 @@ import { ModalModule } from 'ngx-bootstrap';
     StoreDevtoolsModule.instrument({
       maxAge: 25 //  Retains last 25 states
     }),
-    ModalModule.forRoot()
+    ModalModule.forRoot(),
+    PaginationModule,
+    ReferenceDataModule,
+    PatientModule,
+    DoctorModule,
+    PatientServiceModule
   ],
   providers: [],
   bootstrap: [AppComponent]

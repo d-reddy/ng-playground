@@ -75,12 +75,38 @@
     </button>
   </div>
   <div class="modal-body">
-    Exam:
+    <!-- Exam:
 
     <select>
         <option *ngFor="let exam of exams" value= {{exam.id}}>
             {{exam.name}}
         </option>
     </select>
+    <div class="btn-toolbar">
+            <button type="button" class="btn btn-primary btn-fill pull-right" (click)="openModal(template)">Add</button>
+    </div> -->
+    <form [formGroup]="examForm" (ngSubmit)="onSubmitExam(examForm)" novalidate >
+            <div class= "row">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label>Exam</label>
+                        <select class="form-control" formControlName="examId">
+                                <option *ngFor="let exam of exams$ | async" value= {{exam.id}}>
+                                    {{exam.name}}
+                                </option>
+                        </select>
+                        <label>Doctor</label>
+                        <select class="form-control" formControlName="doctorId">
+                                <option *ngFor="let doctor of doctors" value= {{doctor.id}}>
+                                    {{doctor.firstName}}
+                                </option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="btn-toolbar">
+                    <button type="submit" class="btn btn-primary btn-fill pull-right">Add</button>
+            </div>            <div class="clearfix"></div>
+        </form>
   </div>
 </ng-template>

@@ -4,15 +4,19 @@ import { Component, OnInit, TemplateRef } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs'
-import { tap } from 'rxjs/operators'
+import { tap, map } from 'rxjs/operators'
 
-import * as reducer from '../../reducers';
+import * as patientServiceReducer from '../../reducers';
+
 import * as actions from '../../actions/patient-service.actions';
 
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
+import { Doctor } from '../../../doctor/models/doctor';
 
-import { Exam } from '../../models/exam';
+import { Exam } from '../../../reference-data/models/referenceData';
+import * as referenceDataReducer from '../../../reference-data/reducers/reference-data.reducer';
+import { ReferenceDataGet } from '../../../reference-data/actions/reference-data.actions';
 
 @Component({
   selector: 'app-patient-service',
@@ -21,12 +25,14 @@ import { Exam } from '../../models/exam';
 })
 export class PatientServiceDetailComponent implements OnInit {
   patientServiceForm: FormGroup;
+  examForm: FormGroup;
   id: number;
   patientService$: Observable<PatientService>;
   modalRef: BsModalRef;
-  exams: Exam[];
+  exams$: Observable<Exam[]>;
+  doctors: Doctor[];
 
-  constructor(private store: Store<reducer.PatientServicesAggregateState>, private fb: FormBuilder, private route: ActivatedRoute,
+  constructor(private store: Store<patientServiceReducer.PatientServicesAggregateState>, private refDataStore: Store<referenceDataReducer.ReferenceDataStore>, private fb: FormBuilder, private route: ActivatedRoute,
     private modalService: BsModalService) { }
 
   onSubmit({ value, valid }) {
@@ -38,10 +44,23 @@ export class PatientServiceDetailComponent implements OnInit {
     }));
   }
 
+  
+  onSubmitExam({ value, valid }) {
+    alert(this.exams$[value.examId-1]);
+  }
+
   ngOnInit() {
 
-    this.exams = [ {id:1, name:'brain mri'}, {id:2, name: 'chest mri'}, {id:3, name:'face mri'}];
+    //this.exams = [ {id:1, name:'brain mri'}, {id:2, name: 'chest mri'}, {id:3, name:'face mri'}];
+    this.doctors = [{id:1, firstName:'tim', lastName:'doctor'}, {id:2, firstName:'jawartolo', lastName:'melancholoy'}];
 
+    //move to guard at some point?:  https://toddmotto.com/preloading-ngrx-store-route-guards
+    this.exams$ = this.refDataStore.select('referenceData').pipe(
+      map(data => data.exams)
+    );
+
+    this.refDataStore.dispatch(new ReferenceDataGet());
+    
     //create the patientService form
     this.patientServiceForm = this.fb.group({
       id: '',
@@ -50,9 +69,14 @@ export class PatientServiceDetailComponent implements OnInit {
       exams: []
     });
 
+    this.examForm = this.fb.group({
+      examId: null,
+      doctorId: null
+    });
+
     this.id = +this.route.snapshot.paramMap.get('id');
   
-    let patientServiceSlice$ = this.store.select(reducer.selectCurrentPatientService);
+    let patientServiceSlice$ = this.store.select(patientServiceReducer.selectCurrentPatientService);
 
     this.patientService$ = patientServiceSlice$.pipe(
       tap(patientService => this.patientServiceForm.patchValue(patientService))
