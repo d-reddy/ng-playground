@@ -111,7 +111,7 @@ export class PatientServiceDetailComponent implements OnInit {
   }
 
   deleteExam(doctorId: number, examId: number){
-    this.performedExams = this.performedExams.filter(pe => pe.doctorId != doctorId && pe.examId != examId);
+    this.performedExams = this.performedExams.filter(pe => !(pe.doctorId == doctorId && pe.examId == examId));
   }
 
 }

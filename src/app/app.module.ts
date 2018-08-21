@@ -20,6 +20,7 @@ import { PatientServiceModule } from './patient-service/patient-service.module';
 
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { ModalModule } from 'ngx-bootstrap';
+import { DatepickerModule, BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 
 @NgModule({
   declarations: [
@@ -45,7 +46,9 @@ import { ModalModule } from 'ngx-bootstrap';
     ReferenceDataModule,
     PatientModule,
     DoctorModule,
-    PatientServiceModule
+    PatientServiceModule,
+    BsDatepickerModule.forRoot(),
+    DatepickerModule.forRoot() 
   ],
   providers: [],
   bootstrap: [AppComponent]

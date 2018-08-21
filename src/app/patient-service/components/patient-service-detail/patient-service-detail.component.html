@@ -17,8 +17,12 @@
                                 </div>
                                 <div class="col-md-4">
                                     <div class="form-group">
-                                        <label>Date of Service</label>
-                                        <input type="text" class="form-control" formControlName="dateOfService">
+                                        <label>Date of Service</label>                                       
+                                        <input type="text"
+                                            placeholder="Datepicker"
+                                            class="form-control"
+                                            formControlName="dateOfService"
+                                            bsDatepicker>
                                     </div>
                                 </div>
                             </div>
@@ -108,7 +112,7 @@
                 </div>
             </div>
             <div class="btn-toolbar">
-                    <button type="submit" class="btn btn-primary btn-fill pull-right">Add</button>
+                    <button (click)="modalRef.hide()" type="submit" class="btn btn-primary btn-fill pull-right">Add</button>
             </div>            <div class="clearfix"></div>
         </form>
   </div>

@@ -18,6 +18,8 @@ import { PatientModule } from '../patient/patient.module';
 import { DoctorModule } from '../doctor/doctor.module';
 import { ReferenceDataModule } from '../reference-data/reference-data.module';
 import { ReferenceDataService } from '../reference-data/services/reference-data.service';
+import { DatepickerModule, BsDatepickerModule } from 'ngx-bootstrap/datepicker';
+
 
 @NgModule({
   imports: [
@@ -35,7 +37,9 @@ import { ReferenceDataService } from '../reference-data/services/reference-data.
     //https://offering.solutions/blog/articles/2018/02/10/separating-state-into-angular-modules-with-ngrx
     //https://toddmotto.com/ngrx-store-understanding-state-selectors
     StoreModule.forFeature('patientServices', patientServiceReducer),
-    EffectsModule.forFeature([PatientServiceEffects])
+    EffectsModule.forFeature([PatientServiceEffects]),
+    BsDatepickerModule.forRoot(),
+    DatepickerModule.forRoot() 
   ],
   declarations: [
     PatientServiceDetailComponent,
