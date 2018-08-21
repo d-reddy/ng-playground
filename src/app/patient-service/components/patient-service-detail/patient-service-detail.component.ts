@@ -17,6 +17,7 @@ import { Doctor } from '../../../doctor/models/doctor';
 import { Exam } from '../../../reference-data/models/referenceData';
 import * as referenceDataReducer from '../../../reference-data/reducers/reference-data.reducer';
 import { ReferenceDataGet } from '../../../reference-data/actions/reference-data.actions';
+import {PerformedExam} from '../../models/performedExam';
 
 @Component({
   selector: 'app-patient-service',
@@ -31,30 +32,18 @@ export class PatientServiceDetailComponent implements OnInit {
   modalRef: BsModalRef;
   exams$: Observable<Exam[]>;
   doctors: Doctor[];
+  performedExams: PerformedExam[];
 
   constructor(private store: Store<patientServiceReducer.PatientServicesAggregateState>, private refDataStore: Store<referenceDataReducer.ReferenceDataStore>, private fb: FormBuilder, private route: ActivatedRoute,
     private modalService: BsModalService) { }
 
-  onSubmit({ value, valid }) {
-    this.store.dispatch(new actions.PatientServiceSave(<PatientService>{
-      id: value.id, 
-      medicalRecordNumber: value.medicalRecordNumber, 
-      dateOfService: value.dateOfService, 
-      performedExams:  value.exams
-    }));
-  }
-
-  
-  onSubmitExam({ value, valid }) {
-    alert(this.exams$[value.examId-1]);
-  }
-
   ngOnInit() {
 
+    this.performedExams = [];
     //this.exams = [ {id:1, name:'brain mri'}, {id:2, name: 'chest mri'}, {id:3, name:'face mri'}];
     this.doctors = [{id:1, firstName:'tim', lastName:'doctor'}, {id:2, firstName:'jawartolo', lastName:'melancholoy'}];
 
-    //move to guard at some point?:  https://toddmotto.com/preloading-ngrx-store-route-guards
+    //move to guard at some point?  https://toddmotto.com/preloading-ngrx-store-route-guards
     this.exams$ = this.refDataStore.select('referenceData').pipe(
       map(data => data.exams)
     );
@@ -66,7 +55,7 @@ export class PatientServiceDetailComponent implements OnInit {
       id: '',
       medicalRecordNumber: '',
       dateOfService: '',
-      exams: []
+      performedExams: []
     });
 
     this.examForm = this.fb.group({
@@ -86,8 +75,40 @@ export class PatientServiceDetailComponent implements OnInit {
 
   }
 
-
   openModal(template: TemplateRef<any>) {
     this.modalRef = this.modalService.show(template);
   }
+
+  getDoctorName(id: number) {
+    let doctor = this.doctors.filter(doc => doc.id == id);
+    return doctor[0].firstName;
+  }
+
+  getExamName(id: number) {
+   return this.exams$.pipe(
+    map(exams => {
+     let exam = exams.filter(e => e.id == id);
+     return (exam.length > 0) ? exam[0].name : null;
+   }));
+  }
+
+  onSubmit({ value, valid }) {
+    this.store.dispatch(new actions.PatientServiceSave(<PatientService>{
+      id: value.id, 
+      medicalRecordNumber: value.medicalRecordNumber, 
+      dateOfService: value.dateOfService, 
+      performedExams:  value.exams
+    }));
+  }
+ 
+  onSubmitExam({ value, valid }) {
+    //check if already added
+    let matchingExams = this.performedExams.filter(pe => pe.doctorId == value.doctorId && pe.examId == value.examId);
+
+    if (matchingExams.length == 0){
+      this.performedExams.push(<PerformedExam>{doctorId:value.doctorId,examId:value.examId,patientServiceId:this.id});
+    }
+  }
+
+
 }

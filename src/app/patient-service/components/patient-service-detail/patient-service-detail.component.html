@@ -45,13 +45,15 @@
                                             <tr>
                                                 <th>Doctor</th>
                                                 <th>Exam</th>
+                                                <th></th>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <!-- <tr *ngFor="let address of addressHistory">
-                                                <td>{{ address.address }}, {{address.city}}, {{address.state}}, {{address.zip}}</td>
-                                                <td>{{ address.until }}</td>
-                                            </tr> -->
+                                            <tr *ngFor="let performedExam of performedExams">
+                                                    <td>{{ getDoctorName(performedExam.doctorId) }}</td>
+                                                    <td>{{ getExamName(performedExam.examId) | async }}</td>
+                                                    <td><button type="button" class="btn btn-primary btn-sm">Delete</button></td>
+                                                </tr>
                                         </tbody>
                                 </table>
                             </div>
