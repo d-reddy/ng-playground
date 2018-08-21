@@ -22,6 +22,39 @@
                                     </div>
                                 </div>
                             </div>
+                            <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="card">
+                                            <div class="header">
+                                                <h4 class="title">Performed Exams</h4>
+                                            </div>                       
+                                            <div class="content">
+                                                <div class="content table-responsive table-full-width">
+                                                    <table class="table table-hover table-striped">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th>Doctor</th>
+                                                                    <th>Exam</th>
+                                                                    <th></th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                <tr *ngFor="let performedExam of performedExams">
+                                                                        <td>{{ getDoctorName(performedExam.doctorId) }}</td>
+                                                                        <td>{{ getExamName(performedExam.examId) | async }}</td>
+                                                                        <td><button (click)="deleteExam(performedExam.doctorId, performedExam.examId)" type="button" class="btn btn-danger btn-sm">Delete</button></td>
+                                                                    </tr>
+                                                            </tbody>
+                                                    </table>
+                                                </div>
+                                                <div class="btn-toolbar">
+                                                        <button type="button" class="btn btn-primary btn-fill pull-right" (click)="openModal(template)">Add</button>
+                                                </div>
+                                                <div class="clearfix"></div>   
+                                            </div>
+                                        </div>                           
+                                    </div>
+                                </div>        
                             <div class="btn-toolbar">
                                 <button type="submit" class="btn btn-primary btn-fill pull-right">Save</button>
                                 <button [routerLink]="['/patient/services']" class="btn btn-secondary btn-fill pull-right">Cancel</button>   
@@ -32,39 +65,7 @@
                 </div>
             </div>
         </div>
-        <div class="row">
-                <div class="col-md-12">
-                    <div class="card">
-                        <div class="header">
-                            <h4 class="title">Exams</h4>
-                        </div>                       
-                        <div class="content">
-                            <div class="content table-responsive table-full-width">
-                                <table class="table table-hover table-striped">
-                                        <thead>
-                                            <tr>
-                                                <th>Doctor</th>
-                                                <th>Exam</th>
-                                                <th></th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr *ngFor="let performedExam of performedExams">
-                                                    <td>{{ getDoctorName(performedExam.doctorId) }}</td>
-                                                    <td>{{ getExamName(performedExam.examId) | async }}</td>
-                                                    <td><button type="button" class="btn btn-primary btn-sm">Delete</button></td>
-                                                </tr>
-                                        </tbody>
-                                </table>
-                            </div>
-                            <div class="btn-toolbar">
-                                    <button type="button" class="btn btn-primary btn-fill pull-right" (click)="openModal(template)">Add</button>
-                            </div>
-                            <div class="clearfix"></div>   
-                        </div>
-                    </div>                           
-                </div>
-            </div>        
+    
     </div>
 </div>
  

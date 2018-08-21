@@ -152,7 +152,7 @@ let serviceData = {
         examId: 1,
         doctorId: 1
       },{
-        patientServiceId: 2,
+        patientServiceId: 1,
         examId: 2,
         doctorId: 2
       }],

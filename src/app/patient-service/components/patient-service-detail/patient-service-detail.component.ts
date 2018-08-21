@@ -54,8 +54,7 @@ export class PatientServiceDetailComponent implements OnInit {
     this.patientServiceForm = this.fb.group({
       id: '',
       medicalRecordNumber: '',
-      dateOfService: '',
-      performedExams: []
+      dateOfService: ''
     });
 
     this.examForm = this.fb.group({
@@ -68,7 +67,8 @@ export class PatientServiceDetailComponent implements OnInit {
     let patientServiceSlice$ = this.store.select(patientServiceReducer.selectCurrentPatientService);
 
     this.patientService$ = patientServiceSlice$.pipe(
-      tap(patientService => this.patientServiceForm.patchValue(patientService))
+      tap(patientService => this.patientServiceForm.patchValue(patientService)),
+      tap(patientService => this.performedExams = patientService.performedExams )
     );
 
     this.store.dispatch(new actions.PatientServiceGet(this.id));
@@ -97,7 +97,7 @@ export class PatientServiceDetailComponent implements OnInit {
       id: value.id, 
       medicalRecordNumber: value.medicalRecordNumber, 
       dateOfService: value.dateOfService, 
-      performedExams:  value.exams
+      performedExams:  this.performedExams
     }));
   }
  
@@ -110,5 +110,8 @@ export class PatientServiceDetailComponent implements OnInit {
     }
   }
 
+  deleteExam(doctorId: number, examId: number){
+    this.performedExams = this.performedExams.filter(pe => pe.doctorId != doctorId && pe.examId != examId);
+  }
 
 }
