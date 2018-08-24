@@ -19,6 +19,8 @@ import * as referenceDataReducer from '../../../reference-data/reducers/referenc
 import { ReferenceDataGet } from '../../../reference-data/actions/reference-data.actions';
 import {PerformedExam} from '../../models/performedExam';
 
+import { ToastrService } from 'ngx-toastr';
+
 @Component({
   selector: 'app-patient-service',
   templateUrl: './patient-service-detail.component.html',
@@ -36,7 +38,7 @@ export class PatientServiceDetailComponent implements OnInit {
   displayedExams: PerformedExam[];
 
   constructor(private store: Store<patientServiceReducer.PatientServicesAggregateState>, private refDataStore: Store<referenceDataReducer.ReferenceDataStore>, private fb: FormBuilder, private route: ActivatedRoute,
-    private modalService: BsModalService) { }
+    private modalService: BsModalService, private toastr: ToastrService) { }
 
   ngOnInit() {
 
@@ -108,6 +110,9 @@ export class PatientServiceDetailComponent implements OnInit {
       dateOfService: value.dateOfService, 
       performedExams: value.performedExams
     }));
+
+    //NOT CORRECT, NEEDS TO BE ACTION DRIVEN
+    this.showSuccess();
   }
 
   deleteExam(doctorId: number, examId: number){
@@ -135,5 +140,10 @@ export class PatientServiceDetailComponent implements OnInit {
       this.patientServiceForm.get("performedExams").value.push(performedExam);
       this.patientServiceForm.markAsDirty();
     }
+  }
+
+  //toastr messages
+  showSuccess() {
+    this.toastr.success('Saved');
   }
 }
