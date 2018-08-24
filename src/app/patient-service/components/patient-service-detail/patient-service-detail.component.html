@@ -5,7 +5,7 @@
                 <div class="card">
                     <div class="header">
                         <h4 class="title">Edit Patient Service</h4>
-                    </div>                    
+                    </div>
                     <div class="content">
                         <form *ngIf="patientService$ | async;" [formGroup]="patientServiceForm" (ngSubmit)="onSubmit(patientServiceForm)" novalidate >
                             <div class= "row">
@@ -17,7 +17,7 @@
                                 </div>
                                 <div class="col-md-4">
                                     <div class="form-group">
-                                        <label>Date of Service</label>                                       
+                                        <label>Date of Service</label>
                                         <input type="text"
                                             placeholder="Datepicker"
                                             class="form-control"
@@ -31,7 +31,7 @@
                                         <div class="card">
                                             <div class="header">
                                                 <h4 class="title">Performed Exams</h4>
-                                            </div>                       
+                                            </div>
                                             <div class="content">
                                                 <div class="content table-responsive table-full-width">
                                                     <table class="table table-hover table-striped">
@@ -43,10 +43,10 @@
                                                                 </tr>
                                                             </thead>
                                                             <tbody>
-                                                                <tr *ngFor="let performedExam of performedExams">
-                                                                        <td>{{ getDoctorName(performedExam.doctorId) }}</td>
-                                                                        <td>{{ getExamName(performedExam.examId) | async }}</td>
-                                                                        <td><button (click)="deleteExam(performedExam.doctorId, performedExam.examId)" type="button" class="btn btn-danger btn-sm">Delete</button></td>
+                                                                <tr *ngFor="let displayedExam of displayedExams">
+                                                                        <td>{{ getDoctorName(displayedExam.doctorId) }}</td>
+                                                                        <td>{{ getExamName(displayedExam.examId) | async }}</td>
+                                                                        <td><button (click)="deleteExam(displayedExam.doctorId, displayedExam.examId)" type="button" class="btn btn-danger btn-sm">Delete</button></td>
                                                                     </tr>
                                                             </tbody>
                                                     </table>
@@ -54,14 +54,14 @@
                                                 <div class="btn-toolbar">
                                                         <button type="button" class="btn btn-primary btn-fill pull-right" (click)="openModal(template)">Add</button>
                                                 </div>
-                                                <div class="clearfix"></div>   
+                                                <div class="clearfix"></div>
                                             </div>
-                                        </div>                           
+                                        </div>
                                     </div>
                                 </div>        
                             <div class="btn-toolbar">
                                 <button type="submit" class="btn btn-primary btn-fill pull-right">Save</button>
-                                <button [routerLink]="['/patient/services']" class="btn btn-secondary btn-fill pull-right">Cancel</button>   
+                                <button [routerLink]="['/patient/services']" class="btn btn-secondary btn-fill pull-right">Cancel</button>
                             </div>
                             <div class="clearfix"></div>
                         </form>
@@ -69,10 +69,10 @@
                 </div>
             </div>
         </div>
-    
+
     </div>
 </div>
- 
+
 <ng-template #template>
   <div class="modal-header">
     <h4 class="modal-title pull-left">Add Exam</h4>
@@ -82,16 +82,6 @@
     </button>
   </div>
   <div class="modal-body">
-    <!-- Exam:
-
-    <select>
-        <option *ngFor="let exam of exams" value= {{exam.id}}>
-            {{exam.name}}
-        </option>
-    </select>
-    <div class="btn-toolbar">
-            <button type="button" class="btn btn-primary btn-fill pull-right" (click)="openModal(template)">Add</button>
-    </div> -->
     <form [formGroup]="examForm" (ngSubmit)="onSubmitExam(examForm)" novalidate >
             <div class= "row">
                 <div class="col-md-4">
@@ -113,7 +103,8 @@
             </div>
             <div class="btn-toolbar">
                     <button (click)="modalRef.hide()" type="submit" class="btn btn-primary btn-fill pull-right">Add</button>
-            </div>            <div class="clearfix"></div>
+            </div>            
+            <div class="clearfix"></div>
         </form>
   </div>
 </ng-template>

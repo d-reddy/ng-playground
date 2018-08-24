@@ -1,4 +1,4 @@
-import { FormGroup,  FormBuilder,  Validators } from '@angular/forms';
+import { FormGroup, FormArray, FormBuilder,  Validators } from '@angular/forms';
 import { PatientService } from '../../models/patientService';
 import { Component, OnInit, TemplateRef } from '@angular/core';
 import { Store } from '@ngrx/store';
@@ -32,15 +32,14 @@ export class PatientServiceDetailComponent implements OnInit {
   modalRef: BsModalRef;
   exams$: Observable<Exam[]>;
   doctors: Doctor[];
-  performedExams: PerformedExam[];
+
+  displayedExams: PerformedExam[];
 
   constructor(private store: Store<patientServiceReducer.PatientServicesAggregateState>, private refDataStore: Store<referenceDataReducer.ReferenceDataStore>, private fb: FormBuilder, private route: ActivatedRoute,
     private modalService: BsModalService) { }
 
   ngOnInit() {
 
-    this.performedExams = [];
-    //this.exams = [ {id:1, name:'brain mri'}, {id:2, name: 'chest mri'}, {id:3, name:'face mri'}];
     this.doctors = [{id:1, firstName:'tim', lastName:'doctor'}, {id:2, firstName:'jawartolo', lastName:'melancholoy'}];
 
     //move to guard at some point?  https://toddmotto.com/preloading-ngrx-store-route-guards
@@ -50,11 +49,33 @@ export class PatientServiceDetailComponent implements OnInit {
 
     this.refDataStore.dispatch(new ReferenceDataGet());
     
-    //create the patientService form
+    this.id = +this.route.snapshot.paramMap.get('id');
+  
+    let patientServiceSlice$ = this.store.select(patientServiceReducer.selectCurrentPatientService);
+
+    this.patientService$ = patientServiceSlice$.pipe(
+      tap(patientService => {
+        this.initialize();
+        this.patientServiceForm.patchValue(patientService);
+        patientService.performedExams.forEach(pe => {
+          this.displayedExams.push(pe);
+          this.performedExams.push(this.fb.group(pe))
+        });
+      })
+    );
+
+    this.store.dispatch(new actions.PatientServiceGet(this.id));
+  }
+
+  initialize(){
+
+    this.displayedExams = [];
+
     this.patientServiceForm = this.fb.group({
       id: '',
       medicalRecordNumber: '',
-      dateOfService: ''
+      dateOfService: '',
+      performedExams: this.fb.array([])
     });
 
     this.examForm = this.fb.group({
@@ -62,21 +83,6 @@ export class PatientServiceDetailComponent implements OnInit {
       doctorId: null
     });
 
-    this.id = +this.route.snapshot.paramMap.get('id');
-  
-    let patientServiceSlice$ = this.store.select(patientServiceReducer.selectCurrentPatientService);
-
-    this.patientService$ = patientServiceSlice$.pipe(
-      tap(patientService => this.patientServiceForm.patchValue(patientService)),
-      tap(patientService => this.performedExams = patientService.performedExams )
-    );
-
-    this.store.dispatch(new actions.PatientServiceGet(this.id));
-
-  }
-
-  openModal(template: TemplateRef<any>) {
-    this.modalRef = this.modalService.show(template);
   }
 
   getDoctorName(id: number) {
@@ -93,25 +99,41 @@ export class PatientServiceDetailComponent implements OnInit {
   }
 
   onSubmit({ value, valid }) {
+    console.warn(this.patientServiceForm.value);
+    console.warn(this.patientServiceForm.dirty);
+
     this.store.dispatch(new actions.PatientServiceSave(<PatientService>{
       id: value.id, 
       medicalRecordNumber: value.medicalRecordNumber, 
       dateOfService: value.dateOfService, 
-      performedExams:  this.performedExams
+      performedExams: value.performedExams
     }));
-  }
- 
-  onSubmitExam({ value, valid }) {
-    //check if already added
-    let matchingExams = this.performedExams.filter(pe => pe.doctorId == value.doctorId && pe.examId == value.examId);
-
-    if (matchingExams.length == 0){
-      this.performedExams.push(<PerformedExam>{doctorId:value.doctorId,examId:value.examId,patientServiceId:this.id});
-    }
   }
 
   deleteExam(doctorId: number, examId: number){
-    this.performedExams = this.performedExams.filter(pe => !(pe.doctorId == doctorId && pe.examId == examId));
+    this.displayedExams = this.displayedExams.filter(pe => !(pe.doctorId == doctorId && pe.examId == examId));
+    this.patientServiceForm.setControl('performedExams', this.fb.array(this.displayedExams || []));
+    this.patientServiceForm.markAsDirty();
   }
 
+  get performedExams(){
+    return this.patientServiceForm.get('performedExams') as FormArray;
+  }
+
+  //exam modal interactions
+  openModal(template: TemplateRef<any>) {
+    this.modalRef = this.modalService.show(template);
+  }
+
+  onSubmitExam({ value, valid }) {
+    //check if already added
+    let matchingExams = this.patientServiceForm.get("performedExams").value.filter(pe => pe.doctorId == value.doctorId && pe.examId == value.examId);
+
+    if (matchingExams.length == 0){
+      let performedExam = <PerformedExam>{doctorId:value.doctorId,examId:value.examId,patientServiceId:this.id};
+      this.displayedExams.push(performedExam)
+      this.patientServiceForm.get("performedExams").value.push(performedExam);
+      this.patientServiceForm.markAsDirty();
+    }
+  }
 }
