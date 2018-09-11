@@ -2,6 +2,8 @@ import { NgModule } from '@angular/core';
 import { CommonModule, } from '@angular/common';
 import { BrowserModule  } from '@angular/platform-browser';
 import { Routes, RouterModule } from '@angular/router';
+import { CallbackComponent} from './shared/authentication/components/callback.component'
+import { AuthGuard } from './shared/guards/auth-guard';
 
 // import { HomeComponent } from './home/home.component';
 // import { UserComponent } from './user/user.component';
@@ -21,7 +23,8 @@ const routes: Routes =[
     // { path: 'maps',           component: MapsComponent },
     // { path: 'notifications',  component: NotificationsComponent },
     // { path: 'upgrade',        component: UpgradeComponent },
-      { path: '',          redirectTo: 'dashboard', pathMatch: 'full' }
+      { path: '',          redirectTo: 'dashboard', pathMatch: 'full' },
+      { path: 'callback',  component: CallbackComponent }
 ];
 
 @NgModule({

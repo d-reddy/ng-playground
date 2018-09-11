@@ -7,7 +7,7 @@
                         <h4 class="title">Edit Patient Service</h4>
                     </div>
                     <div class="content">
-                        <form *ngIf="patientService$ | async;" [formGroup]="patientServiceForm" (ngSubmit)="onSubmit(patientServiceForm)" novalidate >
+                        <form *ngIf="patientService$ | async;" [formGroup]="form" (ngSubmit)="onSubmit(form)" novalidate >
                             <div class= "row">
                                 <div class="col-md-4">
                                     <div class="form-group">

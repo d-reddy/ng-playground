@@ -21,13 +21,16 @@ import {PerformedExam} from '../../models/performedExam';
 
 import { ToastrService } from 'ngx-toastr';
 
+import {FormCanDeactivate} from '../../../shared/form/form-can-deactivate';
+
 @Component({
   selector: 'app-patient-service',
   templateUrl: './patient-service-detail.component.html',
   styleUrls: ['./patient-service-detail.component.css']
 })
-export class PatientServiceDetailComponent implements OnInit {
-  patientServiceForm: FormGroup;
+export class PatientServiceDetailComponent extends FormCanDeactivate implements OnInit {
+
+  form: FormGroup;
   examForm: FormGroup;
   id: number;
   patientService$: Observable<PatientService>;
@@ -38,7 +41,9 @@ export class PatientServiceDetailComponent implements OnInit {
   displayedExams: PerformedExam[];
 
   constructor(private store: Store<patientServiceReducer.PatientServicesAggregateState>, private refDataStore: Store<referenceDataReducer.ReferenceDataStore>, private fb: FormBuilder, private route: ActivatedRoute,
-    private modalService: BsModalService, private toastr: ToastrService) { }
+    private modalService: BsModalService, private toastr: ToastrService) {
+      super();
+     }
 
   ngOnInit() {
 
@@ -58,7 +63,7 @@ export class PatientServiceDetailComponent implements OnInit {
     this.patientService$ = patientServiceSlice$.pipe(
       tap(patientService => {
         this.initialize();
-        this.patientServiceForm.patchValue(patientService);
+        this.form.patchValue(patientService);
         patientService.performedExams.forEach(pe => {
           this.displayedExams.push(pe);
           this.performedExams.push(this.fb.group(pe))
@@ -73,7 +78,7 @@ export class PatientServiceDetailComponent implements OnInit {
 
     this.displayedExams = [];
 
-    this.patientServiceForm = this.fb.group({
+    this.form = this.fb.group({
       id: '',
       medicalRecordNumber: '',
       dateOfService: '',
@@ -101,8 +106,8 @@ export class PatientServiceDetailComponent implements OnInit {
   }
 
   onSubmit({ value, valid }) {
-    console.warn(this.patientServiceForm.value);
-    console.warn(this.patientServiceForm.dirty);
+    console.warn(this.form.value);
+    console.warn(this.form.dirty);
 
     this.store.dispatch(new actions.PatientServiceSave(<PatientService>{
       id: value.id, 
@@ -117,12 +122,12 @@ export class PatientServiceDetailComponent implements OnInit {
 
   deleteExam(doctorId: number, examId: number){
     this.displayedExams = this.displayedExams.filter(pe => !(pe.doctorId == doctorId && pe.examId == examId));
-    this.patientServiceForm.setControl('performedExams', this.fb.array(this.displayedExams || []));
-    this.patientServiceForm.markAsDirty();
+    this.form.setControl('performedExams', this.fb.array(this.displayedExams || []));
+    this.form.markAsDirty();
   }
 
   get performedExams(){
-    return this.patientServiceForm.get('performedExams') as FormArray;
+    return this.form.get('performedExams') as FormArray;
   }
 
   //exam modal interactions
@@ -132,13 +137,13 @@ export class PatientServiceDetailComponent implements OnInit {
 
   onSubmitExam({ value, valid }) {
     //check if already added
-    let matchingExams = this.patientServiceForm.get("performedExams").value.filter(pe => pe.doctorId == value.doctorId && pe.examId == value.examId);
+    let matchingExams = this.form.get("performedExams").value.filter(pe => pe.doctorId == value.doctorId && pe.examId == value.examId);
 
     if (matchingExams.length == 0){
       let performedExam = <PerformedExam>{doctorId:value.doctorId,examId:value.examId,patientServiceId:this.id};
       this.displayedExams.push(performedExam)
-      this.patientServiceForm.get("performedExams").value.push(performedExam);
-      this.patientServiceForm.markAsDirty();
+      this.form.get("performedExams").value.push(performedExam);
+      this.form.markAsDirty();
     }
   }
 

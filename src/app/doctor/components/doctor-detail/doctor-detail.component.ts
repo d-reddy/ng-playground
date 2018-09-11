@@ -7,7 +7,7 @@ import { Observable } from 'rxjs'
 
 import * as reducer from '../../reducers';
 import * as actions from '../../actions/doctor.actions';
-import { map, tap } from '../../../../../node_modules/rxjs/operators';
+import { map, tap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-doctor',

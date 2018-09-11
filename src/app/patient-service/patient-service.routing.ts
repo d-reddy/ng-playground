@@ -7,6 +7,8 @@ import { Routes, RouterModule } from '@angular/router';
 // import { UserComponent } from './user/user.component';
 import { PatientServiceDetailComponent } from './components/patient-service-detail/patient-service-detail.component';
 import { PatientServiceListComponent } from './components/patient-service-list/patient-service-list.component'
+import { CanDeactivateGuard } from '../shared/guards/can-deactivate-guard';
+import { AuthGuard } from '../shared/guards/auth-guard';
 // import { TablesComponent } from './tables/tables.component';
 // import { TypographyComponent } from './typography/typography.component';
 // import { IconsComponent } from './icons/icons.component';
@@ -18,7 +20,7 @@ const routes: Routes =[
     // { path: 'dashboard',      component: HomeComponent },
     // { path: 'user',           component: UserComponent },
     { path: 'patient/services',          component: PatientServiceListComponent },
-    { path: 'patient/services/:id',       component: PatientServiceDetailComponent },
+    { path: 'patient/services/:id',       component: PatientServiceDetailComponent, canDeactivate: [CanDeactivateGuard], canActivate:[AuthGuard] },
     // { path: 'table',          component: TablesComponent },
     // { path: 'typography',     component: TypographyComponent },
     // { path: 'icons',          component: IconsComponent },

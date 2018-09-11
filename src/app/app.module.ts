@@ -23,10 +23,16 @@ import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { ModalModule } from 'ngx-bootstrap';
 import { DatepickerModule, BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { ToastrModule } from 'ngx-toastr';
+import { CanDeactivateGuard } from './shared/guards/can-deactivate-guard';
+import { AuthGuard } from './shared/guards/auth-guard'
+
+import {AuthenticationService} from './shared/authentication/services/auth.service'
+import { CallbackComponent } from './shared/authentication/components/callback.component';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    CallbackComponent
   ],
   imports: [
     BrowserModule,
@@ -54,7 +60,7 @@ import { ToastrModule } from 'ngx-toastr';
     DatepickerModule.forRoot(),
     ToastrModule.forRoot()
   ],
-  providers: [],
+  providers: [AuthenticationService, CanDeactivateGuard, AuthGuard],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
