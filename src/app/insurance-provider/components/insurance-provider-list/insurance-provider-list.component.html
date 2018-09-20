@@ -1,0 +1,40 @@
+<div class="main-content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                        <div class="header">
+                                <h4 class="title">Insurance Providers</h4>
+                            </div>                     
+                    <div class="content table-responsive table-full-width">
+                          <table class="table table-hover table-striped">
+                                <thead>
+                                    <tr>
+                                        <th *ngFor="let cell of headerRow">{{ cell }}</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let insuranceProvider of insuranceProviders$ | async">
+                                        <td>{{ insuranceProvider.name }}</td>
+                                        <td>{{ insuranceProvider.currentAddress.city }}</td>
+                                        <td>{{ insuranceProvider.currentAddress.state }}</td>
+                                        <td>{{ insuranceProvider.phone }}</td>
+                                        <td><button [routerLink]="['/insuranceproviders', insuranceProvider.id]" [queryParams]="{mode:'update'}" type="button" class="btn btn-primary btn-sm">Select</button></td>
+                                    </tr>
+                                </tbody>
+                          </table>
+                          <div class="content">
+                            <div class="btn-toolbar">
+                                <button [routerLink]="['/insuranceproviders', 0]" [queryParams]="{mode:'create'}" class="btn btn-primary btn-fill pull-right">Create</button>   
+                              </div>
+                            <div class="clearfix"></div>                            
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+    </div>
+    <div class="row">
+            <app-paginator *ngIf="page$" [page]="page$ | async" (pageChange)="onPageChanged($event)"></app-paginator>
+    </div>
+</div>

@@ -18,6 +18,13 @@ import { ReferenceDataModule } from './reference-data/reference-data.module'
 import { PatientModule } from './patient/patient.module';
 import { DoctorModule } from './doctor/doctor.module';
 import { PatientServiceModule } from './patient-service/patient-service.module';
+import { InsuranceProviderModule } from './insurance-provider/insurance-provider.module';
+import { LawFirmModule } from './law-firm/law-firm.module';
+import { ClaimsAdjusterModule } from './claims-adjuster/claims-adjuster.module';
+import { AttorneyModule } from './attorney/attorney.module';
+import { BillingModule } from './billing/billing.module';
+import { LopModule } from './lop/lop.module';
+
 
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { ModalModule } from 'ngx-bootstrap';
@@ -26,7 +33,7 @@ import { ToastrModule } from 'ngx-toastr';
 import { CanDeactivateGuard } from './shared/guards/can-deactivate-guard';
 import { AuthGuard } from './shared/guards/auth-guard'
 
-import {AuthenticationService} from './shared/authentication/services/auth.service'
+import { AuthenticationService } from './shared/authentication/services/auth.service'
 import { CallbackComponent } from './shared/authentication/components/callback.component';
 
 @NgModule({
@@ -56,6 +63,13 @@ import { CallbackComponent } from './shared/authentication/components/callback.c
     PatientModule,
     DoctorModule,
     PatientServiceModule,
+    InsuranceProviderModule,
+    LawFirmModule,
+    ClaimsAdjusterModule,
+    AttorneyModule,
+    BillingModule,
+    LopModule,
+
     BsDatepickerModule.forRoot(),
     DatepickerModule.forRoot(),
     ToastrModule.forRoot()

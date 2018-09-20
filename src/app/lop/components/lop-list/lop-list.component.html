@@ -1,0 +1,40 @@
+<div class="main-content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                        <div class="header">
+                                <h4 class="title">LOP Cases</h4>
+                            </div>                     
+                    <div class="content table-responsive table-full-width">
+                          <table class="table table-hover table-striped">
+                                <thead>
+                                    <tr>
+                                        <th *ngFor="let cell of headerRow">{{ cell }}</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let lop of lops$ | async">
+                                        <td>{{ lop.firstName }}</td>
+                                        <td>{{ lop.lastName }}</td>
+                                        <td>{{ lop.currentAddress.city }}</td>
+                                        <td>{{ lop.currentAddress.state }}</td>
+                                        <td>{{ lop.phone }}</td>
+                                        <td><button [routerLink]="['/lops', lop.id]" [queryParams]="{mode:'update'}" type="button" class="btn btn-primary btn-sm">Select</button></td>
+                                    </tr>
+                                </tbody>
+                          </table>
+                          <div class="content">
+                            <div class="btn-toolbar">
+                                <button [routerLink]="['/lops', 0]" [queryParams]="{mode:'create'}" class="btn btn-primary btn-fill pull-right">Create</button>   
+                              </div>
+                            <div class="clearfix"></div>                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+    </div>
+    <div class="row">
+            <app-paginator *ngIf="page$" [page]="page$ | async" (pageChange)="onPageChanged($event)"></app-paginator>
+    </div>
+</div>

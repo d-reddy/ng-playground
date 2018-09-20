@@ -3,6 +3,9 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="card">
+                        <div class="header">
+                                <h4 class="title">Patients</h4>
+                            </div>                     
                     <div class="content table-responsive table-full-width">
                           <table class="table table-hover table-striped">
                                 <thead>
@@ -16,10 +19,16 @@
                                         <td>{{ patient.firstName }}</td>
                                         <td>{{ patient.lastName }}</td>
                                         <td>{{ patient.dob }}</td>
-                                        <td><button [routerLink]="['/patients', patient.id]" type="button" class="btn btn-primary btn-sm">Select</button></td>
+                                        <td><button [routerLink]="['/patients', patient.id]" [queryParams]="{mode:'update'}" type="button" class="btn btn-primary btn-sm">Select</button></td>
                                     </tr>
                                 </tbody>
                           </table>
+                          <div class="content">
+                            <div class="btn-toolbar">
+                                <button [routerLink]="['/patients', 0]" [queryParams]="{mode:'create'}" class="btn btn-primary btn-fill pull-right">Create</button>   
+                              </div>
+                            <div class="clearfix"></div>                            
+                        </div>
                     </div>
                 </div>
             </div>

@@ -10,7 +10,7 @@ import { map } from 'rxjs/operators';
 
 
 @Component({
-  selector: 'patient-service-list',
+  selector: 'app-patient-service-list',
   templateUrl: './patient-service-list.component.html',
   styleUrls: ['./patient-service-list.component.css']
 })

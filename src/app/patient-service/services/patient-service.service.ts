@@ -21,7 +21,7 @@ export class PatientServiceService {
     return this.paginationService.queryPaginated<PatientService>(this.http, this.API_PATH, filter, pageRequest);
   }
 
-  getPatientService(id:number){
+  getPatientService(id:number): Observable<PatientService> {
     //cheap stub for testing, would need to actually go out to fetch patientService detail      
     let test = this.getPatientServices(null, <PageRequest> {pageIndex:0, pageSize:100 } ).pipe(
         map(pagedPatientServices => pagedPatientServices.results.find(patientService => patientService.id === id))

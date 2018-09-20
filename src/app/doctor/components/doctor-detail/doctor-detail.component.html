@@ -4,7 +4,7 @@
             <div class="col-md-12">
                 <div class="card">
                     <div class="header">
-                        <h4 class="title">Edit Doctor</h4>
+                        <h4 class="title">{{action}} Doctor</h4>
                     </div>                    
                     <div class="content">
                         <form *ngIf="doctor$ | async;" [formGroup]="doctorForm" (ngSubmit)="onSubmit(doctorForm)" novalidate >

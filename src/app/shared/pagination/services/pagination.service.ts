@@ -158,8 +158,119 @@ let serviceData = {
       }],
       dateOfService: new Date(2018,10,11)
     }
-  ]
+  ],
 
+  insuranceProviders: [
+    {
+       id: 1,
+       name: 'geico',
+       phone: '815.333.1234',
+       fax: '815.332.2322',
+       email: 'jim.smith@geico.com',
+       notes: 'some note',
+       currentAddress: {
+          address: '123 Fake st',
+          city: 'springfield',
+          state: 'il',
+          zip: '60515',
+          until: ''
+       }
+    }
+  ],
+
+  lawFirms: [
+    {
+       id: 1,
+       name: 'BobLobLaw Firm',
+       phone: '815.333.1234',
+       fax: '815.332.2322',
+       email: 'bob.loblaw@loblaw.com',
+       notes: 'some law note',
+       currentAddress: {
+          address: '125 Fake st',
+          city: 'springfield',
+          state: 'il',
+          zip: '60515',
+          until: ''
+       }
+    }
+  ],
+    
+  claimsAdjusters: [
+    {
+       id: 1,
+       firstName: 'smith',
+       middleName: '',
+       lastName: 'smithburg',       
+       phone: '815.333.1234',
+       fax: '815.332.2322',
+       email: 'smith.smithburg@adj.com',
+       notes: 'some adj note',
+       insuranceProviderIds: [],
+       currentAddress: {
+          address: '125 Fake st',
+          city: 'springfield',
+          state: 'il',
+          zip: '60515',
+          until: ''
+       }
+    }
+  ],
+
+  attorneys: [
+    {
+       id: 1,
+       firstName: 'bob',
+       middleName: '',
+       lastName: 'loblaw',       
+       phone: '815.333.1234',
+       fax: '815.332.2322',
+       email: 'bob.loblaw@boboblawfirm.com',
+       notes: 'some attorney note',
+       lawFirmId: 0,
+       currentAddress: {
+          address: '125 Fake st',
+          city: 'springfield',
+          state: 'il',
+          zip: '60515',
+          until: ''
+       }
+    }
+  ],
+
+  billings: [
+    {
+       id: 1,
+       patientName: 'bill bo',
+       doctorName: 'tim doctor',
+       patientId: 1,
+       exam: 'brain mri',
+       dateOfService: '04/03/04',
+       statusId: 1,
+       amount: 1000
+    }
+  ],
+
+  lops: [
+    {
+       id: 1,
+       firstName: 'lop',
+       middleName: '',
+       lastName: 'loppingsworth',       
+       phone: '815.333.1234',
+       fax: '815.332.2322',
+       email: 'lop@lop.com',
+       notes: 'some lop note',
+       lawFirmId: 0,
+       currentAddress: {
+          address: '125 Fake st',
+          city: 'springfield',
+          state: 'il',
+          zip: '60515',
+          until: ''
+       }
+    }
+  ]
 }
 
 
@@ -197,7 +308,13 @@ let serviceData = {
       if (url == 'patients') data = serviceData.patients;
       if (url == 'doctors') data = serviceData.doctors;
       if (url == 'patientServices') data = serviceData.patientServices;
-     
+      if (url == 'insuranceproviders') data = serviceData.insuranceProviders;
+      if (url == 'lawfirms') data = serviceData.lawFirms;
+      if (url == 'claimsadjusters') data = serviceData.claimsAdjusters;
+      if (url == 'attorneys') data = serviceData.attorneys;
+      if (url == 'billings') data = serviceData.billings;
+      if (url == 'lops') data = serviceData.lops;
+
       let response = <PageResponse<T>>{
         total: data.length,      // total number of items in full collection
         pageIndex: pageRequest.pageIndex,  // page index returned

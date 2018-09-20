@@ -6,7 +6,7 @@ import { Address } from '../../models/address';
 import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { ActivatedRoute } from '@angular/router';
-import { Observable } from 'rxjs'
+import { Observable, of } from 'rxjs'
 import { tap } from 'rxjs/operators';
 
 import * as reducer from '../../reducers';
@@ -22,29 +22,12 @@ export class PatientDetailComponent implements OnInit {
   id: number;
   patient$: Observable<Patient>;
   addressHistory: Address[];
+  action: string;
   
   constructor(private store: Store<reducer.PatientsAggregateState>, private fb: FormBuilder, private route: ActivatedRoute) { }
 
-  onSubmit({ value, valid }) {
-    this.store.dispatch(new actions.PatientSave(<Patient>{
-      id: value.id, 
-      firstName: value.firstName, 
-      middleName: value.middleName, 
-      lastName:  value.lastName, 
-      phone: value.phone, 
-      email: value.email, 
-      dob:value.dob,
-      notes: value.notes,
-      currentAddress: {
-        address: value.currentAddress.address,
-        city: value.currentAddress.city,
-        state: value.currentAddress.state,
-        zip: value.currentAddress.zip
-      }
-    }));
-  }
-
   ngOnInit() {
+
     //create the patient form
     this.patientForm = this.fb.group({
       id: '',
@@ -55,14 +38,24 @@ export class PatientDetailComponent implements OnInit {
       phone:'',
       email:'',
       notes:'',
-      currentAddress: this.fb.group({
+      currentAddress: this.fb.group(<Address>{
         address:'',
         city:'',
         state:'',
         zip:''
       })
-    });
+    });  
+
+    let mode = this.route.snapshot.queryParamMap.get('mode');
+
+    mode == 'update' ? this.update() : this.create();
+
+  }
+
+  update(){
     
+    this.action = 'Update';
+
     this.id = +this.route.snapshot.paramMap.get('id');
   
     let patientSlice$ = this.store.select(reducer.selectCurrentPatient);
@@ -76,5 +69,34 @@ export class PatientDetailComponent implements OnInit {
 
     this.store.dispatch(new actions.PatientGet(this.id));
 
+  }
+
+  create(){
+    
+    this.action = 'Create';
+
+    this.patient$ = of(<Patient>{})
+
+  }
+
+  onSubmit({ value, valid }) {
+
+    this.store.dispatch(new actions.PatientSave(<Patient>{
+      id: value.id, 
+      firstName: value.firstName, 
+      middleName: value.middleName, 
+      lastName:  value.lastName, 
+      phone: value.phone, 
+      email: value.email, 
+      dob:value.dob,
+      notes: value.notes,
+      currentAddress: <Address>{
+        address: value.currentAddress.address,
+        city: value.currentAddress.city,
+        state: value.currentAddress.state,
+        zip: value.currentAddress.zip
+      }
+    }));
+    
   }
 }

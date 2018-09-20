@@ -1,0 +1,62 @@
+<div class="main-content" >
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="header">
+                        <h4 class="title">{{action}} Billing</h4>
+                    </div>                    
+                    <div class="content">
+                        <form *ngIf="billing$ | async;" [formGroup]="billingForm" (ngSubmit)="onSubmit(billingForm)" novalidate >
+                            <div class= "row">
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>Patient</label>
+                                        <input type="text" class="form-control" formControlName="patientName">
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>Medical Record Number</label>
+                                        <input type="text" class="form-control" formControlName="patientId">
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>Doctor</label>
+                                        <input type="text" class="form-control" formControlName="doctorName">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>Exam</label>
+                                        <input type="text" class="form-control" formControlName="exam">
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>Date of Service</label>
+                                        <input type="text" class="form-control" formControlName="dateOfService">
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>Amount</label>
+                                        <input type="text" class="form-control" formControlName="amount">
+                                    </div>
+                                </div>                                   
+                            </div>
+                            <div class="btn-toolbar">
+                                <button type="submit" class="btn btn-primary btn-fill pull-right">Save</button>
+                                <button [routerLink]="['/billings']" class="btn btn-secondary btn-fill pull-right">Cancel</button>   
+                            </div>
+                            <div class="clearfix"></div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

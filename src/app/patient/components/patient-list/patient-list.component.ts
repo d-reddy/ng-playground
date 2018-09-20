@@ -9,7 +9,7 @@ import { PageRequest, PageResponse } from '../../../shared/pagination/models/pag
 import { map } from 'rxjs/operators';
 
 @Component({
-  selector: 'patient-list',
+  selector: 'app-patient-list',
   templateUrl: './patient-list.component.html',
   styleUrls: ['./patient-list.component.css']
 })

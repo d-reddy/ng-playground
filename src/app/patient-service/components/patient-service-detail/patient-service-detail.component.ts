@@ -3,7 +3,7 @@ import { PatientService } from '../../models/patientService';
 import { Component, OnInit, TemplateRef } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { ActivatedRoute } from '@angular/router';
-import { Observable } from 'rxjs'
+import { Observable, of } from 'rxjs'
 import { tap, map } from 'rxjs/operators'
 
 import * as patientServiceReducer from '../../reducers';
@@ -37,6 +37,7 @@ export class PatientServiceDetailComponent extends FormCanDeactivate implements 
   modalRef: BsModalRef;
   exams$: Observable<Exam[]>;
   doctors: Doctor[];
+  action: string;
 
   displayedExams: PerformedExam[];
 
@@ -55,7 +56,16 @@ export class PatientServiceDetailComponent extends FormCanDeactivate implements 
     );
 
     this.refDataStore.dispatch(new ReferenceDataGet());
+
+    let mode = this.route.snapshot.queryParamMap.get('mode');
+
+    mode == 'update' ? this.update() : this.create();
+  }
+
+  update(){
     
+    this.action = 'Update';
+
     this.id = +this.route.snapshot.paramMap.get('id');
   
     let patientServiceSlice$ = this.store.select(patientServiceReducer.selectCurrentPatientService);
@@ -72,6 +82,17 @@ export class PatientServiceDetailComponent extends FormCanDeactivate implements 
     );
 
     this.store.dispatch(new actions.PatientServiceGet(this.id));
+
+  }
+
+  create(){
+    
+    this.action = 'Create';
+
+    this.initialize();
+
+    this.patientService$ = of(<PatientService>{})
+
   }
 
   initialize(){

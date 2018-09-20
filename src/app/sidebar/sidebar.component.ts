@@ -21,7 +21,7 @@ export const BILLING_ROUTES: RouteInfo[] = [
     { path: 'attorneys', title: 'Attorneys',  icon: '', class: '' },
     { path: 'patients', title: 'Patients',  icon: '', class: '' },
     { path: 'billings', title: 'Billings',  icon: '', class: '' },
-    { path: 'casemanagement', title: 'LOP Case Management',  icon: '', class: '' },
+    { path: 'lops', title: 'LOP Cases',  icon: '', class: '' },
 ];
 
 @Component({
