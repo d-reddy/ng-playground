@@ -24,7 +24,7 @@ import { ClaimsAdjusterModule } from './claims-adjuster/claims-adjuster.module';
 import { AttorneyModule } from './attorney/attorney.module';
 import { BillingModule } from './billing/billing.module';
 import { LopModule } from './lop/lop.module';
-
+import { DashboardModule} from './dashboard/dashboard.module';
 
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { ModalModule } from 'ngx-bootstrap';
@@ -69,6 +69,7 @@ import { CallbackComponent } from './shared/authentication/components/callback.c
     AttorneyModule,
     BillingModule,
     LopModule,
+    DashboardModule,
 
     BsDatepickerModule.forRoot(),
     DatepickerModule.forRoot(),
