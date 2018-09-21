@@ -1,5 +1,5 @@
 import { Action } from '@ngrx/store';
-import { Billing } from '../models/billing';
+import { ExamBillingSummary } from '../models/examBillingSummary';
 import { PageRequest, PageResponse } from '../../shared/pagination/models/pagination'
 
 export enum BillingActionTypes {
@@ -24,13 +24,13 @@ export enum BillingActionTypes {
 export class BillingCreate implements Action {
   readonly type = BillingActionTypes.BILLING_CREATE;
 
-  constructor(public payload: Billing) {}
+  constructor(public payload: ExamBillingSummary) {}
 }
 
 export class BillingCreateComplete implements Action {
   readonly type = BillingActionTypes.BILLING_CREATE_COMPLETE;
 
-  constructor(public payload: Billing) {}
+  constructor(public payload: ExamBillingSummary) {}
 }
 
 export class BillingsGet implements Action {
@@ -43,19 +43,19 @@ export class BillingsGet implements Action {
 export class BillingsGetComplete implements Action {
   readonly type = BillingActionTypes.BILLINGS_GET_COMPLETE;
 
-  constructor(public payload: PageResponse<Billing>) {}
+  constructor(public payload: PageResponse<ExamBillingSummary>) {}
 }
 
 export class BillingSave implements Action {
   readonly type = BillingActionTypes.BILLING_SAVE;
 
-  constructor(public payload: Billing) {}
+  constructor(public payload: ExamBillingSummary) {}
 }
 
 export class BillingSaveComplete implements Action {
   readonly type = BillingActionTypes.BILLING_SAVE_COMPLETE;
 
-  constructor(public id: number, public changes: Partial<Billing>) {}
+  constructor(public id: number, public changes: Partial<ExamBillingSummary>) {}
 }
 
 export class BillingGet implements Action {
@@ -67,7 +67,7 @@ export class BillingGet implements Action {
 export class BillingGetComplete implements Action {
   readonly type = BillingActionTypes.BILLING_GET_COMPLETE;
 
-  constructor(public payload: Billing) {}
+  constructor(public payload: ExamBillingSummary) {}
 }
 
 /**

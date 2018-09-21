@@ -1,6 +1,6 @@
 import { FormGroup,  FormBuilder,  Validators } from '@angular/forms';
 
-import { Billing } from '../../models/billing';
+import { ExamBillingSummary } from '../../models/examBillingSummary';
 
 import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
@@ -19,7 +19,7 @@ import * as actions from '../../actions/billing.actions';
 export class BillingDetailComponent implements OnInit {
   billingForm: FormGroup;
   id: number;
-  billing$: Observable<Billing>;
+  billing$: Observable<ExamBillingSummary>;
   action: string;
   
   constructor(private store: Store<reducer.BillingsAggregateState>, private fb: FormBuilder, private route: ActivatedRoute) { }
@@ -65,13 +65,13 @@ export class BillingDetailComponent implements OnInit {
     
     this.action = 'Create';
 
-    this.billing$ = of(<Billing>{})
+    this.billing$ = of(<ExamBillingSummary>{})
 
   }
 
   onSubmit({ value, valid }) {
 
-    this.store.dispatch(new actions.BillingSave(<Billing>{
+    this.store.dispatch(new actions.BillingSave(<ExamBillingSummary>{
       id: value.id, 
       patientName: value.patientName, 
       doctorName: value.doctorName, 

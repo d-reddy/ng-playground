@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-import { Billing } from '../models/billing';
+import { ExamBillingSummary } from '../models/examBillingSummary';
 import { PaginationService } from '../../shared/pagination/services/pagination.service';
 import { PageRequest, PageResponse } from '../../shared/pagination/models/pagination'
 
@@ -14,11 +14,11 @@ export class BillingService {
 
   constructor(private http: HttpClient, private paginationService: PaginationService) {}
 
-  getBillings(filter: null | object, pageRequest: PageRequest): Observable<PageResponse<Billing>> {
+  getBillings(filter: null | object, pageRequest: PageRequest): Observable<PageResponse<ExamBillingSummary>> {
     //execute some api call to fetch billings
 
     //just mocking out an observable response
-    return this.paginationService.queryPaginated<Billing>(this.http, this.API_PATH, filter, pageRequest);
+    return this.paginationService.queryPaginated<ExamBillingSummary>(this.http, this.API_PATH, filter, pageRequest);
   }
 
   getBilling(id:number){
@@ -30,14 +30,14 @@ export class BillingService {
     return test;
   }
 
-  createBilling(billing:Billing): Observable<Billing> {
+  createBilling(billing:ExamBillingSummary): Observable<ExamBillingSummary> {
     //execute some api call to create billing
 
     //just mocking out an observable response
     return of(billing);
   }
 
-  saveBilling(billing:Billing): Observable<Billing> {
+  saveBilling(billing:ExamBillingSummary): Observable<ExamBillingSummary> {
     //execute some api call to create billing
     
     //just mocking out an observable response

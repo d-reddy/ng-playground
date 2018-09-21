@@ -24,7 +24,7 @@ import {
   BillingGetComplete
 } from '../actions/billing.actions';
 
-import { Billing } from '../models/billing';
+import { ExamBillingSummary } from '../models/examBillingSummary';
 import { PageResponse} from '../../shared/pagination/models/pagination'
 
 //may need this when working on billing filtering
@@ -55,7 +55,7 @@ export class BillingEffects {
     map(action => action.payload),
     switchMap(billing => {
       return this.billingService.createBilling(billing).pipe(
-        map((createdBilling: Billing) => new BillingCreateComplete(createdBilling)),
+        map((createdBilling: ExamBillingSummary) => new BillingCreateComplete(createdBilling)),
 //      catchError(err => of(new SearchError(err)))
       );
     })
@@ -67,7 +67,7 @@ export class BillingEffects {
     map(action => action.payload),
     switchMap(billing => {
       return this.billingService.saveBilling(billing).pipe(
-        map((savedBilling: Billing) => new BillingSaveComplete(savedBilling.id, savedBilling)),
+        map((savedBilling: ExamBillingSummary) => new BillingSaveComplete(savedBilling.id, savedBilling)),
 //      catchError(err => of(new SearchError(err)))
       );
     })
@@ -81,7 +81,7 @@ export class BillingEffects {
 //      return this.billingService.getBillings().pipe(
     return this.billingService.getBillings(action.filter, action.pageRequest).pipe(  
 //        map((returnedBillings: Billing[]) => new BillingsGetComplete(returnedBillings)),
-        map((returnedBillings: PageResponse<Billing>) => new BillingsGetComplete(returnedBillings)),
+        map((returnedBillings: PageResponse<ExamBillingSummary>) => new BillingsGetComplete(returnedBillings)),
 //      catchError(err => of(new SearchError(err)))
       );
     })
@@ -92,7 +92,7 @@ export class BillingEffects {
     ofType<BillingGet>(BillingActionTypes.BILLING_GET),
     switchMap(action => {
       return this.billingService.getBilling(action.payload).pipe(
-        map((returnedBilling: Billing) => new BillingGetComplete(returnedBilling)),
+        map((returnedBilling: ExamBillingSummary) => new BillingGetComplete(returnedBilling)),
 //      catchError(err => of(new SearchError(err)))
       );
     })

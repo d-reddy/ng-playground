@@ -1,4 +1,4 @@
-import { Billing } from '../../models/billing';
+import { ExamBillingSummary } from '../../models/examBillingSummary';
 import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs'
@@ -14,9 +14,9 @@ import { map } from 'rxjs/operators';
   styleUrls: ['./billing-list.component.css']
 })
 export class BillingListComponent implements OnInit {
-  page$: Observable<PageResponse<Billing>>;
+  page$: Observable<PageResponse<ExamBillingSummary>>;
   headerRow: string[]
-  billings$: Observable<Billing[]>;
+  billings$: Observable<ExamBillingSummary[]>;
 
   constructor(private store: Store<reducer.BillingsAggregateState>) { 
   }

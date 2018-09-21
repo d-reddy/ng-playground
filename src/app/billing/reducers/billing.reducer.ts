@@ -1,5 +1,5 @@
 import { createEntityAdapter, EntityAdapter, EntityState } from '@ngrx/entity';
-import { Billing } from '../models/billing';
+import { ExamBillingSummary } from '../models/examBillingSummary';
 import { PageResponse } from '../../shared/pagination/models/pagination';
 import { BillingActionsUnion, BillingActionTypes } from '../actions/billing.actions';
 
@@ -15,9 +15,9 @@ import {
  * model type by id. This interface is extended to include
  * any additional interface properties.
  */
-export interface BillingsState extends EntityState<Billing> { 
+export interface BillingsState extends EntityState<ExamBillingSummary> { 
   selectedBillingId: number | null;
-  selectedBillingPage : PageResponse<Billing>
+  selectedBillingPage : PageResponse<ExamBillingSummary>
 }
 
 /**
@@ -28,8 +28,8 @@ export interface BillingsState extends EntityState<Billing> {
  * a sortComparer option which is set to a compare
  * function if the records are to be sorted.
  */
-export const billingAdapter: EntityAdapter<Billing> = createEntityAdapter<Billing>({
-  selectId: (billing: Billing) => billing.id
+export const billingAdapter: EntityAdapter<ExamBillingSummary> = createEntityAdapter<ExamBillingSummary>({
+  selectId: (billing: ExamBillingSummary) => billing.id
 });
 
 
