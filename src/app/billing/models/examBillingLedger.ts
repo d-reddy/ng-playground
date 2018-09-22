@@ -1,6 +1,6 @@
-import { BillingActivity } from './billingActivity'
+import { BillingJournal } from './billingJournal'
 
-export interface ExamBilling {
+export interface ExamBillingLedger {
     id: number;
     patientServiceId: number;
     patientName: string;
@@ -13,10 +13,11 @@ export interface ExamBilling {
     statusId: number; //status representing if the exam payment has been completed... open/complete.
     amount: number;
 
-    patientBillingActivities: BillingActivity[];
-    insuranceBillingActivities: BillingActivity[];
+    patientBillingJournals: BillingJournal[];
+    insuranceBillingJournals: BillingJournal[];
+    
     //an individual exam can be bundled as part of an LOP, because of that not tracking BillingActivity
     // ... at the LOP level, in an individual exam billing, so only holding a reference to the lopCaseId
-    //is this item associated with an LOP Case?
+    //is this item associated with an LOP Case
     lopCaseId: number;
   }

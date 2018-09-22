@@ -7,7 +7,7 @@
                         <h4 class="title">{{action}} Billing</h4>
                     </div>                    
                     <div class="content">
-                        <form *ngIf="billing$ | async;" [formGroup]="billingForm" (ngSubmit)="onSubmit(billingForm)" novalidate >
+                        <form *ngIf="billing$ | async;" [formGroup]="form" (ngSubmit)="onSubmit(form)" novalidate >
                             <div class= "row">
                                 <div class="col-md-4">
                                     <div class="form-group">
@@ -48,6 +48,84 @@
                                     </div>
                                 </div>                                   
                             </div>
+
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="card">
+                                        <div class="header">
+                                            <h4 class="title">Patient</h4>
+                                        </div>
+                                        <div class="content">
+                                            <div class="content table-responsive table-full-width">
+                                                <table class="table table-hover table-striped">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Date Billed</th>
+                                                                <th>Amount</th>
+                                                                <th>Status</th>
+                                                                <th></th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr *ngFor="let patientBillingJournal of displayedPatientBillingJournals">
+                                                                    <td>{{ patientBillingJournal.dateBilled.toDateString() }}</td>
+                                                                    <td>{{ patientBillingJournal.amount }}</td>
+                                                                    <td>{{ patientBillingJournal.statusId }}</td>
+                                                                    <td></td>
+                                                                    <td><button [routerLink]="['/billings/journal', patientBillingJournal.id]" type="button" class="btn btn-primary btn-sm">Select</button></td>
+                                                                    <!-- <td><button (click)="selectBillingActivity(patientBillingActivity)" type="button" class="btn btn-primary btn-sm">Select</button></td> -->
+                                                                </tr>
+                                                        </tbody>
+                                                </table>
+                                            </div>
+                                            <!-- <div class="btn-toolbar">
+                                                    <button type="button" class="btn btn-primary btn-fill pull-right" (click)="openModal(template)">Add</button>
+                                            </div>
+                                            <div class="clearfix"></div> -->
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="card">
+                                        <div class="header">
+                                            <h4 class="title">Insurance Provider</h4>
+                                        </div>
+                                        <div class="content">
+                                            <div class="content table-responsive table-full-width">
+                                                <table class="table table-hover table-striped">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Date Billed</th>
+                                                                <th>Amount</th>
+                                                                <th>Status</th>
+                                                                <th>Name</th>
+                                                                <th></th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr *ngFor="let providerBillingJournal of displayedInsuranceProviderBillingJournals">
+                                                                    <td>{{ providerBillingJournal.dateBilled.toDateString() }}</td>
+                                                                    <td>{{ providerBillingJournal.amount }}</td>
+                                                                    <td>{{ providerBillingJournal.statusId }}</td>
+                                                                    <td>{{ providerBillingJournal.billedEntityName }}</td>
+                                                                    <td></td>
+                                                                    <!-- <td><button (click)="deleteExam(displayedExam.doctorId, displayedExam.examId)" type="button" class="btn btn-danger btn-sm">Delete</button></td> -->
+                                                                </tr>
+                                                        </tbody>
+                                                </table>
+                                            </div>
+                                            <!-- <div class="btn-toolbar">
+                                                    <button type="button" class="btn btn-primary btn-fill pull-right" (click)="openModal(template)">Add</button>
+                                            </div>
+                                            <div class="clearfix"></div> -->
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
                             <div class="btn-toolbar">
                                 <button type="submit" class="btn btn-primary btn-fill pull-right">Save</button>
                                 <button [routerLink]="['/billings']" class="btn btn-secondary btn-fill pull-right">Cancel</button>   

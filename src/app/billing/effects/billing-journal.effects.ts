@@ -13,18 +13,16 @@ import {
 
 import { BillingService } from '../services/billing.service';
 import {
-  BillingActionTypes,
-  BillingCreate,
-  BillingCreateComplete,
-  BillingsGet,
-  BillingsGetComplete,
-  BillingSave,
-  BillingSaveComplete,
-  BillingGet,
-  BillingGetComplete
-} from '../actions/billing.actions';
+  BillingJournalActionTypes,
+  BillingJournalCreate,
+  BillingJournalCreateComplete,
+  BillingJournalSave,
+  BillingJournalSaveComplete,
+  BillingJournalGet,
+  BillingJournalGetComplete
+} from '../actions/billing-journal.actions';
 
-import { ExamBillingLedger } from '../models/examBillingLedger';
+import { BillingJournal } from '../models/billingJournal';
 
 import { PageResponse} from '../../shared/pagination/models/pagination'
 
@@ -48,40 +46,27 @@ import { PageResponse} from '../../shared/pagination/models/pagination'
  */
 
 @Injectable()
-export class BillingEffects {
+export class BillingJournalEffects {
     
   @Effect()
-  createBilling$: Observable<Action> = this.actions$.pipe(
-    ofType<BillingCreate>(BillingActionTypes.BILLING_CREATE),
+  createBillingJournal$: Observable<Action> = this.actions$.pipe(
+    ofType<BillingJournalCreate>(BillingJournalActionTypes.BILLING_JOURNAL_CREATE),
     map(action => action.payload),
-    switchMap(billing => {
-      return this.billingService.createBilling(billing).pipe(
-        map((createdBilling: ExamBillingLedger) => new BillingCreateComplete(createdBilling)),
+    switchMap(billingJournal => {
+      return this.billingService.createBillingJournal(billingJournal).pipe(
+        map((createdBillingJournal: BillingJournal) => new BillingJournalCreateComplete(createdBillingJournal)),
 //      catchError(err => of(new SearchError(err)))
       );
     })
   );
 
   @Effect()
-  saveBilling$: Observable<Action> = this.actions$.pipe(
-    ofType<BillingSave>(BillingActionTypes.BILLING_SAVE),
+  saveBillingJournal$: Observable<Action> = this.actions$.pipe(
+    ofType<BillingJournalSave>(BillingJournalActionTypes.BILLING_JOURNAL_SAVE),
     map(action => action.payload),
-    switchMap(billing => {
-      return this.billingService.saveBilling(billing).pipe(
-        map((savedBilling: ExamBillingLedger) => new BillingSaveComplete(savedBilling.id, savedBilling)),
-//      catchError(err => of(new SearchError(err)))
-      );
-    })
-  );
-
-
-  @Effect()
-  getBillings$: Observable<Action> = this.actions$.pipe(
-    ofType<BillingsGet>(BillingActionTypes.BILLINGS_GET),
-    switchMap(action => {
-//      return this.billingService.getBillings().pipe(
-    return this.billingService.getBillings(action.filter, action.pageRequest).pipe(  
-        map((returnedBillings: PageResponse<ExamBillingLedger>) => new BillingsGetComplete(returnedBillings)),
+    switchMap(billingJournal => {
+      return this.billingService.saveBillingJournal(billingJournal).pipe(
+        map((savedBillingJournal: BillingJournal) => new BillingJournalSaveComplete(savedBillingJournal.id, savedBillingJournal)),
 //      catchError(err => of(new SearchError(err)))
       );
     })
@@ -89,10 +74,10 @@ export class BillingEffects {
 
   @Effect()
   getBilling$: Observable<Action> = this.actions$.pipe(
-    ofType<BillingGet>(BillingActionTypes.BILLING_GET),
+    ofType<BillingJournalGet>(BillingJournalActionTypes.BILLING_JOURNAL_GET),
     switchMap(action => {
-      return this.billingService.getBilling(action.payload).pipe(
-        map((returnedBilling: ExamBillingLedger) => new BillingGetComplete(returnedBilling)),
+      return this.billingService.getBillingJournal(action.payload).pipe(
+        map((returnedBillingJournal: BillingJournal) => new BillingJournalGetComplete(returnedBillingJournal)),
 //      catchError(err => of(new SearchError(err)))
       );
     })

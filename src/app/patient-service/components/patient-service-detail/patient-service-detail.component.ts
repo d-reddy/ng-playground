@@ -50,7 +50,6 @@ export class PatientServiceDetailComponent extends FormCanDeactivate implements 
 
     this.doctors = [{id:1, firstName:'tim', lastName:'doctor'}, {id:2, firstName:'jawartolo', lastName:'melancholoy'}];
 
-    //move to guard at some point?  https://toddmotto.com/preloading-ngrx-store-route-guards
     this.exams$ = this.refDataStore.select('referenceData').pipe(
       map(data => data.exams)
     );

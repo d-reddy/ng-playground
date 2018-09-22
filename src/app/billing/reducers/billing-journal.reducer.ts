@@ -1,7 +1,7 @@
 import { createEntityAdapter, EntityAdapter, EntityState } from '@ngrx/entity';
-import { ExamBillingLedger } from '../models/examBillingLedger';
+import { BillingJournal } from '../models/billingJournal';
 import { PageResponse } from '../../shared/pagination/models/pagination';
-import { BillingActionsUnion, BillingActionTypes } from '../actions/billing.actions';
+import { BillingJournalActionsUnion, BillingJournalActionTypes } from '../actions/billing-journal.actions';
 
 import {
   createSelector,
@@ -15,9 +15,8 @@ import {
  * model type by id. This interface is extended to include
  * any additional interface properties.
  */
-export interface BillingState extends EntityState<ExamBillingLedger> { 
-  selectedBillingId: number | null;
-  selectedBillingPage: PageResponse<ExamBillingLedger>;
+export interface BillingJournalState extends EntityState<BillingJournal> { 
+  selectedBillingJournalId: number | null;
 }
 
 
@@ -29,8 +28,8 @@ export interface BillingState extends EntityState<ExamBillingLedger> {
  * a sortComparer option which is set to a compare
  * function if the records are to be sorted.
  */
-export const billingAdapter: EntityAdapter<ExamBillingLedger> = createEntityAdapter<ExamBillingLedger>({
-  selectId: (billing: ExamBillingLedger) => billing.id
+export const billingJournalAdapter: EntityAdapter<BillingJournal> = createEntityAdapter<BillingJournal>({
+  selectId: (billingJournal: BillingJournal) => billingJournal.id
 });
 
 
@@ -39,17 +38,16 @@ export const billingAdapter: EntityAdapter<ExamBillingLedger> = createEntityAdap
  * for the generated entity state. Initial state
  * additional properties can also be defined.
  */
-export const initialState: BillingState = billingAdapter.getInitialState({
-  selectedBillingId: null,
-  selectedBillingPage: null
+export const initialState: BillingJournalState = billingJournalAdapter.getInitialState({
+  selectedBillingJournalId: null
 });
  
-export function billingReducer (
+export function billingJournalReducer (
     state = initialState,
-    action: BillingActionsUnion
-  ) : BillingState {
+    action: BillingJournalActionsUnion
+  ) : BillingJournalState {
     switch (action.type) {
-      case BillingActionTypes.BILLING_CREATE_COMPLETE: {
+      case BillingJournalActionTypes.BILLING_JOURNAL_CREATE_COMPLETE: {
         /**
        * The addOne function provided by the created adapter
        * adds one record to the entity dictionary
@@ -58,18 +56,14 @@ export function billingReducer (
        * insert the new record into the sorted array.
        */
 
-        return billingAdapter.addOne(action.payload, state);
+        return billingJournalAdapter.addOne(action.payload, state);
       } 
-      case BillingActionTypes.BILLINGS_GET_COMPLETE: {
-        state = billingAdapter.upsertMany(action.payload.results, state);
-        return { ...state, selectedBillingPage: action.payload }
-      }   
-      case BillingActionTypes.BILLING_SAVE_COMPLETE: {
-        return billingAdapter.updateOne({id:action.id, changes: action.changes}, state);
+      case BillingJournalActionTypes.BILLING_JOURNAL_SAVE_COMPLETE: {
+        return billingJournalAdapter.updateOne({id:action.id, changes: action.changes}, state);
       }
-      case BillingActionTypes.BILLING_GET_COMPLETE: {
-        state = billingAdapter.upsertOne(action.payload, state);
-        return { ...state, selectedBillingId: action.payload.id }
+      case BillingJournalActionTypes.BILLING_JOURNAL_GET_COMPLETE: {
+        state = billingJournalAdapter.upsertOne(action.payload, state);
+        return { ...state, selectedBillingJournalId: action.payload.id }
       }       
       default: {
         return state;
@@ -87,10 +81,9 @@ export function billingReducer (
    * use-case.
    */
   
-   
   export const {
     selectIds: selectIds,
     selectEntities: selectEntities,
     selectAll: selectAll,
     selectTotal: selectTotal
-  } = billingAdapter.getSelectors();
+  } = billingJournalAdapter.getSelectors();

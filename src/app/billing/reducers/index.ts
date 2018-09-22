@@ -5,6 +5,7 @@ import {
   } from '@ngrx/store';
 
 import * as fromBilling from './billing.reducer';
+import * as fromBillingJournal from './billing-journal.reducer';
 
 /**
  * from what i understand, an index like this is used to aggregate reducers
@@ -12,29 +13,45 @@ import * as fromBilling from './billing.reducer';
  */
 
 export interface BillingsAggregateState {
-    billingsState: fromBilling.BillingsState,
-    //other type of billing "state" ...ie AddressHistory???
-}
+    billingState: fromBilling.BillingState,
+    billingJournalState: fromBillingJournal.BillingJournalState
+};
+
+
+export const reducers: ActionReducerMap<BillingsAggregateState> = {
+  billingState: fromBilling.billingReducer,
+  billingJournalState: fromBillingJournal.billingJournalReducer
+};
 
 //billing selectors  
-export const billingsState = createFeatureSelector<fromBilling.BillingsState>('billings');
+export const billingState = createFeatureSelector<BillingsAggregateState>('billings');
 
 export const selectCurrentBillingId = createSelector(
-  billingsState,  
-  (state: fromBilling.BillingsState) => state.selectedBillingId
+  billingState,  
+  (state: BillingsAggregateState) => state.billingState.selectedBillingId
 );
 
 export const selectCurrentBillingPage = createSelector(
-  billingsState,  
-  (state: fromBilling.BillingsState) => state.selectedBillingPage
+  billingState,  
+  (state: BillingsAggregateState) => state.billingState.selectedBillingPage
 );
 
-export const selectAllBillings = createSelector(billingsState, fromBilling.selectAll);
+export const selectBillingState = createSelector(billingState,(state: BillingsAggregateState) => state.billingState);
 
+export const selectAllBillings = createSelector(
+  selectBillingState,
+  fromBilling.selectAll);
+  
 //get selected billing
 export const selectCurrentBilling = createSelector(
   selectAllBillings,
   selectCurrentBillingId,
   (billings, selectedBillingId) => billings.find(billing => billing.id === selectedBillingId)
 );
+
+//journal selectors
+// export const selectCurrentBillingJournalId = createSelector(
+//   billingState,  
+//   (state: BillingsAggregateState) => state.billingJournalState.selectedBillingJournalId
+// );
 

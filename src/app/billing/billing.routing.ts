@@ -6,6 +6,7 @@ import { Routes, RouterModule } from '@angular/router';
 // import { HomeComponent } from './home/home.component';
 // import { UserComponent } from './user/user.component';
 import { BillingDetailComponent } from './components/billing-detail/billing-detail.component';
+import { BillingJournalComponent } from './components/billing-journal/billing-journal.component';
 import { BillingListComponent } from './components/billing-list/billing-list.component'
 // import { TablesComponent } from './tables/tables.component';
 // import { TypographyComponent } from './typography/typography.component';
@@ -19,6 +20,7 @@ const routes: Routes =[
     // { path: 'user',           component: UserComponent },
     { path: 'billings',          component: BillingListComponent },
     { path: 'billings/:id',      component: BillingDetailComponent },
+    { path: 'billings/journal/:id',      component: BillingJournalComponent },
     // { path: 'table',          component: TablesComponent },
     // { path: 'typography',     component: TypographyComponent },
     // { path: 'icons',          component: IconsComponent },

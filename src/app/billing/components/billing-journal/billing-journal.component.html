@@ -1,0 +1,82 @@
+<div class="main-content" >
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="header">
+                        <h4 class="title">{{action}} Billing Activity</h4>
+                    </div>                    
+                    <div class="content">
+                         <form [formGroup]="form" (ngSubmit)="onSubmit(form)" novalidate >
+                            <div class= "row">
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>Name</label>
+                                        <input type="text" class="form-control" formControlName="billedEntityName">
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>Amount</label>
+                                        <input type="text" class="form-control" formControlName="amount">
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>Status</label>
+                                        <input type="text" class="form-control" formControlName="statusId">
+                                    </div>
+                                </div>
+                            </div>                     
+                            
+                            <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="card">
+                                            <div class="header">
+                                                <h4 class="title">Payment Activity</h4>
+                                            </div>
+                                            <div class="content">
+                                                <div class="content table-responsive table-full-width">
+                                                    <table class="table table-hover table-striped">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th>Date Billed</th>
+                                                                    <th>Amount</th>
+                                                                    <th>Status</th>
+                                                                    <th></th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                <tr *ngFor="let patientBillingActivity of displayedPatientBillingActivities">
+                                                                        <td>{{ patientBillingActivity.dateBilled.toDateString() }}</td>
+                                                                        <td>{{ patientBillingActivity.amount }}</td>
+                                                                        <td>{{ patientBillingActivity.statusId }}</td>
+                                                                        <td></td>
+                                                                        <!-- <td><button [routerLink]="['/billings/activity', patientBillingActivity.id]" type="button" class="btn btn-primary btn-sm">Select</button></td> -->
+                                                                        <td><button (click)="selectBillingActivity(patientBillingActivity)" type="button" class="btn btn-primary btn-sm">Select</button></td>
+                                                                    </tr>
+                                                            </tbody>
+                                                    </table>
+                                                </div>
+                                                <!-- <div class="btn-toolbar">
+                                                        <button type="button" class="btn btn-primary btn-fill pull-right" (click)="openModal(template)">Add</button>
+                                                </div>
+                                                <div class="clearfix"></div> -->
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+    
+<!-- 
+                            <div class="btn-toolbar">
+                                <button type="submit" class="btn btn-primary btn-fill pull-right">Save</button>
+                                <button [routerLink]="['/billings']" class="btn btn-secondary btn-fill pull-right">Cancel</button>   
+                            </div>
+                            <div class="clearfix"></div> -->
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

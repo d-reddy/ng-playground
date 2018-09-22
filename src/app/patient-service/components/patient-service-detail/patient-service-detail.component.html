@@ -84,20 +84,26 @@
   <div class="modal-body">
     <form [formGroup]="examForm" (ngSubmit)="onSubmitExam(examForm)" novalidate >
             <div class= "row">
-                <div class="col-md-4">
+                <div class="col-md-12">
                     <div class="form-group">
-                        <label>Exam</label>
-                        <select class="form-control" formControlName="examId">
-                                <option *ngFor="let exam of exams$ | async" value= {{exam.id}}>
-                                    {{exam.name}}
-                                </option>
-                        </select>
-                        <label>Doctor</label>
-                        <select class="form-control" formControlName="doctorId">
-                                <option *ngFor="let doctor of doctors" value= {{doctor.id}}>
-                                    {{doctor.firstName}}
-                                </option>
-                        </select>
+                        <div class= "row">
+                                <div class="col-md-6">
+                                        <label>Exam</label>
+                                        <select class="form-control" formControlName="examId">
+                                                <option *ngFor="let exam of exams$ | async" value= {{exam.id}}>
+                                                    {{exam.name}}
+                                                </option>
+                                        </select>               
+                                </div>
+                                <div class="col-md-6">
+                                        <label>Doctor</label>
+                                        <select class="form-control" formControlName="doctorId">
+                                                <option *ngFor="let doctor of doctors" value= {{doctor.id}}>
+                                                    {{doctor.firstName}}
+                                                </option>
+                                        </select>                
+                                </div>
+                            </div>
                     </div>
                 </div>
             </div>
