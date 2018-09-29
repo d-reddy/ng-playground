@@ -8,6 +8,24 @@ import {
   createFeatureSelector,
   ActionReducerMap,
 } from '@ngrx/store';
+
+/**
+ * This reducer is what manages the 'attorney' slice of the store. 
+ * There is 1 store per application, so by slice I mean a portion of
+ * the full application's store.
+ * 
+ * ie
+ * 
+ *  /store  <= full store
+ *  /store/attorney <= this is the slice of the store managed by this reducer
+ *  /store/patient  <= this would be managed by reducer in patient module
+ *  /store/billing ...etc
+ * 
+ * In this example as attorneys are added, updated, fetched, their 
+ * representation in the store is managed by this reducer.
+ * 
+ */
+
 /**
  * @ngrx/entity provides a predefined interface for handling
  * a structured dictionary of records. This interface
@@ -15,8 +33,10 @@ import {
  * model type by id. This interface is extended to include
  * any additional interface properties.
  */
-export interface AttorneysState extends EntityState<Attorney> { 
+export interface AttorneyState extends EntityState<Attorney> { 
+  //keep the id of the currently selected attorney handy in the store
   selectedAttorneyId: number | null;
+  //keep the last accessed attorney page in the store
   selectedAttorneyPage : PageResponse<Attorney>
 }
 
@@ -38,7 +58,7 @@ export const attorneyAdapter: EntityAdapter<Attorney> = createEntityAdapter<Atto
  * for the generated entity state. Initial state
  * additional properties can also be defined.
  */
-export const initialState: AttorneysState = attorneyAdapter.getInitialState({
+export const initialState: AttorneyState = attorneyAdapter.getInitialState({
   selectedAttorneyId: null,
   selectedAttorneyPage: null
 });
@@ -46,7 +66,7 @@ export const initialState: AttorneysState = attorneyAdapter.getInitialState({
 export function attorneyReducer (
     state = initialState,
     action: AttorneyActionsUnion
-  ) : AttorneysState {
+  ) : AttorneyState {
     switch (action.type) {
       case AttorneyActionTypes.ATTORNEY_CREATE_COMPLETE: {
         /**
@@ -58,11 +78,7 @@ export function attorneyReducer (
        */
         return attorneyAdapter.addOne(action.payload, state);
       } 
-      // case AttorneyActionTypes.ATTORNEYS_GET_COMPLETE: {
-      //   return attorneyAdapter.addAll(action.payload, state);
-      // }   
       case AttorneyActionTypes.ATTORNEYS_GET_COMPLETE: {
-        //attorneyAdapter.upsertMany(action.payload.results, state);
         state = attorneyAdapter.upsertMany(action.payload.results, state);
         return { ...state, selectedAttorneyPage: action.payload }
       }   
@@ -78,7 +94,6 @@ export function attorneyReducer (
       }
     }
   }
-
 
   /**
    * Because the data structure is defined within the reducer it is optimal to

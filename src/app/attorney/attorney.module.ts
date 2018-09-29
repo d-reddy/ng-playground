@@ -1,10 +1,10 @@
-import { ModuleWithProviders, NgModule } from '@angular/core';
+import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { StoreModule } from '@ngrx/store';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AttorneyDetailComponent } from './components/attorney-detail/attorney-detail.component';
 import { AttorneyListComponent } from './components/attorney-list/attorney-list.component';
-import { attorneyReducer } from './reducers/attorney.reducer';
+import { reducers } from './reducers';
 import { BrowserModule } from '@angular/platform-browser';
 import { CommonModule } from '@angular/common'
 import { AttorneyRoutingModule } from './attorney.routing'
@@ -26,7 +26,7 @@ import { PaginationModule } from '../shared/pagination/pagination.module'
     PaginationModule,
     //https://offering.solutions/blog/articles/2018/02/10/separating-state-into-angular-modules-with-ngrx
     //https://toddmotto.com/ngrx-store-understanding-state-selectors
-    StoreModule.forFeature('attorneys', attorneyReducer),
+    StoreModule.forFeature('attorney', reducers),
     EffectsModule.forFeature([AttorneyEffects])
   ],
   declarations: [

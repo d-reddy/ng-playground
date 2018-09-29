@@ -9,6 +9,7 @@ import { PageRequest, PageResponse } from '../../shared/pagination/models/pagina
 
 @Injectable()
 export class AttorneyService {
+  
   //this is just a hack for testing
   private API_PATH = 'attorneys';
 

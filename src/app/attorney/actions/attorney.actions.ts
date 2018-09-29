@@ -11,7 +11,6 @@ export enum AttorneyActionTypes {
   ATTORNEYS_GET_COMPLETE = 'ATTORNEYS_GET_COMPLETE',
   ATTORNEY_GET = 'ATTORNEY_GET',
   ATTORNEY_GET_COMPLETE = 'ATTORNEY_GET_COMPLETE'
-
 }
 
 /**
@@ -36,7 +35,6 @@ export class AttorneyCreateComplete implements Action {
 export class AttorneysGet implements Action {
   readonly type = AttorneyActionTypes.ATTORNEYS_GET;
 
-//  constructor() {}
   constructor(public filter: object, public pageRequest: PageRequest) {}
 }
 
