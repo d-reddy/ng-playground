@@ -1,6 +1,6 @@
 export interface PaymentActivity {
     id: number;
-    billingActivityId: number;
+    billingJournalId: number;
     datePaid: Date;
     amount: number;
 }

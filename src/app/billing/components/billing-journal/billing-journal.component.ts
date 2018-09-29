@@ -7,10 +7,11 @@ import { Observable, of } from 'rxjs'
 import { tap } from 'rxjs/operators';
 
 import * as reducer from '../../reducers';
-import * as actions from '../../actions/billing.actions';
+import * as actions from '../../actions/billing-journal.actions';
 import { BillingJournal } from '../../models/billingJournal';
-import { BillingActivityService } from '../../services/billing-activity.service';
+import { BillingJournalService } from '../../services/billing-journal.service';
 import { PaymentActivity } from '../../models/paymentActivity';
+import { Attachment } from '../../models/attachment';
 
 @Component({
   selector: 'app-billing-journal',
@@ -20,15 +21,15 @@ import { PaymentActivity } from '../../models/paymentActivity';
 export class BillingJournalComponent implements OnInit {
   form: FormGroup;
   id: number;
-//  billingActivity$: Observable<BillingActivity>;
+  billingJournal$: Observable<BillingJournal>;
   action: string;
-//  billingActivity$: BillingActivity;
 
   displayedPaymentActivities: PaymentActivity[];  
+  displayedAttachments: Attachment[];  
  // displayedInsuranceProviderBillingActivities: BillingActivity[];  
 
   constructor(private store: Store<reducer.BillingsAggregateState>, private fb: FormBuilder, private route: ActivatedRoute, 
-    public billingActivtyService: BillingActivityService) { }
+    public billingActivtyService: BillingJournalService) { }
 
   ngOnInit() {
        
@@ -36,52 +37,52 @@ export class BillingJournalComponent implements OnInit {
 
     mode == 'update' ? this.update() : this.create();
 
-    this.initialize();
+    // this.form.patchValue(this.billingActivtyService.billingJournal);
 
-    this.form.patchValue(this.billingActivtyService.billingActivity);
-
-    this.billingActivtyService.billingActivity.paymentActivities.forEach(pe => {
-      this.displayedPaymentActivities.push(pe);
-      this.paymentActivities.push(this.fb.group(pe))
-    });
+    // this.billingActivtyService.billingJournal.paymentActivities.forEach(pe => {
+    //   this.displayedPaymentActivities.push(pe);
+    //   this.paymentActivities.push(this.fb.group(pe))
+    // });
 
   }
 
   update(){
+    this.action = 'Update';
 
-    // this.action = 'Update';
+    this.initialize();
 
-    // this.id = +this.route.snapshot.paramMap.get('id');
+    this.id = +this.route.snapshot.paramMap.get('id');
   
-    // let billingSlice$ = this.store.select(reducer.selectCurrentBilling);
+    let billingJournalSlice$ = this.store.select(reducer.selectCurrentBillingJournal);
 
-    // this.billing$ = billingSlice$.pipe(
-    //   tap(billing => {
-    //     this.initialize();
-    //     this.form.patchValue(billing);
+    this.billingJournal$ = billingJournalSlice$.pipe(
+      tap(billingJournal => {
+//        this.initialize();
+        this.form.patchValue(billingJournal);
 
-    //     billing.patientBillingActivities.forEach(pe => {
-    //       this.displayedPatientBillingActivities.push(pe);
-    //       this.patientBillingActivities.push(this.fb.group(pe))
-    //     });
+        billingJournal.paymentActivities.forEach(pe => {
+          this.displayedPaymentActivities.push(pe);
+          this.paymentActivities.push(this.fb.group(pe))
+        });
 
-    //     billing.insuranceBillingActivities.forEach(pe => {
-    //       this.displayedInsuranceProviderBillingActivities.push(pe);
-    //       this.insuranceProviderBillingActivities.push(this.fb.group(pe))
-    //     });
-    //   })
-    // );
+        billingJournal.attachments.forEach(at => {
+          this.displayedAttachments.push(at);
+          this.attachments.push(this.fb.group(at))
+        });
 
-    // this.store.dispatch(new actions.BillingGet(this.id));
+      })
+    );
+
+    this.store.dispatch(new actions.BillingJournalGet(this.id));
   }
 
   create(){
     
-    // this.action = 'Create';
+    this.action = 'Create';
 
-    // this.initialize();
+    this.initialize();
 
-    // this.billing$ = of(<ExamBilling>{})
+    this.billingJournal$ = of(<BillingJournal>{})
 
   }
 
@@ -89,29 +90,36 @@ export class BillingJournalComponent implements OnInit {
 
     //investigate the need for this
     this.displayedPaymentActivities = [];
+    this.displayedAttachments = [];
+
     // this.displayedInsuranceProviderBillingActivities = [];
     
     //create the billing form
     this.form = this.fb.group({
       id: '',
+      ledgerId: '',
+      ledgerTypeId: '',
       dateBilled: '',
       amount: '',
       balance: '',
       statusId: '',
-      billedItemId: '',
-      billedItemTypeId: '',
       billedEntityId: '',
       billedEntityTypeId: '',
       billedEntityName:'',
       contactActivities: this.fb.array([]),
       paymentActivities: this.fb.array([]),
-      negotiationActivities: this.fb.array([])
+      negotiationActivities: this.fb.array([]),
+      attachments: this.fb.array([])
     });
 
   }
 
   get paymentActivities(){
     return this.form.get('paymentActivities') as FormArray;
+  }
+
+  get attachments(){
+    return this.form.get('attachments') as FormArray;
   }
 
   // get insuranceProviderBillingActivities(){

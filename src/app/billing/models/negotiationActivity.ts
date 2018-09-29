@@ -1,5 +1,5 @@
 export interface NegotiationActivity {
     id: number;
-    billingActivityId: number;
+    billingJournalId: number;
     //negotiation data
 }

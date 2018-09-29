@@ -7,7 +7,7 @@
                         <h4 class="title">{{action}} Billing Activity</h4>
                     </div>                    
                     <div class="content">
-                         <form [formGroup]="form" (ngSubmit)="onSubmit(form)" novalidate >
+                         <form *ngIf="billingJournal$ | async;" [formGroup]="form" (ngSubmit)="onSubmit(form)" novalidate >
                             <div class= "row">
                                 <div class="col-md-4">
                                     <div class="form-group">
@@ -29,6 +29,41 @@
                                 </div>
                             </div>                     
                             
+      
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="card">
+                                        <div class="header">
+                                            <h4 class="title">Attachments</h4>
+                                        </div>
+                                        <div class="content">
+                                            <div class="content table-responsive table-full-width">
+                                                <table class="table table-hover table-striped">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Name</th>
+                                                                <th></th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr *ngFor="let attachment of displayedAttachments">
+                                                                    <td>{{ attachment.name }}</td>
+                                                                    <td></td>
+                                                                    <!-- <td><button [routerLink]="['/billings/activity', patientBillingActivity.id]" type="button" class="btn btn-primary btn-sm">Select</button></td> -->
+                                                                    <!-- <td><button (click)="selectBillingActivity(patientBillingActivity)" type="button" class="btn btn-primary btn-sm">Select</button></td> -->
+                                                                </tr>
+                                                        </tbody>
+                                                </table>
+                                            </div>
+                                            <!-- <div class="btn-toolbar">
+                                                    <button type="button" class="btn btn-primary btn-fill pull-right" (click)="openModal(template)">Add</button>
+                                            </div>
+                                            <div class="clearfix"></div> -->
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
                             <div class="row">
                                     <div class="col-md-12">
                                         <div class="card">
@@ -47,13 +82,13 @@
                                                                 </tr>
                                                             </thead>
                                                             <tbody>
-                                                                <tr *ngFor="let patientBillingActivity of displayedPatientBillingActivities">
-                                                                        <td>{{ patientBillingActivity.dateBilled.toDateString() }}</td>
-                                                                        <td>{{ patientBillingActivity.amount }}</td>
-                                                                        <td>{{ patientBillingActivity.statusId }}</td>
+                                                                <tr *ngFor="let paymentActivity of displayedPaymentActivities">
+                                                                        <td>{{ paymentActivity.datePaid.toDateString() }}</td>
+                                                                        <td>{{ paymentActivity.amount }}</td>
+                                                                        <td>{{ paymentActivity.statusId }}</td>
                                                                         <td></td>
                                                                         <!-- <td><button [routerLink]="['/billings/activity', patientBillingActivity.id]" type="button" class="btn btn-primary btn-sm">Select</button></td> -->
-                                                                        <td><button (click)="selectBillingActivity(patientBillingActivity)" type="button" class="btn btn-primary btn-sm">Select</button></td>
+                                                                        <!-- <td><button (click)="selectBillingActivity(patientBillingActivity)" type="button" class="btn btn-primary btn-sm">Select</button></td> -->
                                                                     </tr>
                                                             </tbody>
                                                     </table>

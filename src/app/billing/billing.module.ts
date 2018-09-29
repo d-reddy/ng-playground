@@ -6,7 +6,7 @@ import { BillingDetailComponent } from './components/billing-detail/billing-deta
 import { BillingListComponent } from './components/billing-list/billing-list.component';
 import { BillingJournalComponent } from './components/billing-journal/billing-journal.component';
 
-import { reducers } from './reducers/index';
+import { reducers } from './reducers';
 //import { billingReducer } from './reducers/billing.reducer';
 
 import { BrowserModule } from '@angular/platform-browser';
@@ -14,8 +14,10 @@ import { CommonModule } from '@angular/common'
 import { BillingRoutingModule } from './billing.routing'
 import { EffectsModule } from '@ngrx/effects';
 import { BillingEffects } from './effects/billing.effects';
+import { BillingJournalEffects } from './effects/billing-journal.effects';
+
 import { BillingService } from './services/billing.service';
-import { BillingActivityService } from './services/billing-activity.service';
+import { BillingJournalService } from './services/billing-journal.service';
 import { HttpClientModule } from '@angular/common/http';
 import { PaginationModule } from '../shared/pagination/pagination.module'
 
@@ -32,7 +34,7 @@ import { PaginationModule } from '../shared/pagination/pagination.module'
     //https://offering.solutions/blog/articles/2018/02/10/separating-state-into-angular-modules-with-ngrx
     //https://toddmotto.com/ngrx-store-understanding-state-selectors
     StoreModule.forFeature('billings', reducers),
-    EffectsModule.forFeature([BillingEffects])
+    EffectsModule.forFeature([BillingEffects, BillingJournalEffects])
   ],
   declarations: [
     BillingDetailComponent,
@@ -41,7 +43,7 @@ import { PaginationModule } from '../shared/pagination/pagination.module'
   ],
   providers: [
     BillingService, 
-    BillingActivityService
+    BillingJournalService
   ],
   exports:[
     BillingDetailComponent,

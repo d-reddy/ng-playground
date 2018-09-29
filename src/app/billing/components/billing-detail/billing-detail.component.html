@@ -72,7 +72,7 @@
                                                                     <td>{{ patientBillingJournal.amount }}</td>
                                                                     <td>{{ patientBillingJournal.statusId }}</td>
                                                                     <td></td>
-                                                                    <td><button [routerLink]="['/billings/journal', patientBillingJournal.id]" type="button" class="btn btn-primary btn-sm">Select</button></td>
+                                                                    <td><button [routerLink]="['/billings/journal', patientBillingJournal.id]" [queryParams]="{mode:'update'}" type="button" class="btn btn-primary btn-sm">Select</button></td>
                                                                     <!-- <td><button (click)="selectBillingActivity(patientBillingActivity)" type="button" class="btn btn-primary btn-sm">Select</button></td> -->
                                                                 </tr>
                                                         </tbody>

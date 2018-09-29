@@ -11,7 +11,7 @@ import {
   takeUntil,
 } from 'rxjs/operators';
 
-import { BillingService } from '../services/billing.service';
+import { BillingJournalService } from '../services/billing-journal.service';
 import {
   BillingJournalActionTypes,
   BillingJournalCreate,
@@ -73,7 +73,7 @@ export class BillingJournalEffects {
   );
 
   @Effect()
-  getBilling$: Observable<Action> = this.actions$.pipe(
+  getBillingJournal$: Observable<Action> = this.actions$.pipe(
     ofType<BillingJournalGet>(BillingJournalActionTypes.BILLING_JOURNAL_GET),
     switchMap(action => {
       return this.billingService.getBillingJournal(action.payload).pipe(
@@ -85,7 +85,7 @@ export class BillingJournalEffects {
 
   constructor(
     private actions$: Actions,
-    private billingService: BillingService,
+    private billingService: BillingJournalService,
     //@Optional()
     // @Inject(SEARCH_DEBOUNCE)
     // private debounce: number,

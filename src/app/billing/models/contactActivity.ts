@@ -1,4 +1,4 @@
 export interface ContactActivity {
     id: number;
-    billingId: number;
+    billingJournalId: number;
 }

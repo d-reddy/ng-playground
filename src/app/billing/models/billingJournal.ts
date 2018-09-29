@@ -1,6 +1,7 @@
 import { ContactActivity } from './contactActivity';
 import { PaymentActivity } from './paymentActivity';
 import { NegotiationActivity } from './negotiationActivity';
+import { Attachment } from './attachment';
 
 export interface BillingJournal {
     id: number;
@@ -20,4 +21,6 @@ export interface BillingJournal {
     contactActivities: ContactActivity[];
     paymentActivities: PaymentActivity[];
     negotiationActivities: NegotiationActivity[];
+
+    attachments: Attachment[];
 }

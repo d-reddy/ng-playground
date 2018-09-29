@@ -11,7 +11,7 @@ import { tap } from 'rxjs/operators';
 import * as reducer from '../../reducers';
 import * as actions from '../../actions/billing.actions';
 import { BillingJournal } from '../../models/billingJournal';
-import { BillingActivityService } from '../../services/billing-activity.service';
+import { BillingJournalService } from '../../services/billing-journal.service';
 
 import { Router } from '@angular/router';
 
@@ -29,7 +29,7 @@ export class BillingDetailComponent implements OnInit {
   displayedPatientBillingJournals: BillingJournal[];  
   displayedInsuranceProviderBillingJournals: BillingJournal[];  
 
-  constructor(private store: Store<reducer.BillingsAggregateState>, private fb: FormBuilder, private route: ActivatedRoute, public billingActivtyService: BillingActivityService, private router: Router) { }
+  constructor(private store: Store<reducer.BillingsAggregateState>, private fb: FormBuilder, private route: ActivatedRoute, public billingActivtyService: BillingJournalService, private router: Router) { }
 
   ngOnInit() {
        
