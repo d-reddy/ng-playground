@@ -28,7 +28,7 @@ export class BillingJournalComponent implements OnInit {
   displayedAttachments: Attachment[];  
  // displayedInsuranceProviderBillingActivities: BillingActivity[];  
 
-  constructor(private store: Store<reducer.BillingsAggregateState>, private fb: FormBuilder, private route: ActivatedRoute, 
+  constructor(private store: Store<reducer.BillingModuleState>, private fb: FormBuilder, private route: ActivatedRoute, 
     public billingActivtyService: BillingJournalService) { }
 
   ngOnInit() {

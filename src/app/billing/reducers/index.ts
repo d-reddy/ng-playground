@@ -7,36 +7,31 @@ import {
 import * as fromBilling from './billing.reducer';
 import * as fromBillingJournal from './billing-journal.reducer';
 
-/**
- * from what i understand, an index like this is used to aggregate reducers
- * and help to generate selectors across reducers, if multiple
- */
-
-export interface BillingsAggregateState {
+export interface BillingModuleState {
     billingState: fromBilling.BillingState,
     billingJournalState: fromBillingJournal.BillingJournalState
 };
 
 
-export const reducers: ActionReducerMap<BillingsAggregateState> = {
+export const reducers: ActionReducerMap<BillingModuleState> = {
   billingState: fromBilling.billingReducer,
   billingJournalState: fromBillingJournal.billingJournalReducer
 };
 
-//billing selectors  
-export const billingStore = createFeatureSelector<BillingsAggregateState>('billings');
+export const billingState = createFeatureSelector<BillingModuleState>('billing');
 
+//billing selectors
 export const selectCurrentBillingId = createSelector(
-  billingStore,  
-  (state: BillingsAggregateState) => state.billingState.selectedBillingId
+  billingState,  
+  (state: BillingModuleState) => state.billingState.selectedBillingId
 );
 
 export const selectCurrentBillingPage = createSelector(
-  billingStore,  
-  (state: BillingsAggregateState) => state.billingState.selectedBillingPage
+  billingState,  
+  (state: BillingModuleState) => state.billingState.selectedBillingPage
 );
 
-export const selectBillingState = createSelector(billingStore, (state: BillingsAggregateState) => state.billingState);
+export const selectBillingState = createSelector(billingState, (state: BillingModuleState) => state.billingState);
 
 export const selectAllBillings = createSelector(
   selectBillingState,
@@ -48,13 +43,13 @@ export const selectCurrentBilling = createSelector(
   (billings, selectedBillingId) => billings.find(billing => billing.id === selectedBillingId)
 );
 
-//journal selectors
+//billing journal selectors
 export const selectCurrentBillingJournalId = createSelector(
-  billingStore,  
-  (state: BillingsAggregateState) => state.billingJournalState.selectedBillingJournalId
+  billingState,  
+  (state: BillingModuleState) => state.billingJournalState.selectedBillingJournalId
 );
 
-export const selectBillingJournalState = createSelector(billingStore, (state: BillingsAggregateState) => state.billingJournalState);
+export const selectBillingJournalState = createSelector(billingState, (state: BillingModuleState) => state.billingJournalState);
 
 export const selectAllBillingJournals = createSelector(
   selectBillingJournalState,

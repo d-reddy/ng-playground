@@ -12,15 +12,9 @@ export enum BillingActionTypes {
   BILLINGS_GET_COMPLETE = 'BILLINGS_GET_COMPLETE',
   BILLING_GET = 'BILLING_GET',
   BILLING_GET_COMPLETE = 'BILLING_GET_COMPLETE'
+
 }
 
-/**
- * Every action is comprised of at least a type and an optional
- * payload. Expressing actions as classes enables powerful
- * type checking in reducer functions.
- *
- * See Discriminated Unions: https://www.typescriptlang.org/docs/handbook/advanced-types.html#discriminated-unions
- */
 export class BillingCreate implements Action {
   readonly type = BillingActionTypes.BILLING_CREATE;
 
@@ -36,7 +30,6 @@ export class BillingCreateComplete implements Action {
 export class BillingsGet implements Action {
   readonly type = BillingActionTypes.BILLINGS_GET;
 
-//  constructor() {}
   constructor(public filter: object, public pageRequest: PageRequest) {}
 }
 
@@ -70,10 +63,6 @@ export class BillingGetComplete implements Action {
   constructor(public payload: ExamBillingLedger) {}
 }
 
-/**
- * Export a type alias of all actions in this action group
- * so that reducers can easily compose action types
- */
 export type BillingActionsUnion =
   | BillingCreate
   | BillingCreateComplete

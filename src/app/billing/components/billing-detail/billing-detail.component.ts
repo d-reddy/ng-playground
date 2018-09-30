@@ -29,7 +29,7 @@ export class BillingDetailComponent implements OnInit {
   displayedPatientBillingJournals: BillingJournal[];  
   displayedInsuranceProviderBillingJournals: BillingJournal[];  
 
-  constructor(private store: Store<reducer.BillingsAggregateState>, private fb: FormBuilder, private route: ActivatedRoute, public billingActivtyService: BillingJournalService, private router: Router) { }
+  constructor(private store: Store<reducer.BillingModuleState>, private fb: FormBuilder, private route: ActivatedRoute, public billingActivtyService: BillingJournalService, private router: Router) { }
 
   ngOnInit() {
        

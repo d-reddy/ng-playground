@@ -1,10 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
-import { map } from 'rxjs/operators';
 
 import { ExamBillingLedger } from '../models/examBillingLedger'; 
-import { PaymentActivity } from '../models/paymentActivity';
 import { PaginationService } from '../../shared/pagination/services/pagination.service';
 import { PageRequest, PageResponse } from '../../shared/pagination/models/pagination'
 import { BillingJournal } from '../models/billingJournal';
@@ -46,23 +44,17 @@ export class BillingService {
           dateBilled: new Date('04/13/04'),
           amount: 1000,
           balance: 1000,
-          statusId: 1,           //open, settled, collections, etc
+          statusId: 1,            //open, settled, collections, etc
 
-          ledgerId: 1,       //examBillingId or lopCaseId since an LOP Case can be associated with multiple exams
-          ledgerTypeId: 1,   //individual exam vs a bill tied to a lop which could be for a group of exams
+          ledgerId: 1,            //examBillingId or lopCaseId since an LOP Case can be associated with multiple exams
+          ledgerTypeId: 1,        //individual exam vs a bill tied to a lop which could be for a group of exams
 
           billedEntityId: 1,     //patientId, insuranceProviderId, lawfirmId, attorneyId
           billedEntityTypeId: 1, //patient, insurance provider, law firm, attorney
           billedEntityName: 'jim bo',
 
           contactActivities: [],
-          paymentActivities: [
-          //   <PaymentActivity>{
-          //   amount: 100,
-          //   billingActivityId: 1,
-          //   datePaid: new Date('12/12/17')         
-          // }
-        ],
+          paymentActivities: [],
           negotiationActivities: []
         }
       ],
@@ -74,11 +66,11 @@ export class BillingService {
           balance: 1000,
           statusId: 1,            //open, settled, collections, etc
 
-          ledgerId: 1,       //examBillingId or lopCaseId since an LOP Case can be associated with multiple exams
-          ledgerTypeId: 1,   //individual exam vs a bill tied to a lop which could be for a group of exams
+          ledgerId: 1,            //examBillingId or lopCaseId since an LOP Case can be associated with multiple exams
+          ledgerTypeId: 1,        //individual exam vs a bill tied to a lop which could be for a group of exams
 
-          billedEntityId: 1,     //patientId, insuranceProviderId, lawfirmId, attorneyId
-          billedEntityTypeId: 1, //patient, insurance provider, law firm, attorney
+          billedEntityId: 1,      //patientId, insuranceProviderId, lawfirmId, attorneyId
+          billedEntityTypeId: 1,  //patient, insurance provider, law firm, attorney
           billedEntityName: 'geico',
 
           contactActivities: [],

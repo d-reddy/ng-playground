@@ -1,14 +1,10 @@
-import { Inject, Injectable, InjectionToken, Optional } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { Actions, Effect, ofType } from '@ngrx/effects';
 import { Action } from '@ngrx/store';
-import { asyncScheduler, empty, Observable, of } from 'rxjs';
+import { Observable } from 'rxjs';
 import {
-  catchError,
-  debounceTime,
   map,
-  skip,
   switchMap,
-  takeUntil,
 } from 'rxjs/operators';
 
 import { BillingService } from '../services/billing.service';
@@ -28,25 +24,6 @@ import { ExamBillingLedger } from '../models/examBillingLedger';
 
 import { PageResponse} from '../../shared/pagination/models/pagination'
 
-//may need this when working on billing filtering
-// import { Scheduler } from 'rxjs/internal/Scheduler';
-
-// export const SEARCH_DEBOUNCE = new InjectionToken<number>('Search Debounce');
-// export const SEARCH_SCHEDULER = new InjectionToken<Scheduler>(
-//   'Search Scheduler'
-// );
-
-/**
- * Effects offer a way to isolate and easily test side-effects within your
- * application.
- *
- * If you are unfamiliar with the operators being used in these examples, please
- * check out the sources below:
- *
- * Official Docs: http://reactivex.io/rxjs/manual/overview.html#categories-of-operators
- * RxJS 5 Operators By Example: https://gist.github.com/btroncone/d6cf141d6f2c00dc6b35
- */
-
 @Injectable()
 export class BillingEffects {
     
@@ -57,7 +34,7 @@ export class BillingEffects {
     switchMap(billing => {
       return this.billingService.createBilling(billing).pipe(
         map((createdBilling: ExamBillingLedger) => new BillingCreateComplete(createdBilling)),
-//      catchError(err => of(new SearchError(err)))
+        //catchError(err => of(new SearchError(err)))
       );
     })
   );
@@ -69,20 +46,18 @@ export class BillingEffects {
     switchMap(billing => {
       return this.billingService.saveBilling(billing).pipe(
         map((savedBilling: ExamBillingLedger) => new BillingSaveComplete(savedBilling.id, savedBilling)),
-//      catchError(err => of(new SearchError(err)))
+        //catchError(err => of(new SearchError(err)))
       );
     })
   );
-
 
   @Effect()
   getBillings$: Observable<Action> = this.actions$.pipe(
     ofType<BillingsGet>(BillingActionTypes.BILLINGS_GET),
     switchMap(action => {
-//      return this.billingService.getBillings().pipe(
     return this.billingService.getBillings(action.filter, action.pageRequest).pipe(  
         map((returnedBillings: PageResponse<ExamBillingLedger>) => new BillingsGetComplete(returnedBillings)),
-//      catchError(err => of(new SearchError(err)))
+        //catchError(err => of(new SearchError(err)))
       );
     })
   );
@@ -93,24 +68,13 @@ export class BillingEffects {
     switchMap(action => {
       return this.billingService.getBilling(action.payload).pipe(
         map((returnedBilling: ExamBillingLedger) => new BillingGetComplete(returnedBilling)),
-//      catchError(err => of(new SearchError(err)))
+        //catchError(err => of(new SearchError(err)))
       );
     })
   );
 
   constructor(
     private actions$: Actions,
-    private billingService: BillingService,
-    //@Optional()
-    // @Inject(SEARCH_DEBOUNCE)
-    // private debounce: number,
-    /**
-     * You inject an optional Scheduler that will be undefined
-     * in normal application usage, but its injected here so that you can mock out
-     * during testing using the RxJS TestScheduler for simulating passages of time.
-     */
-    //@Optional()
-    // @Inject(SEARCH_SCHEDULER)
-    // private scheduler: Scheduler
+    private billingService: BillingService
   ) {}
 }

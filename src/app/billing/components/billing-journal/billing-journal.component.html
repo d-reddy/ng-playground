@@ -49,16 +49,10 @@
                                                             <tr *ngFor="let attachment of displayedAttachments">
                                                                     <td>{{ attachment.name }}</td>
                                                                     <td></td>
-                                                                    <!-- <td><button [routerLink]="['/billings/activity', patientBillingActivity.id]" type="button" class="btn btn-primary btn-sm">Select</button></td> -->
-                                                                    <!-- <td><button (click)="selectBillingActivity(patientBillingActivity)" type="button" class="btn btn-primary btn-sm">Select</button></td> -->
                                                                 </tr>
                                                         </tbody>
                                                 </table>
                                             </div>
-                                            <!-- <div class="btn-toolbar">
-                                                    <button type="button" class="btn btn-primary btn-fill pull-right" (click)="openModal(template)">Add</button>
-                                            </div>
-                                            <div class="clearfix"></div> -->
                                         </div>
                                     </div>
                                 </div>
@@ -87,27 +81,14 @@
                                                                         <td>{{ paymentActivity.amount }}</td>
                                                                         <td>{{ paymentActivity.statusId }}</td>
                                                                         <td></td>
-                                                                        <!-- <td><button [routerLink]="['/billings/activity', patientBillingActivity.id]" type="button" class="btn btn-primary btn-sm">Select</button></td> -->
-                                                                        <!-- <td><button (click)="selectBillingActivity(patientBillingActivity)" type="button" class="btn btn-primary btn-sm">Select</button></td> -->
                                                                     </tr>
                                                             </tbody>
                                                     </table>
                                                 </div>
-                                                <!-- <div class="btn-toolbar">
-                                                        <button type="button" class="btn btn-primary btn-fill pull-right" (click)="openModal(template)">Add</button>
-                                                </div>
-                                                <div class="clearfix"></div> -->
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-    
-<!-- 
-                            <div class="btn-toolbar">
-                                <button type="submit" class="btn btn-primary btn-fill pull-right">Save</button>
-                                <button [routerLink]="['/billings']" class="btn btn-secondary btn-fill pull-right">Cancel</button>   
-                            </div>
-                            <div class="clearfix"></div> -->
+                                </div>    
                         </form>
                     </div>
                 </div>

@@ -73,15 +73,10 @@
                                                                     <td>{{ patientBillingJournal.statusId }}</td>
                                                                     <td></td>
                                                                     <td><button [routerLink]="['/billings/journal', patientBillingJournal.id]" [queryParams]="{mode:'update'}" type="button" class="btn btn-primary btn-sm">Select</button></td>
-                                                                    <!-- <td><button (click)="selectBillingActivity(patientBillingActivity)" type="button" class="btn btn-primary btn-sm">Select</button></td> -->
                                                                 </tr>
                                                         </tbody>
                                                 </table>
                                             </div>
-                                            <!-- <div class="btn-toolbar">
-                                                    <button type="button" class="btn btn-primary btn-fill pull-right" (click)="openModal(template)">Add</button>
-                                            </div>
-                                            <div class="clearfix"></div> -->
                                         </div>
                                     </div>
                                 </div>
@@ -112,15 +107,10 @@
                                                                     <td>{{ providerBillingJournal.statusId }}</td>
                                                                     <td>{{ providerBillingJournal.billedEntityName }}</td>
                                                                     <td></td>
-                                                                    <!-- <td><button (click)="deleteExam(displayedExam.doctorId, displayedExam.examId)" type="button" class="btn btn-danger btn-sm">Delete</button></td> -->
                                                                 </tr>
                                                         </tbody>
                                                 </table>
                                             </div>
-                                            <!-- <div class="btn-toolbar">
-                                                    <button type="button" class="btn btn-primary btn-fill pull-right" (click)="openModal(template)">Add</button>
-                                            </div>
-                                            <div class="clearfix"></div> -->
                                         </div>
                                     </div>
                                 </div>
