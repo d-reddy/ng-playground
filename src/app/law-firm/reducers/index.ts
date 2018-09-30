@@ -6,32 +6,30 @@ import {
 
 import * as fromLawFirm from './law-firm.reducer';
 
-/**
- * from what i understand, an index like this is used to aggregate reducers
- * and help to generate selectors across reducers, if multiple
- */
-
-export interface LawFirmsAggregateState {
-    lawFirmsState: fromLawFirm.LawFirmsState,
-    //other type of lawFirm "state" ...ie AddressHistory???
+export interface LawFirmModuleState {
+    lawFirmState: fromLawFirm.LawFirmState
 }
 
-//lawFirm selectors  
-export const lawFirmsState = createFeatureSelector<fromLawFirm.LawFirmsState>('lawFirms');
+export const reducers: ActionReducerMap<LawFirmModuleState> = {
+  lawFirmState: fromLawFirm.lawFirmReducer
+};
+
+export const lawFirmState = createFeatureSelector<LawFirmModuleState>('lawFirm');
 
 export const selectCurrentLawFirmId = createSelector(
-  lawFirmsState,  
-  (state: fromLawFirm.LawFirmsState) => state.selectedLawFirmId
+  lawFirmState,  
+  (state: LawFirmModuleState) => state.lawFirmState.selectedLawFirmId
 );
 
 export const selectCurrentLawFirmPage = createSelector(
-  lawFirmsState,  
-  (state: fromLawFirm.LawFirmsState) => state.selectedLawFirmPage
+  lawFirmState,  
+  (state: LawFirmModuleState) => state.lawFirmState.selectedLawFirmPage
 );
 
-export const selectAllLawFirms = createSelector(lawFirmsState, fromLawFirm.selectAll);
+export const selectLawFirmState = createSelector(lawFirmState, (state: LawFirmModuleState) => state.lawFirmState);
 
-//get selected lawFirm
+export const selectAllLawFirms = createSelector(selectLawFirmState, fromLawFirm.selectAll);
+
 export const selectCurrentLawFirm = createSelector(
   selectAllLawFirms,
   selectCurrentLawFirmId,

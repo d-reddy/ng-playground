@@ -18,12 +18,10 @@ export class LawFirmListComponent implements OnInit {
   headerRow: string[]
   lawFirms$: Observable<LawFirm[]>;
 
-  constructor(private store: Store<reducer.LawFirmsAggregateState>) { 
+  constructor(private store: Store<reducer.LawFirmModuleState>) { 
   }
 
   ngOnInit() {
-    this.headerRow = ['name', 'city', 'state', 'phone', 'actions'];
-
     this.page$ = this.store.select(reducer.selectCurrentLawFirmPage);
  
     this.lawFirms$ = this.page$.pipe(

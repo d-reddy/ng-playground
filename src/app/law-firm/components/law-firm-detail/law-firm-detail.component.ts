@@ -23,9 +23,19 @@ export class LawFirmDetailComponent implements OnInit {
   lawFirm$: Observable<LawFirm>;
   action: string;
   
-  constructor(private store: Store<reducer.LawFirmsAggregateState>, private fb: FormBuilder, private route: ActivatedRoute) { }
+  constructor(private store: Store<reducer.LawFirmModuleState>, private fb: FormBuilder, private route: ActivatedRoute) { }
 
   ngOnInit() {
+
+    this.initialize();
+
+    let mode = this.route.snapshot.queryParamMap.get('mode');
+
+    mode == 'update' ? this.update() : this.create();
+
+  }
+
+  initialize(){
 
     //create the lawFirm form
     this.lawFirmForm = this.fb.group({
@@ -43,10 +53,6 @@ export class LawFirmDetailComponent implements OnInit {
       })
     });
 
-    let mode = this.route.snapshot.queryParamMap.get('mode');
-
-    mode == 'update' ? this.update() : this.create();
-
   }
 
   update(){
@@ -59,6 +65,7 @@ export class LawFirmDetailComponent implements OnInit {
 
     this.lawFirm$ = lawFirmSlice$.pipe(
       tap(lawFirm => {
+        this.initialize();
         this.lawFirmForm.patchValue(lawFirm);
       })
     );
