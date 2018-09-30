@@ -18,11 +18,10 @@ export class LopListComponent implements OnInit {
   headerRow: string[]
   lops$: Observable<Lop[]>;
 
-  constructor(private store: Store<reducer.LopsAggregateState>) { 
+  constructor(private store: Store<reducer.LopModuleState>) { 
   }
 
   ngOnInit() {
-    this.headerRow = ['first', 'last', 'city', 'state', 'phone', 'actions'];
 
     this.page$ = this.store.select(reducer.selectCurrentLopPage);
  

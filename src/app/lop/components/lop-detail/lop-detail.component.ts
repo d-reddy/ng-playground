@@ -1,14 +1,10 @@
 import { FormGroup,  FormBuilder,  Validators } from '@angular/forms';
-
 import { Lop } from '../../models/lop';
-import { Address } from '../../models/address';
-
 import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { ActivatedRoute } from '@angular/router';
 import { Observable, of } from 'rxjs'
 import { tap } from 'rxjs/operators';
-
 import * as reducer from '../../reducers';
 import * as actions from '../../actions/lop.actions';
 
@@ -23,9 +19,19 @@ export class LopDetailComponent implements OnInit {
   lop$: Observable<Lop>;
   action: string;
   
-  constructor(private store: Store<reducer.LopsAggregateState>, private fb: FormBuilder, private route: ActivatedRoute) { }
+  constructor(private store: Store<reducer.LopModuleState>, private fb: FormBuilder, private route: ActivatedRoute) { }
 
   ngOnInit() {
+   
+    this.initialize();
+    
+    let mode = this.route.snapshot.queryParamMap.get('mode');
+
+    mode == 'update' ? this.update() : this.create();
+
+  }
+
+  initialize(){
     //create the lop form
     this.lopForm = this.fb.group({
       id: '',
@@ -43,11 +49,6 @@ export class LopDetailComponent implements OnInit {
         zip:''
       })
     });
-    
-    let mode = this.route.snapshot.queryParamMap.get('mode');
-
-    mode == 'update' ? this.update() : this.create();
-
   }
 
   update(){
@@ -60,6 +61,7 @@ export class LopDetailComponent implements OnInit {
 
     this.lop$ = lopSlice$.pipe(
       tap(lop => {
+        this.initialize();
         this.lopForm.patchValue(lop);
       })
     );
