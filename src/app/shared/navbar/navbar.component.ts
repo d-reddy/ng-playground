@@ -41,8 +41,6 @@ export class NavbarComponent implements OnInit{
         body.classList.remove('nav-open');
     };
     sidebarToggle() {
-        // const toggleButton = this.toggleButton;
-        // const body = document.getElementsByTagName('body')[0];
         if (this.sidebarVisible === false) {
             this.sidebarOpen();
         } else {
@@ -51,10 +49,10 @@ export class NavbarComponent implements OnInit{
     };
 
     getTitle(){
-      var titlee = this.location.prepareExternalUrl(this.location.path());
-      titlee = titlee.split('/').pop();
+      var title = this.location.prepareExternalUrl(this.location.path());
+      title = title.split('/').pop();
       for(var item = 0; item < this.listTitles.length; item++){
-          if(this.listTitles[item].path === titlee){
+          if(this.listTitles[item].path === title){
               return this.listTitles[item].title;
           }
       }
