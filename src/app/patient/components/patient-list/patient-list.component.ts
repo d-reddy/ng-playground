@@ -18,12 +18,10 @@ export class PatientListComponent implements OnInit {
   headerRow: string[]
   patients$: Observable<Patient[]>;
 
-  constructor(private store: Store<reducer.PatientsAggregateState>) { 
+  constructor(private store: Store<reducer.PatientsModuleState>) { 
   }
 
   ngOnInit() {
-    this.headerRow = ['medical record number', 'first', 'last', 'dob', 'actions'];
-
     this.page$ = this.store.select(reducer.selectCurrentPatientPage);
  
     this.patients$ = this.page$.pipe(

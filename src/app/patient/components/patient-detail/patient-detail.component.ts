@@ -1,14 +1,11 @@
 import { FormGroup,  FormBuilder,  Validators } from '@angular/forms';
-
 import { Patient } from '../../models/patient';
 import { Address } from '../../models/address';
-
 import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { ActivatedRoute } from '@angular/router';
 import { Observable, of } from 'rxjs'
 import { tap } from 'rxjs/operators';
-
 import * as reducer from '../../reducers';
 import * as actions from '../../actions/patient.actions';
 
@@ -24,10 +21,19 @@ export class PatientDetailComponent implements OnInit {
   addressHistory: Address[];
   action: string;
   
-  constructor(private store: Store<reducer.PatientsAggregateState>, private fb: FormBuilder, private route: ActivatedRoute) { }
+  constructor(private store: Store<reducer.PatientsModuleState>, private fb: FormBuilder, private route: ActivatedRoute) { }
 
   ngOnInit() {
 
+    this.initialize();
+
+    let mode = this.route.snapshot.queryParamMap.get('mode');
+
+    mode == 'update' ? this.update() : this.create();
+
+  }
+
+  initialize(){
     //create the patient form
     this.patientForm = this.fb.group({
       id: '',
@@ -45,11 +51,6 @@ export class PatientDetailComponent implements OnInit {
         zip:''
       })
     });  
-
-    let mode = this.route.snapshot.queryParamMap.get('mode');
-
-    mode == 'update' ? this.update() : this.create();
-
   }
 
   update(){
@@ -62,6 +63,7 @@ export class PatientDetailComponent implements OnInit {
 
     this.patient$ = patientSlice$.pipe(
       tap(patient => {
+        this.initialize();
         this.patientForm.patchValue(patient);
         this.addressHistory = patient.addressHistory;
       })
