@@ -67,6 +67,7 @@ export class ClaimsAdjusterDetailComponent implements OnInit {
 
     this.claimsAdjuster$ = claimsAdjusterSlice$.pipe(
       tap(claimsAdjuster => {
+        this.initialize();
         this.claimsAdjusterForm.patchValue(claimsAdjuster);
       })
     );

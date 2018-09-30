@@ -7,7 +7,7 @@ import { Observable, of } from 'rxjs'
 
 import * as reducer from '../../reducers';
 import * as actions from '../../actions/doctor.actions';
-import { map, tap } from 'rxjs/operators';
+import { tap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-doctor',
@@ -20,9 +20,19 @@ export class DoctorDetailComponent implements OnInit{
   doctor$: Observable<Doctor>;
   action: string;
 
-  constructor(private store: Store<reducer.DoctorsAggregateState>, private fb: FormBuilder, private route: ActivatedRoute) { }
+  constructor(private store: Store<reducer.DoctorModuleState>, private fb: FormBuilder, private route: ActivatedRoute) { }
 
   ngOnInit() {
+
+    this.initialize();
+
+    let mode = this.route.snapshot.queryParamMap.get('mode');
+
+    mode == 'update' ? this.update() : this.create();
+
+  }
+
+  initialize(){
 
     //create the doctor form
     this.doctorForm = this.fb.group({
@@ -34,10 +44,6 @@ export class DoctorDetailComponent implements OnInit{
       email:'',
     });
 
-    let mode = this.route.snapshot.queryParamMap.get('mode');
-
-    mode == 'update' ? this.update() : this.create();
-
   }
 
   update(){
@@ -48,8 +54,11 @@ export class DoctorDetailComponent implements OnInit{
 
     let doctorSlice$ = this.store.select(reducer.selectCurrentDoctor);
   
-    this.doctor$ = doctorSlice$.pipe(
-      tap(doctor => this.doctorForm.patchValue(doctor))
+    this.doctor$ = doctorSlice$.pipe(      
+      tap(doctor => {
+        this.initialize();
+        this.doctorForm.patchValue(doctor)
+      })
     );
 
     this.store.dispatch(new actions.DoctorGet(this.id)); 

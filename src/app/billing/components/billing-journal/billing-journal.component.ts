@@ -31,7 +31,9 @@ export class BillingJournalComponent implements OnInit {
     public billingActivtyService: BillingJournalService) { }
 
   ngOnInit() {
-       
+    
+    this.initialize();
+
     let mode = this.route.snapshot.queryParamMap.get('mode');
 
     mode == 'update' ? this.update() : this.create();
@@ -39,10 +41,8 @@ export class BillingJournalComponent implements OnInit {
   }
 
   update(){
-    
-    this.action = 'Update';
 
-    this.initialize();
+    this.action = 'Update';
 
     this.id = +this.route.snapshot.paramMap.get('id');
   
@@ -50,6 +50,8 @@ export class BillingJournalComponent implements OnInit {
 
     this.billingJournal$ = billingJournalSlice$.pipe(
       tap(billingJournal => {
+        this.initialize();
+
         this.form.patchValue(billingJournal);
 
         billingJournal.paymentActivities.forEach(pe => {
@@ -71,8 +73,6 @@ export class BillingJournalComponent implements OnInit {
   create(){
     
     this.action = 'Create';
-
-    this.initialize();
 
     this.billingJournal$ = of(<BillingJournal>{})
 

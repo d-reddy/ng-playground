@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core';
 import { CommonModule, } from '@angular/common';
 import { BrowserModule  } from '@angular/platform-browser';
 import { Routes, RouterModule } from '@angular/router';
-
 import { BillingDetailComponent } from './components/billing-detail/billing-detail.component';
 import { BillingJournalComponent } from './components/billing-journal/billing-journal.component';
 import { BillingListComponent } from './components/billing-list/billing-list.component'

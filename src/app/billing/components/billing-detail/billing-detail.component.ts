@@ -75,6 +75,8 @@ export class BillingDetailComponent implements OnInit {
 
     this.billing$ = billingSlice$.pipe(
       tap(billing => {
+        this.initialize();
+
         this.form.patchValue(billing);
 
         billing.patientBillingJournals.forEach(pe => {

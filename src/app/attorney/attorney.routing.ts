@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core';
 import { CommonModule, } from '@angular/common';
 import { BrowserModule  } from '@angular/platform-browser';
 import { Routes, RouterModule } from '@angular/router';
-
 import { AttorneyDetailComponent } from './components/attorney-detail/attorney-detail.component';
 import { AttorneyListComponent } from './components/attorney-list/attorney-list.component'
 

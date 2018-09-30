@@ -76,6 +76,8 @@ export class AttorneyDetailComponent implements OnInit {
     //... changes.
     this.attorney$ = attorneySlice$.pipe(
       tap(attorney => {
+        //before applying form values, clean form
+        this.initialize();
         //when the selected attorney is updated, take the payload, and
         //... patch the form (apply on top of the instantiated form object)
         this.attorneyForm.patchValue(attorney);

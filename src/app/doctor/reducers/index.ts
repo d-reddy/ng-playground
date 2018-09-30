@@ -6,28 +6,29 @@ import {
 
 import * as fromDoctor from './doctor.reducer';
 
-/**
- * from what i understand, an index like this is used to aggregate reducers
- * and help to generate selectors across reducers, if multiple
- */
-
-export interface DoctorsAggregateState {
-    doctorsState: fromDoctor.DoctorsState,
+export interface DoctorModuleState {
+    doctorState: fromDoctor.DoctorState,
 }
 
-export const doctorsState = createFeatureSelector<fromDoctor.DoctorsState>('doctors');
+export const reducers: ActionReducerMap<DoctorModuleState> = {
+  doctorState: fromDoctor.doctorReducer
+};
+
+export const doctorState = createFeatureSelector<DoctorModuleState>('doctor');
 
 export const selectCurrentDoctorId = createSelector(
-  doctorsState,  
-  (state: fromDoctor.DoctorsState) => state.selectedDoctorId
+  doctorState,  
+  (state: DoctorModuleState) => state.doctorState.selectedDoctorId
 );
 
 export const selectCurrentDoctorPage = createSelector(
-  doctorsState,  
-  (state: fromDoctor.DoctorsState) => state.selectedDoctorPage
+  doctorState,  
+  (state: DoctorModuleState) => state.doctorState.selectedDoctorPage
 );
 
-export const selectAllDoctors = createSelector(doctorsState, fromDoctor.selectAll);
+export const selectDoctorState = createSelector(doctorState, (state: DoctorModuleState) => state.doctorState);
+
+export const selectAllDoctors = createSelector(selectDoctorState, fromDoctor.selectAll);
 
 export const selectCurrentDoctor = createSelector(
   selectAllDoctors,
