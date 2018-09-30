@@ -3,6 +3,7 @@ import { PatientService } from '../models/patientService';
 import { PageRequest, PageResponse } from '../../shared/pagination/models/pagination'
 
 export enum PatientServiceActionTypes {
+
   PATIENTSERVICE_CREATE = 'PATIENTSERVICE_CREATE',
   PATIENTSERVICE_CREATE_COMPLETE = 'PATIENTSERVICE_CREATE_COMPLETE',
   PATIENTSERVICE_SAVE = 'PATIENTSERVICE_SAVE',
@@ -15,13 +16,6 @@ export enum PatientServiceActionTypes {
   PATIENTSERVICE_EXAMS_GET_COMPLETE = 'PATIENTSERVICE_EXAMS_GET_COMPLETE'
 }
 
-/**
- * Every action is comprised of at least a type and an optional
- * payload. Expressing actions as classes enables powerful
- * type checking in reducer functions.
- *
- * See Discriminated Unions: https://www.typescriptlang.org/docs/handbook/advanced-types.html#discriminated-unions
- */
 export class PatientServiceCreate implements Action {
   readonly type = PatientServiceActionTypes.PATIENTSERVICE_CREATE;
 
@@ -37,7 +31,6 @@ export class PatientServiceCreateComplete implements Action {
 export class PatientServicesGet implements Action {
   readonly type = PatientServiceActionTypes.PATIENTSERVICES_GET;
 
-//  constructor() {}
   constructor(public filter: object, public pageRequest: PageRequest) {}
 }
 
@@ -84,10 +77,6 @@ export class PatientServiceExamsGetComplete implements Action {
   constructor(public payload: PatientService) {}
 }
 
-/**
- * Export a type alias of all actions in this action group
- * so that reducers can easily compose action types
- */
 export type PatientServiceActionsUnion =
   | PatientServiceCreate
   | PatientServiceCreateComplete

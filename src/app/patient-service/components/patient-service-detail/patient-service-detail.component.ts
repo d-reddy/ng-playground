@@ -5,22 +5,16 @@ import { Store } from '@ngrx/store';
 import { ActivatedRoute } from '@angular/router';
 import { Observable, of } from 'rxjs'
 import { tap, map } from 'rxjs/operators'
-
 import * as patientServiceReducer from '../../reducers';
-
 import * as actions from '../../actions/patient-service.actions';
-
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
 import { Doctor } from '../../../doctor/models/doctor';
-
 import { Exam } from '../../../reference-data/models/referenceData';
 import * as referenceDataReducer from '../../../reference-data/reducers/reference-data.reducer';
 import { ReferenceDataGet } from '../../../reference-data/actions/reference-data.actions';
 import {PerformedExam} from '../../models/performedExam';
-
 import { ToastrService } from 'ngx-toastr';
-
 import {FormCanDeactivate} from '../../../shared/form/form-can-deactivate';
 
 @Component({
@@ -41,12 +35,14 @@ export class PatientServiceDetailComponent extends FormCanDeactivate implements 
 
   displayedExams: PerformedExam[];
 
-  constructor(private store: Store<patientServiceReducer.PatientServicesAggregateState>, private refDataStore: Store<referenceDataReducer.ReferenceDataStore>, private fb: FormBuilder, private route: ActivatedRoute,
+  constructor(private store: Store<patientServiceReducer.PatientServiceModuleState>, private refDataStore: Store<referenceDataReducer.ReferenceDataStore>, private fb: FormBuilder, private route: ActivatedRoute,
     private modalService: BsModalService, private toastr: ToastrService) {
       super();
      }
 
   ngOnInit() {
+
+    this.initialize();
 
     this.doctors = [{id:1, firstName:'tim', lastName:'doctor'}, {id:2, firstName:'jawartolo', lastName:'melancholoy'}];
 
@@ -59,6 +55,24 @@ export class PatientServiceDetailComponent extends FormCanDeactivate implements 
     let mode = this.route.snapshot.queryParamMap.get('mode');
 
     mode == 'update' ? this.update() : this.create();
+  }
+
+  initialize(){
+
+    this.displayedExams = [];
+
+    this.form = this.fb.group({
+      id: '',
+      medicalRecordNumber: '',
+      dateOfService: '',
+      performedExams: this.fb.array([])
+    });
+
+    this.examForm = this.fb.group({
+      examId: null,
+      doctorId: null
+    });
+
   }
 
   update(){
@@ -88,41 +102,8 @@ export class PatientServiceDetailComponent extends FormCanDeactivate implements 
     
     this.action = 'Create';
 
-    this.initialize();
-
     this.patientService$ = of(<PatientService>{})
 
-  }
-
-  initialize(){
-
-    this.displayedExams = [];
-
-    this.form = this.fb.group({
-      id: '',
-      medicalRecordNumber: '',
-      dateOfService: '',
-      performedExams: this.fb.array([])
-    });
-
-    this.examForm = this.fb.group({
-      examId: null,
-      doctorId: null
-    });
-
-  }
-
-  getDoctorName(id: number) {
-    let doctor = this.doctors.filter(doc => doc.id == id);
-    return doctor[0].firstName;
-  }
-
-  getExamName(id: number) {
-   return this.exams$.pipe(
-    map(exams => {
-     let exam = exams.filter(e => e.id == id);
-     return (exam.length > 0) ? exam[0].name : null;
-   }));
   }
 
   onSubmit({ value, valid }) {
@@ -140,6 +121,31 @@ export class PatientServiceDetailComponent extends FormCanDeactivate implements 
     this.showSuccess();
   }
 
+  onSubmitExam({ value, valid }) {
+    //check if already added
+    let matchingExams = this.form.get("performedExams").value.filter(pe => pe.doctorId == value.doctorId && pe.examId == value.examId);
+
+    if (matchingExams.length == 0){
+      let performedExam = <PerformedExam>{doctorId:value.doctorId,examId:value.examId,patientServiceId:this.id};
+      this.displayedExams.push(performedExam)
+      this.form.get("performedExams").value.push(performedExam);
+      this.form.markAsDirty();
+    }
+  }
+
+  getDoctorName(id: number) {
+    let doctor = this.doctors.filter(doc => doc.id == id);
+    return doctor[0].firstName;
+  }
+
+  getExamName(id: number) {
+   return this.exams$.pipe(
+    map(exams => {
+     let exam = exams.filter(e => e.id == id);
+     return (exam.length > 0) ? exam[0].name : null;
+   }));
+  }
+
   deleteExam(doctorId: number, examId: number){
     this.displayedExams = this.displayedExams.filter(pe => !(pe.doctorId == doctorId && pe.examId == examId));
     this.form.setControl('performedExams', this.fb.array(this.displayedExams || []));
@@ -153,18 +159,6 @@ export class PatientServiceDetailComponent extends FormCanDeactivate implements 
   //exam modal interactions
   openModal(template: TemplateRef<any>) {
     this.modalRef = this.modalService.show(template);
-  }
-
-  onSubmitExam({ value, valid }) {
-    //check if already added
-    let matchingExams = this.form.get("performedExams").value.filter(pe => pe.doctorId == value.doctorId && pe.examId == value.examId);
-
-    if (matchingExams.length == 0){
-      let performedExam = <PerformedExam>{doctorId:value.doctorId,examId:value.examId,patientServiceId:this.id};
-      this.displayedExams.push(performedExam)
-      this.form.get("performedExams").value.push(performedExam);
-      this.form.markAsDirty();
-    }
   }
 
   //toastr messages

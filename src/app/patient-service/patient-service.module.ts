@@ -1,10 +1,10 @@
-import { ModuleWithProviders, NgModule } from '@angular/core';
+import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { StoreModule } from '@ngrx/store';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { PatientServiceDetailComponent } from './components/patient-service-detail/patient-service-detail.component';
 import { PatientServiceListComponent } from './components/patient-service-list/patient-service-list.component';
-import { patientServiceReducer } from './reducers/patient-service.reducer';
+import { reducers } from './reducers';
 import { BrowserModule } from '@angular/platform-browser';
 import { CommonModule } from '@angular/common'
 import { PatientServiceRoutingModule } from './patient-service.routing'
@@ -36,7 +36,7 @@ import { DatepickerModule, BsDatepickerModule } from 'ngx-bootstrap/datepicker';
     DoctorModule,
     //https://offering.solutions/blog/articles/2018/02/10/separating-state-into-angular-modules-with-ngrx
     //https://toddmotto.com/ngrx-store-understanding-state-selectors
-    StoreModule.forFeature('patientServices', patientServiceReducer),
+    StoreModule.forFeature('patientService', reducers),
     EffectsModule.forFeature([PatientServiceEffects]),
     BsDatepickerModule.forRoot(),
     DatepickerModule.forRoot() 

@@ -1,14 +1,10 @@
-import { Inject, Injectable, InjectionToken, Optional } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { Actions, Effect, ofType } from '@ngrx/effects';
 import { Action } from '@ngrx/store';
-import { asyncScheduler, empty, Observable, of } from 'rxjs';
+import { Observable } from 'rxjs';
 import {
-  catchError,
-  debounceTime,
   map,
-  skip,
   switchMap,
-  takeUntil,
 } from 'rxjs/operators';
 
 import { PatientServiceService } from '../services/patient-service.service';
@@ -22,31 +18,10 @@ import {
   PatientServiceSaveComplete,
   PatientServiceGet,
   PatientServiceGetComplete,
-  PatientServiceExamsGet,
-  PatientServiceExamsGetComplete
 } from '../actions/patient-service.actions';
 
 import { PatientService } from '../models/patientService';
 import { PageResponse} from '../../shared/pagination/models/pagination'
-
-//may need this when working on patientService filtering
-// import { Scheduler } from 'rxjs/internal/Scheduler';
-
-// export const SEARCH_DEBOUNCE = new InjectionToken<number>('Search Debounce');
-// export const SEARCH_SCHEDULER = new InjectionToken<Scheduler>(
-//   'Search Scheduler'
-// );
-
-/**
- * Effects offer a way to isolate and easily test side-effects within your
- * application.
- *
- * If you are unfamiliar with the operators being used in these examples, please
- * check out the sources below:
- *
- * Official Docs: http://reactivex.io/rxjs/manual/overview.html#categories-of-operators
- * RxJS 5 Operators By Example: https://gist.github.com/btroncone/d6cf141d6f2c00dc6b35
- */
 
 @Injectable()
 export class PatientServiceEffects {
@@ -58,7 +33,7 @@ export class PatientServiceEffects {
     switchMap(patientService => {
       return this.patientServiceService.createPatientService(patientService).pipe(
         map((createdPatientService: PatientService) => new PatientServiceCreateComplete(createdPatientService)),
-//      catchError(err => of(new SearchError(err)))
+        //catchError(err => of(new SearchError(err)))
       );
     })
   );
@@ -70,7 +45,7 @@ export class PatientServiceEffects {
     switchMap(patientService => {
       return this.patientServiceService.savePatientService(patientService).pipe(
         map((savedPatientService: PatientService) => new PatientServiceSaveComplete(savedPatientService.id, savedPatientService)),
-//      catchError(err => of(new SearchError(err)))
+        //catchError(err => of(new SearchError(err)))
       );
     })
   );
@@ -82,7 +57,7 @@ export class PatientServiceEffects {
     switchMap(action => {
     return this.patientServiceService.getPatientServices(action.filter, action.pageRequest).pipe(  
         map((returnedPatientServices: PageResponse<PatientService>) => new PatientServicesGetComplete(returnedPatientServices)),
-//      catchError(err => of(new SearchError(err)))
+        //catchError(err => of(new SearchError(err)))
       );
     })
   );
@@ -93,24 +68,13 @@ export class PatientServiceEffects {
     switchMap(action => {
       return this.patientServiceService.getPatientService(action.payload).pipe(
         map((returnedPatientService: PatientService) => new PatientServiceGetComplete(returnedPatientService)),
-//      catchError(err => of(new SearchError(err)))
+        //catchError(err => of(new SearchError(err)))
       );
     })
   );
 
   constructor(
     private actions$: Actions,
-    private patientServiceService: PatientServiceService,
-    //@Optional()
-    // @Inject(SEARCH_DEBOUNCE)
-    // private debounce: number,
-    /**
-     * You inject an optional Scheduler that will be undefined
-     * in normal application usage, but its injected here so that you can mock out
-     * during testing using the RxJS TestScheduler for simulating passages of time.
-     */
-    //@Optional()
-    // @Inject(SEARCH_SCHEDULER)
-    // private scheduler: Scheduler
+    private patientServiceService: PatientServiceService
   ) {}
 }

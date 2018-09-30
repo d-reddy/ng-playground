@@ -6,28 +6,29 @@ import {
 
 import * as fromPatientService from './patient-service.reducer';
 
-/**
- * from what i understand, an index like this is used to aggregate reducers
- * and help to generate selectors across reducers, if multiple
- */
-
-export interface PatientServicesAggregateState {
-    patientServicesState: fromPatientService.PatientServicesState,
+export interface PatientServiceModuleState {
+    patientServiceState: fromPatientService.PatientServiceState,
 }
 
-export const patientServicesState = createFeatureSelector<fromPatientService.PatientServicesState>('patientServices');
+export const reducers: ActionReducerMap<PatientServiceModuleState> = {
+  patientServiceState: fromPatientService.patientServiceReducer
+};
+
+export const patientServiceState = createFeatureSelector<PatientServiceModuleState>('patientService');
 
 export const selectCurrentPatientServiceId = createSelector(
-  patientServicesState,  
-  (state: fromPatientService.PatientServicesState) => state.selectedPatientServiceId
+  patientServiceState,  
+  (state: PatientServiceModuleState) => state.patientServiceState.selectedPatientServiceId
 );
 
 export const selectCurrentPatientServicePage = createSelector(
-  patientServicesState,  
-  (state: fromPatientService.PatientServicesState) => state.selectedPatientServicePage
+  patientServiceState,  
+  (state: PatientServiceModuleState) => state.patientServiceState.selectedPatientServicePage
 );
 
-export const selectAllPatientServices = createSelector(patientServicesState, fromPatientService.selectAll);
+export const selectPatientServiceState = createSelector(patientServiceState, (state: PatientServiceModuleState) => state.patientServiceState);
+
+export const selectAllPatientServices = createSelector(selectPatientServiceState, fromPatientService.selectAll);
 
 export const selectCurrentPatientService = createSelector(
   selectAllPatientServices,
