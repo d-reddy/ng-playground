@@ -1,10 +1,10 @@
-import { ModuleWithProviders, NgModule } from '@angular/core';
+import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { StoreModule } from '@ngrx/store';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { InsuranceProviderDetailComponent } from './components/insurance-provider-detail/insurance-provider-detail.component';
 import { InsuranceProviderListComponent } from './components/insurance-provider-list/insurance-provider-list.component';
-import { insuranceProviderReducer } from './reducers/insurance-provider.reducer';
+import { reducers } from './reducers';
 import { BrowserModule } from '@angular/platform-browser';
 import { CommonModule } from '@angular/common'
 import { InsuranceProviderRoutingModule } from './insurance-provider.routing'
@@ -26,7 +26,7 @@ import { PaginationModule } from '../shared/pagination/pagination.module'
     PaginationModule,
     //https://offering.solutions/blog/articles/2018/02/10/separating-state-into-angular-modules-with-ngrx
     //https://toddmotto.com/ngrx-store-understanding-state-selectors
-    StoreModule.forFeature('insuranceProviders', insuranceProviderReducer),
+    StoreModule.forFeature('insuranceProvider', reducers),
     EffectsModule.forFeature([InsuranceProviderEffects])
   ],
   declarations: [

@@ -6,32 +6,31 @@ import {
 
 import * as fromInsuranceProvider from './insurance-provider.reducer';
 
-/**
- * from what i understand, an index like this is used to aggregate reducers
- * and help to generate selectors across reducers, if multiple
- */
-
-export interface InsuranceProvidersAggregateState {
-    insuranceProvidersState: fromInsuranceProvider.InsuranceProvidersState,
-    //other type of insuranceProvider "state" ...ie AddressHistory???
+export interface InsuranceProviderModuleState {
+    insuranceProviderState: fromInsuranceProvider.InsuranceProviderState
 }
 
+export const reducers: ActionReducerMap<InsuranceProviderModuleState> = {
+  insuranceProviderState: fromInsuranceProvider.insuranceProviderReducer
+};
+
 //insuranceProvider selectors  
-export const insuranceProvidersState = createFeatureSelector<fromInsuranceProvider.InsuranceProvidersState>('insuranceProviders');
+export const insuranceProviderState = createFeatureSelector<InsuranceProviderModuleState>('insuranceProvider');
 
 export const selectCurrentInsuranceProviderId = createSelector(
-  insuranceProvidersState,  
-  (state: fromInsuranceProvider.InsuranceProvidersState) => state.selectedInsuranceProviderId
+  insuranceProviderState,  
+  (state: InsuranceProviderModuleState) => state.insuranceProviderState.selectedInsuranceProviderId
 );
 
 export const selectCurrentInsuranceProviderPage = createSelector(
-  insuranceProvidersState,  
-  (state: fromInsuranceProvider.InsuranceProvidersState) => state.selectedInsuranceProviderPage
+  insuranceProviderState,  
+  (state: InsuranceProviderModuleState) => state.insuranceProviderState.selectedInsuranceProviderPage
 );
 
-export const selectAllInsuranceProviders = createSelector(insuranceProvidersState, fromInsuranceProvider.selectAll);
+export const selectInsuranceProviderState = createSelector(insuranceProviderState, (state: InsuranceProviderModuleState) => state.insuranceProviderState);
 
-//get selected insuranceProvider
+export const selectAllInsuranceProviders = createSelector(selectInsuranceProviderState, fromInsuranceProvider.selectAll);
+
 export const selectCurrentInsuranceProvider = createSelector(
   selectAllInsuranceProviders,
   selectCurrentInsuranceProviderId,

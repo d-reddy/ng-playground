@@ -18,12 +18,10 @@ export class InsuranceProviderListComponent implements OnInit {
   headerRow: string[]
   insuranceProviders$: Observable<InsuranceProvider[]>;
 
-  constructor(private store: Store<reducer.InsuranceProvidersAggregateState>) { 
+  constructor(private store: Store<reducer.InsuranceProviderModuleState>) { 
   }
 
   ngOnInit() {
-    this.headerRow = ['name', 'city', 'state', 'phone', 'actions'];
-
     this.page$ = this.store.select(reducer.selectCurrentInsuranceProviderPage);
  
     this.insuranceProviders$ = this.page$.pipe(
