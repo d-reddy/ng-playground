@@ -23,9 +23,19 @@ export class ClaimsAdjusterDetailComponent implements OnInit {
   claimsAdjuster$: Observable<ClaimsAdjuster>;
   action: string;
   
-  constructor(private store: Store<reducer.ClaimsAdjustersAggregateState>, private fb: FormBuilder, private route: ActivatedRoute) { }
+  constructor(private store: Store<reducer.ClaimsAdjustersModuleState>, private fb: FormBuilder, private route: ActivatedRoute) { }
 
   ngOnInit() {
+
+    this.initialize();
+    
+    let mode = this.route.snapshot.queryParamMap.get('mode');
+
+    mode == 'update' ? this.update() : this.create();
+
+  }
+
+  initialize(){
 
     //create the claimsAdjuster form
     this.claimsAdjusterForm = this.fb.group({
@@ -44,10 +54,6 @@ export class ClaimsAdjusterDetailComponent implements OnInit {
         zip:''
       })
     });
-    
-    let mode = this.route.snapshot.queryParamMap.get('mode');
-
-    mode == 'update' ? this.update() : this.create();
 
   }
 

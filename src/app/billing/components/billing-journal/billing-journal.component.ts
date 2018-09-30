@@ -26,7 +26,6 @@ export class BillingJournalComponent implements OnInit {
 
   displayedPaymentActivities: PaymentActivity[];  
   displayedAttachments: Attachment[];  
- // displayedInsuranceProviderBillingActivities: BillingActivity[];  
 
   constructor(private store: Store<reducer.BillingModuleState>, private fb: FormBuilder, private route: ActivatedRoute, 
     public billingActivtyService: BillingJournalService) { }
@@ -37,16 +36,10 @@ export class BillingJournalComponent implements OnInit {
 
     mode == 'update' ? this.update() : this.create();
 
-    // this.form.patchValue(this.billingActivtyService.billingJournal);
-
-    // this.billingActivtyService.billingJournal.paymentActivities.forEach(pe => {
-    //   this.displayedPaymentActivities.push(pe);
-    //   this.paymentActivities.push(this.fb.group(pe))
-    // });
-
   }
 
   update(){
+    
     this.action = 'Update';
 
     this.initialize();
@@ -57,7 +50,6 @@ export class BillingJournalComponent implements OnInit {
 
     this.billingJournal$ = billingJournalSlice$.pipe(
       tap(billingJournal => {
-//        this.initialize();
         this.form.patchValue(billingJournal);
 
         billingJournal.paymentActivities.forEach(pe => {
@@ -88,12 +80,9 @@ export class BillingJournalComponent implements OnInit {
 
   initialize(){
 
-    //investigate the need for this
     this.displayedPaymentActivities = [];
     this.displayedAttachments = [];
 
-    // this.displayedInsuranceProviderBillingActivities = [];
-    
     //create the billing form
     this.form = this.fb.group({
       id: '',
@@ -122,46 +111,8 @@ export class BillingJournalComponent implements OnInit {
     return this.form.get('attachments') as FormArray;
   }
 
-  // get insuranceProviderBillingActivities(){
-  //   return this.form.get('insuranceProviderBillingActivities') as FormArray;
-  // }
-
-
-//   export interface BillingActivity {
-//     id: number;
-//     dateBilled: Date;
-//     amount: number;
-//     balance: number;
-//     statusId: number;           //open, settled, collections, etc
-
-//     billedItemId: number;       //examBillingId or lopCaseId since an LOP Case can be associated with multiple exams
-//     billedItemTypeId: number;   //individual exam vs a bill tied to a lop which could be for a group of exams
-
-//     billedEntityId: number;     //patientId, insuranceProviderId, lawfirmId, attorneyId
-//     billedEntityTypeId: number; //patient, insurance provider, law firm, attorney
-//     billedEntityName: string;
-
-//     contactActivity: ContactActivity[];
-//     paymentActivity: PaymentActivity[];
-//     negotiationActivity: NegotiationActivity[];
-// }
-
-  // get data():string{
-  //   return this.billingActivtyService.billingActivity.billedEntityName;
-  // }
 
   onSubmit({ value, valid }) {
-
-    // this.store.dispatch(new actions.BillingSave(<ExamBilling>{
-    //   id: value.id, 
-    //   patientName: value.patientName, 
-    //   doctorName: value.doctorName, 
-    //   patientId:  value.patientId, 
-    //   exam: value.exam, 
-    //   dateOfService: value.dateOfService, 
-    //   statusId: value.statusId, 
-    //   amount: value.amount
-    // }));
 
   }
 

@@ -26,12 +26,12 @@ export class AttorneyDetailComponent implements OnInit {
   constructor(private store: Store<reducer.AttorneyModuleState>, private fb: FormBuilder, private route: ActivatedRoute) { }
 
   ngOnInit() {
-    
-    //determine which mode this page is being called in... create or update?
-    let mode = this.route.snapshot.queryParamMap.get('mode');
 
     //initialize form
     this.initialize();
+
+    //determine which mode this page is being called in... create or update?
+    let mode = this.route.snapshot.queryParamMap.get('mode');
 
     //handle mode
     mode == 'update' ? this.update() : this.create();

@@ -6,32 +6,30 @@ import {
 
 import * as fromClaimsAdjuster from './claims-adjuster.reducer';
 
-/**
- * from what i understand, an index like this is used to aggregate reducers
- * and help to generate selectors across reducers, if multiple
- */
-
-export interface ClaimsAdjustersAggregateState {
-    claimsAdjustersState: fromClaimsAdjuster.ClaimsAdjustersState,
-    //other type of claimsAdjuster "state" ...ie AddressHistory???
+export interface ClaimsAdjustersModuleState {
+    claimsAdjusterState: fromClaimsAdjuster.ClaimsAdjustersState
 }
 
-//claimsAdjuster selectors  
-export const claimsAdjustersState = createFeatureSelector<fromClaimsAdjuster.ClaimsAdjustersState>('claimsAdjusters');
+export const reducers: ActionReducerMap<ClaimsAdjustersModuleState> = {
+  claimsAdjusterState: fromClaimsAdjuster.claimsAdjusterReducer
+};
+
+export const claimsAdjusterState = createFeatureSelector<ClaimsAdjustersModuleState>('claimsAdjuster');
 
 export const selectCurrentClaimsAdjusterId = createSelector(
-  claimsAdjustersState,  
-  (state: fromClaimsAdjuster.ClaimsAdjustersState) => state.selectedClaimsAdjusterId
+  claimsAdjusterState,  
+  (state: ClaimsAdjustersModuleState) => state.claimsAdjusterState.selectedClaimsAdjusterId
 );
 
 export const selectCurrentClaimsAdjusterPage = createSelector(
-  claimsAdjustersState,  
-  (state: fromClaimsAdjuster.ClaimsAdjustersState) => state.selectedClaimsAdjusterPage
+  claimsAdjusterState,  
+  (state: ClaimsAdjustersModuleState) => state.claimsAdjusterState.selectedClaimsAdjusterPage
 );
 
-export const selectAllClaimsAdjusters = createSelector(claimsAdjustersState, fromClaimsAdjuster.selectAll);
+export const selectClaimsAdjusterState = createSelector(claimsAdjusterState, (state: ClaimsAdjustersModuleState) => state.claimsAdjusterState);
 
-//get selected claimsAdjuster
+export const selectAllClaimsAdjusters = createSelector(selectClaimsAdjusterState, fromClaimsAdjuster.selectAll);
+
 export const selectCurrentClaimsAdjuster = createSelector(
   selectAllClaimsAdjusters,
   selectCurrentClaimsAdjusterId,

@@ -7,7 +7,6 @@ import * as reducer from '../../reducers'
 import * as actions from '../../actions/billing.actions';
 import { PageRequest, PageResponse } from '../../../shared/pagination/models/pagination';
 import { map } from 'rxjs/operators';
-import { BillingState } from '../../reducers/billing.reducer';
 
 @Component({
   selector: 'app-billing-list',
@@ -19,11 +18,10 @@ export class BillingListComponent implements OnInit {
   headerRow: string[]
   billings$: Observable<ExamBillingLedger[]>;
 
-  constructor(private store: Store<BillingState>) { 
+  constructor(private store: Store<reducer.BillingModuleState>) { 
   }
 
   ngOnInit() {
-    this.headerRow = ['patient name', 'medical number', 'date of service', 'exam'];
 
     this.page$ = this.store.select(reducer.selectCurrentBillingPage);
  

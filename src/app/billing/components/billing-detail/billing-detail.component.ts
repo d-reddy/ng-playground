@@ -32,49 +32,13 @@ export class BillingDetailComponent implements OnInit {
   constructor(private store: Store<reducer.BillingModuleState>, private fb: FormBuilder, private route: ActivatedRoute, public billingActivtyService: BillingJournalService, private router: Router) { }
 
   ngOnInit() {
-       
+
+    this.initialize();
+
     let mode = this.route.snapshot.queryParamMap.get('mode');
 
     mode == 'update' ? this.update() : this.create();
     
-  }
-
-  update(){
-
-    this.action = 'Update';
-
-    this.id = +this.route.snapshot.paramMap.get('id');
-  
-    let billingSlice$ = this.store.select(reducer.selectCurrentBilling);
-
-    this.billing$ = billingSlice$.pipe(
-      tap(billing => {
-        this.initialize();
-        this.form.patchValue(billing);
-
-        billing.patientBillingJournals.forEach(pe => {
-          this.displayedPatientBillingJournals.push(pe);
-          this.patientBillingJournals.push(this.fb.group(pe))
-        });
-
-        billing.insuranceBillingJournals.forEach(pe => {
-          this.displayedInsuranceProviderBillingJournals.push(pe);
-          this.insuranceProviderBillingJournals.push(this.fb.group(pe))
-        });
-      })
-    );
-
-    this.store.dispatch(new actions.BillingGet(this.id));
-  }
-
-  create(){
-    
-    this.action = 'Create';
-
-    this.initialize();
-
-    this.billing$ = of(<ExamBillingLedger>{})
-
   }
 
   initialize(){
@@ -101,18 +65,40 @@ export class BillingDetailComponent implements OnInit {
 
   }
 
-  get patientBillingJournals(){
-    return this.form.get('patientBillingJournals') as FormArray;
+  update(){
+
+    this.action = 'Update';
+
+    this.id = +this.route.snapshot.paramMap.get('id');
+  
+    let billingSlice$ = this.store.select(reducer.selectCurrentBilling);
+
+    this.billing$ = billingSlice$.pipe(
+      tap(billing => {
+        this.form.patchValue(billing);
+
+        billing.patientBillingJournals.forEach(pe => {
+          this.displayedPatientBillingJournals.push(pe);
+          this.patientBillingJournals.push(this.fb.group(pe))
+        });
+
+        billing.insuranceBillingJournals.forEach(pe => {
+          this.displayedInsuranceProviderBillingJournals.push(pe);
+          this.insuranceProviderBillingJournals.push(this.fb.group(pe))
+        });
+      })
+    );
+
+    this.store.dispatch(new actions.BillingGet(this.id));
   }
 
-  get insuranceProviderBillingJournals(){
-    return this.form.get('insuranceProviderBillingJournals') as FormArray;
-  }
+  create(){
+    
+    this.action = 'Create';
 
-  // selectBillingActivity(billingActivity){
-  //   this.billingActivtyService.billingActivity = billingActivity;
-  //   this.router.navigate(['billings/activity', billingActivity.id]);
-  // }
+    this.billing$ = of(<ExamBillingLedger>{})
+
+  }
 
   onSubmit({ value, valid }) {
 
@@ -127,6 +113,14 @@ export class BillingDetailComponent implements OnInit {
       amount: value.amount
     }));
 
+  }
+
+  get patientBillingJournals(){
+    return this.form.get('patientBillingJournals') as FormArray;
+  }
+
+  get insuranceProviderBillingJournals(){
+    return this.form.get('insuranceProviderBillingJournals') as FormArray;
   }
 
 }

@@ -18,11 +18,10 @@ export class ClaimsAdjusterListComponent implements OnInit {
   headerRow: string[]
   claimsAdjusters$: Observable<ClaimsAdjuster[]>;
 
-  constructor(private store: Store<reducer.ClaimsAdjustersAggregateState>) { 
+  constructor(private store: Store<reducer.ClaimsAdjustersModuleState>) { 
   }
 
   ngOnInit() {
-    this.headerRow = ['first', 'last', 'city', 'state', 'phone', 'actions'];
 
     this.page$ = this.store.select(reducer.selectCurrentClaimsAdjusterPage);
  
