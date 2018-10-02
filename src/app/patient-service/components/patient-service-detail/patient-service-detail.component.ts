@@ -1,10 +1,10 @@
 import { FormGroup, FormArray, FormBuilder,  Validators } from '@angular/forms';
 import { PatientService } from '../../models/patientService';
-import { Component, OnInit, TemplateRef } from '@angular/core';
+import { Component, OnInit, TemplateRef, OnDestroy } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { ActivatedRoute } from '@angular/router';
-import { Observable, of } from 'rxjs'
-import { tap, map } from 'rxjs/operators'
+import { Observable, of, Subject } from 'rxjs'
+import { tap, map, takeUntil } from 'rxjs/operators'
 import * as patientServiceReducer from '../../reducers';
 import * as actions from '../../actions/patient-service.actions';
 import { BsModalService } from 'ngx-bootstrap/modal';
@@ -16,13 +16,14 @@ import { ReferenceDataGet } from '../../../reference-data/actions/reference-data
 import {PerformedExam} from '../../models/performedExam';
 import { ToastrService } from 'ngx-toastr';
 import {FormCanDeactivate} from '../../../shared/form/form-can-deactivate';
+import { Actions, ofType } from '@ngrx/effects';
 
 @Component({
   selector: 'app-patient-service',
   templateUrl: './patient-service-detail.component.html',
   styleUrls: ['./patient-service-detail.component.css']
 })
-export class PatientServiceDetailComponent extends FormCanDeactivate implements OnInit {
+export class PatientServiceDetailComponent extends FormCanDeactivate implements OnInit, OnDestroy {
 
   form: FormGroup;
   examForm: FormGroup;
@@ -34,9 +35,10 @@ export class PatientServiceDetailComponent extends FormCanDeactivate implements 
   action: string;
 
   displayedExams: PerformedExam[];
+  destroyed$ = new Subject<boolean>();
 
   constructor(private store: Store<patientServiceReducer.PatientServiceModuleState>, private refDataStore: Store<referenceDataReducer.ReferenceDataStore>, private fb: FormBuilder, private route: ActivatedRoute,
-    private modalService: BsModalService, private toastr: ToastrService) {
+    private modalService: BsModalService, private toastr: ToastrService, private actions$: Actions) {
       super();
      }
 
@@ -50,6 +52,14 @@ export class PatientServiceDetailComponent extends FormCanDeactivate implements 
       map(data => data.exams)
     );
 
+    //https://stackoverflow.com/questions/43226681/how-to-subscribe-to-action-success-callback-using-ngrx-and-effects
+    this.actions$.pipe(
+      ofType(actions.PatientServiceActionTypes.PATIENTSERVICE_SAVE_COMPLETE),
+      takeUntil(this.destroyed$),
+      tap(() => { 
+        this.toastr.success('Saved');
+      })).subscribe();
+      
     this.refDataStore.dispatch(new ReferenceDataGet());
 
     let mode = this.route.snapshot.queryParamMap.get('mode');
@@ -118,7 +128,7 @@ export class PatientServiceDetailComponent extends FormCanDeactivate implements 
     }));
 
     //NOT CORRECT, NEEDS TO BE ACTION DRIVEN
-    this.showSuccess();
+    //this.showSuccess();
   }
 
   onSubmitExam({ value, valid }) {
@@ -161,8 +171,8 @@ export class PatientServiceDetailComponent extends FormCanDeactivate implements 
     this.modalRef = this.modalService.show(template);
   }
 
-  //toastr messages
-  showSuccess() {
-    this.toastr.success('Saved');
+  ngOnDestroy(){
+    this.destroyed$.next(true);
+    this.destroyed$.complete();
   }
 }

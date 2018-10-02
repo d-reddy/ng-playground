@@ -1,34 +1,43 @@
 import { FormGroup,  FormBuilder,  Validators } from '@angular/forms';
-
 import { Attorney } from '../../models/attorney';
 import { Address } from '../../models/address';
-
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { ActivatedRoute } from '@angular/router';
-import { Observable, of } from 'rxjs'
-import { tap } from 'rxjs/operators';
-
+import { Observable, Subject, of } from 'rxjs';
+import { tap, takeUntil } from 'rxjs/operators';
 import * as reducer from '../../reducers';
 import * as actions from '../../actions/attorney.actions';
+import { Actions, ofType } from '@ngrx/effects';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-attorney',
   templateUrl: './attorney-detail.component.html',
   styleUrls: ['./attorney-detail.component.css']
 })
-export class AttorneyDetailComponent implements OnInit {
+export class AttorneyDetailComponent implements OnInit, OnDestroy {
   attorneyForm: FormGroup;
   id: number;
   attorney$: Observable<Attorney>;
   action: string;
-  
-  constructor(private store: Store<reducer.AttorneyModuleState>, private fb: FormBuilder, private route: ActivatedRoute) { }
+  destroyed$ = new Subject<boolean>();
+
+  constructor(private store: Store<reducer.AttorneyModuleState>, private fb: FormBuilder, private route: ActivatedRoute, 
+    private toastr: ToastrService, private actions$: Actions) { }
 
   ngOnInit() {
 
     //initialize form
     this.initialize();
+
+     //https://stackoverflow.com/questions/43226681/how-to-subscribe-to-action-success-callback-using-ngrx-and-effects
+     this.actions$.pipe(
+      ofType(actions.AttorneyActionTypes.ATTORNEY_SAVE_COMPLETE),
+      takeUntil(this.destroyed$),
+      tap(() => { 
+        this.toastr.success('Saved');
+      })).subscribe();
 
     //determine which mode this page is being called in... create or update?
     let mode = this.route.snapshot.queryParamMap.get('mode');
@@ -124,5 +133,11 @@ export class AttorneyDetailComponent implements OnInit {
     }));
     
   }
+
+  ngOnDestroy(){
+    this.destroyed$.next(true);
+    this.destroyed$.complete();
+  }
+
 
 }
