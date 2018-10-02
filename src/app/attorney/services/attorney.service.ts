@@ -1,9 +1,10 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
+import { Observable, Subject, of } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { Attorney } from '../models/attorney';
+import { Filter } from '../models/filter';
 import { PaginationService } from '../../shared/pagination/services/pagination.service';
 import { PageRequest, PageResponse } from '../../shared/pagination/models/pagination'
 
@@ -15,8 +16,11 @@ export class AttorneyService {
 
   constructor(private http: HttpClient, private paginationService: PaginationService) {}
 
-  getAttorneys(filter: null | object, pageRequest: PageRequest): Observable<PageResponse<Attorney>> {
+  getAttorneys(filter: null | Filter, pageRequest: PageRequest): Observable<PageResponse<Attorney>> {
     //execute some api call to fetch attorneys
+    // if (filter && filter.searchTerm){
+
+    // }
 
     //just mocking out an observable response
     return this.paginationService.queryPaginated<Attorney>(this.http, this.API_PATH, filter, pageRequest);

@@ -21,6 +21,7 @@ import {
 } from '../actions/attorney.actions';
 
 import { Attorney } from '../models/attorney';
+import { Filter } from '../models/filter';
 import { PageResponse} from '../../shared/pagination/models/pagination'
 
 @Injectable()
@@ -56,7 +57,7 @@ export class AttorneyEffects {
   getAttorneys$: Observable<Action> = this.actions$.pipe(
     ofType<AttorneysGet>(AttorneyActionTypes.ATTORNEYS_GET),
     switchMap(action => {
-      return this.attorneyService.getAttorneys(action.filter, action.pageRequest).pipe(  
+      return this.attorneyService.getAttorneys(<Filter>action.filter, action.pageRequest).pipe(  
         map((returnedAttorneys: PageResponse<Attorney>) => new AttorneysGetComplete(returnedAttorneys)),
         //catchError(err => of(new SearchError(err)))
       );

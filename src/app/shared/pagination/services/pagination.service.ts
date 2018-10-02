@@ -235,6 +235,114 @@ let serviceData = {
           zip: '60515',
           until: ''
        }
+    },
+    {
+      id: 2,
+      firstName: 'tim',
+      middleName: '',
+      lastName: 'smith',       
+      phone: '815.333.1234',
+      fax: '815.332.2322',
+      email: 'bob.loblaw@boboblawfirm.com',
+      notes: 'some attorney note',
+      lawFirmId: 0,
+      currentAddress: {
+         address: '125 Fake st',
+         city: 'springfield',
+         state: 'il',
+         zip: '60515',
+         until: ''
+      }
+   },
+   {
+    id: 3,
+    firstName: 'dean',
+    middleName: '',
+    lastName: 'jones',       
+    phone: '815.333.1234',
+    fax: '815.332.2322',
+    email: 'bob.loblaw@boboblawfirm.com',
+    notes: 'some attorney note',
+    lawFirmId: 0,
+    currentAddress: {
+       address: '125 Fake st',
+       city: 'springfield',
+       state: 'il',
+       zip: '60515',
+       until: ''
+    }
+   },
+    {
+      id: 4,
+      firstName: 'harry',
+      middleName: '',
+      lastName: 'smith',       
+      phone: '815.333.1234',
+      fax: '815.332.2322',
+      email: 'bob.loblaw@boboblawfirm.com',
+      notes: 'some attorney note',
+      lawFirmId: 0,
+      currentAddress: {
+        address: '125 Fake st',
+        city: 'springfield',
+        state: 'il',
+        zip: '60515',
+        until: ''
+      }
+    },
+    {
+      id: 5,
+      firstName: 'scott',
+      middleName: '',
+      lastName: 'smith',       
+      phone: '815.333.1234',
+      fax: '815.332.2322',
+      email: 'bob.loblaw@boboblawfirm.com',
+      notes: 'some attorney note',
+      lawFirmId: 0,
+      currentAddress: {
+        address: '125 Fake st',
+        city: 'springfield',
+        state: 'il',
+        zip: '60515',
+        until: ''
+      }
+    },
+    {
+      id: 6,
+      firstName: 'patrick',
+      middleName: '',
+      lastName: 'smith',       
+      phone: '815.333.1234',
+      fax: '815.332.2322',
+      email: 'bob.loblaw@boboblawfirm.com',
+      notes: 'some attorney note',
+      lawFirmId: 0,
+      currentAddress: {
+        address: '125 Fake st',
+        city: 'springfield',
+        state: 'il',
+        zip: '60515',
+        until: ''
+      }
+    },
+    {
+      id: 7,
+      firstName: 'dennis',
+      middleName: '',
+      lastName: 'smith',       
+      phone: '815.333.1234',
+      fax: '815.332.2322',
+      email: 'bob.loblaw@boboblawfirm.com',
+      notes: 'some attorney note',
+      lawFirmId: 0,
+      currentAddress: {
+        address: '125 Fake st',
+        city: 'springfield',
+        state: 'il',
+        zip: '60515',
+        until: ''
+      }
     }
   ],
 
@@ -299,6 +407,7 @@ let serviceData = {
         });
       }
 
+      //here is where we'd call out to the api, and pass filter parameters
       // return http.get<PageResponse<T>>(url, {
       //   params: params
       // });
@@ -315,11 +424,42 @@ let serviceData = {
       if (url == 'billings') data = serviceData.billings;
       if (url == 'lops') data = serviceData.lops;
 
+
+      var filteredData = [];
+      var dataIds = [];
+      //just some mock filtering for testing
+      if (filter){
+        Object.keys(filter).sort().forEach(filterKey => {
+          //filter value
+          var filterVal = filter[filterKey];
+
+          data.forEach(item => {
+            var dataVal = item[filterKey];
+
+            if (filterVal){
+              if (dataVal && dataVal.toLowerCase().indexOf(filterVal.toLowerCase()) >= 0){
+                if (!dataIds.includes(item.id)){
+                  filteredData.push(item);
+                  dataIds.push(item.id);
+                }
+              } 
+            } else {
+              if (!dataIds.includes(item.id)){
+                filteredData.push(item);
+                dataIds.push(item.id);
+              }
+          }
+          });
+        });
+      } else {
+        filteredData = data;
+      }
+      
       let response = <PageResponse<T>>{
-        total: data.length,      // total number of items in full collection
+        total: filteredData.length,      // total number of items in full collection
         pageIndex: pageRequest.pageIndex,  // page index returned
         pageSize: 2,   // count per page
-        results:  (data.slice(pageRequest.pageIndex*pageRequest.pageSize, pageRequest.pageIndex*pageRequest.pageSize + pageRequest.pageSize)) as Array<any>// items for the current page
+        results:  (filteredData.slice(pageRequest.pageIndex*pageRequest.pageSize, pageRequest.pageIndex*pageRequest.pageSize + pageRequest.pageSize)) as Array<any>// items for the current page
       };
 
       return of(response);

@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, Output, OnInit, OnChanges } from '@angular/core';
 import { PageResponse } from '../models/pagination';
 
 @Component({
@@ -7,7 +7,7 @@ import { PageResponse } from '../models/pagination';
   styleUrls: ['./pagination.component.css']
 })
 
-export class PaginationComponent implements OnInit{
+export class PaginationComponent implements OnInit, OnChanges{
   @Input() page: PageResponse<any>;
   @Output() pageChange = new EventEmitter<number>();
 
@@ -17,6 +17,13 @@ export class PaginationComponent implements OnInit{
   constructor(){}
 
   ngOnInit(){
+    if (this.page){
+      this.numPages = Math.ceil(this.page.total / this.page.pageSize);
+      this.lastPage = this.numPages - 1;
+    }
+  }
+
+  ngOnChanges(){
     if (this.page){
       this.numPages = Math.ceil(this.page.total / this.page.pageSize);
       this.lastPage = this.numPages - 1;
